@@ -319,7 +319,7 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
   <details class="ext disc" id="disclaimer" style="margin-top:28px">
     <summary data-k="discSum">disclaimer · web iseng, nggak resmi, jangan dibawa serius-serius amat</summary>
     <p data-k="disc1"><b>web iseng.</b> ini proyek iseng buatan fans, bukan resmi. gw nggak punya hubungan apa-apa sama jkt48, jkt48 operation team, idn, x, apple, spotify, stats.fm, last.fm, maupun musicbrainz. semua nama dan merek punya yang punya masing-masing. gw cuma numpang lewat.</p>
-    <p data-k="disc2"><b>hak cipta.</b> cover dari itunes dan cover art archive, poster setlist dari akb48 wiki (fandom), foto member dari jkt48.com. semuanya punya yang punya (© jkt48 operation team / pt indonesia musik nusantara dan pihak terkait). gw nampilin ini cuma biar lu bisa bikin daftar favorit pribadi: nggak jualan, nggak pasang iklan, nggak nyari cuan. kalau lu pemilik hak dan minta sesuatu diturunin, kontak gw lewat repo github-nya, gw turunin tanpa drama.</p>
+    <p data-k="disc2"><b>hak cipta.</b> cover dari itunes dan cover art archive, poster setlist, judul lagu dan rilisan tambahan, serta foto ex-member dari akb48 wiki (fandom), foto member dari jkt48.com. semuanya punya yang punya (© jkt48 operation team / pt indonesia musik nusantara dan pihak terkait). gw nampilin ini cuma biar lu bisa bikin daftar favorit pribadi: nggak jualan, nggak pasang iklan, nggak nyari cuan. kalau lu pemilik hak dan minta sesuatu diturunin, kontak gw lewat repo github-nya, gw turunin tanpa drama.</p>
     <p data-k="disc3"><b>datanya bisa ngaco.</b> daftar album dan lagu digabung dari itunes, musicbrainz, dan wikipedia, sedangkan daftar member itu snapshot jkt48.com/member per 19 november 2026. bisa ada yang kurang, salah ketik, atau udah basi (member baru, pindah tim, dst). cuplikan lagu dari itunes, bukan dari sini.</p>
     <p data-k="disc4"><b>privasi.</b> web ini nggak punya server, jadi gw nggak nyimpen apa-apa soal lu. daftar, nama daftar, dan pengaturan cuma ada di browser lu. pas nyari atau impor, browser lu ngobrol langsung sama layanan terkait (itunes, musicbrainz, wikipedia, stats.fm, last.fm, dan wsrv.nl buat foto member) yang punya kebijakan privasi masing-masing. link share isinya daftar lu di dalam alamatnya, jadi siapa pun yang pegang link bisa liat. jangan taruh data pribadi di nama atau link, ya.</p>
     <p data-k="disc5"><b>soal share ke x.</b> iya, emang agak makan waktu, maaf. x nggak ngizinin web mana pun nempelin foto ke tweet, dan api-nya berbayar, sementara ini web iseng, bukan perusahaan. jadi lu salin atau seret fotonya sendiri (atau pakai ekstensi opsional). web ini nggak pernah ngepost atas nama lu dan nggak minta login ke akun mana pun. ekstensi chrome-nya juga nggak resmi, pakai atas risiko sendiri.</p>
@@ -346,6 +346,7 @@ const EN = {
  'Foto':'Photo','Terang':'Light','Otomatis (ikut perangkat)':'Auto (follow device)','Gelap':'Dark','Pencarian terakhir':'Recent searches','Hapus riwayat':'Clear history','Hasil untuk "{q}"':'Results for "{q}"','{n} cocok':'{n} matches','Tidak ada yang cocok.':'No matches.','Tambah "{q}" manual':'Add "{q}" manually','Kalau tidak ada di daftar':'If it is not in the list',
  '+ tambah semua':'+ add all','Tambah semua yang tampil (sampai penuh)':'Add everything shown (until full)','Ditambah {n} item.':'Added {n} item(s).','Tambah manual dengan foto sendiri':'Add manually with your own photo','Foto sendiri hanya tersimpan di browser ini dan tidak ikut link share.':'Your own photo is only kept in this browser and is not included in the share link.','Gagal membuka foto itu.':'Could not open that photo.',
  'Otomatis':'Auto','Hitam':'Black','Warna':'Color','Gaya piringan (Vinyl dan Spin)':'Record style (Vinyl and Spin)','Klasik':'Classic','Malam':'Night','Laut':'Sea','Senja':'Sunset','Kustom':'Custom','Bawaan':'Default','Bulat':'Rounded','Tegas':'Bold',
+ 'Hanya di wiki':'Wiki only','Ex-member':'Ex-members',
  'Singel':'Singles','Rilis resmi':'Official releases','Setlist teater':'Theater setlists','Semua tahun':'All years','Tahun rilis':'Release year',
  'Cari album JKT48...':'Search JKT48 albums...','Cari lagu JKT48...':'Search JKT48 songs...','Cari member JKT48...':'Search JKT48 members...','Nama daftar (mis. Top 2026)':'List name (e.g. Top 2026)',
  'Tambahkan kata-kata untuk postinganmu':'Add words to your post','Namamu (opsional)':'Your name (optional)','Link-mu, mis. x.com/kamu':'Your link, e.g. x.com/you',
@@ -391,7 +392,7 @@ const EN_HTML = {
  viewFoot:'made with jkt48 top 10 · just for fun, not official.',
  discSum:'disclaimer · just for fun, unofficial, do not take it too seriously',
  disc1:'<b>just for fun.</b> this is a fan-made side project, not official. i have no connection to jkt48, jkt48 operation team, idn, x, apple, spotify, stats.fm, last.fm or musicbrainz. all names and brands belong to their owners. i am just passing through.',
- disc2:'<b>copyright.</b> covers come from itunes and the cover art archive, setlist posters from the akb48 wiki (fandom), member photos from jkt48.com. all of it belongs to the rights holders (© jkt48 operation team / pt indonesia musik nusantara and related parties). i only show it so you can build a personal favorites list: no selling, no ads, no cash. if you own the rights and want something taken down, reach me through the github repo and i will remove it, no drama.',
+ disc2:'<b>copyright.</b> covers come from itunes and the cover art archive, setlist posters, extra song and release titles and ex-member photos from the akb48 wiki (fandom), member photos from jkt48.com. all of it belongs to the rights holders (© jkt48 operation team / pt indonesia musik nusantara and related parties). i only show it so you can build a personal favorites list: no selling, no ads, no cash. if you own the rights and want something taken down, reach me through the github repo and i will remove it, no drama.',
  disc3:'<b>the data can be wrong.</b> the album and song lists are merged from itunes, musicbrainz and wikipedia, and the member list is a snapshot of jkt48.com/member from 19 november 2026. there may be gaps, typos, or stale stuff (new members, team changes, etc). song previews come from itunes, not from here.',
  disc4:'<b>privacy.</b> this site has no server, so i store nothing about you. your lists, list names and settings only live in this browser. when you search or import, your browser talks directly to the services involved (itunes, musicbrainz, wikipedia, stats.fm, last.fm, and wsrv.nl for member photos), and they have their own privacy policies. a share link carries your list inside its address, so anyone holding the link can see it. do not put personal info in the name or link, okay?',
  disc5:'<b>about sharing to x.</b> yes, it takes a few extra steps, sorry. x does not let a website attach photos to a tweet for you, and its api costs money, while this is a for-fun site, not a company. so you copy or drag the photos yourself (or use the optional extension). this site never posts for you and never asks you to log in anywhere. the chrome extension is unofficial too, use it at your own risk.',
@@ -411,6 +412,7 @@ const JA = {
  'Foto':'フォト','Terang':'ライト','Otomatis (ikut perangkat)':'自動(端末に合わせる)','Gelap':'ダーク','Pencarian terakhir':'最近の検索','Hapus riwayat':'履歴を消去','Hasil untuk "{q}"':'「{q}」の結果','{n} cocok':'{n}件ヒット','Tidak ada yang cocok.':'一致するものがありません。','Tambah "{q}" manual':'「{q}」を手動で追加','Kalau tidak ada di daftar':'リストにない場合',
  '+ tambah semua':'+ すべて追加','Tambah semua yang tampil (sampai penuh)':'表示中のものをすべて追加(上限まで)','Ditambah {n} item.':'{n}件追加しました。','Tambah manual dengan foto sendiri':'自分の写真で手動追加','Foto sendiri hanya tersimpan di browser ini dan tidak ikut link share.':'自分の写真はこのブラウザにだけ保存され、共有リンクには含まれません。','Gagal membuka foto itu.':'その写真を開けませんでした。',
  'Otomatis':'自動','Hitam':'ブラック','Warna':'カラー','Gaya piringan (Vinyl dan Spin)':'レコードのスタイル(VinylとSpin)','Album':'アルバム','Sakura':'サクラ','Mint':'ミント','Royal':'ロイヤル','Mono':'モノ','Klasik':'クラシック','Malam':'ナイト','Laut':'海','Senja':'夕焼け','Kustom':'カスタム','Bawaan':'標準','Bulat':'丸ゴシック','Tegas':'太字',
+ 'Hanya di wiki':'Wikiのみ','Ex-member':'卒業メンバー',
  'Singel':'シングル','Rilis resmi':'公式リリース','Setlist teater':'劇場セットリスト','Semua tahun':'全年','Tahun rilis':'リリース年',
  'Cari album JKT48...':'JKT48のアルバムを検索...','Cari lagu JKT48...':'JKT48の楽曲を検索...','Cari member JKT48...':'JKT48のメンバーを検索...','Nama daftar (mis. Top 2026)':'リスト名(例: トップ2026)',
  'Tambahkan kata-kata untuk postinganmu':'投稿の文章を入力','Namamu (opsional)':'あなたの名前(任意)','Link-mu, mis. x.com/kamu':'あなたのリンク(例: x.com/you)',
@@ -456,7 +458,7 @@ const JA_HTML = {
  viewFoot:'JKT48 Top 10 で作成 · 趣味のサイト(非公式)',
  discSum:'免責事項 · 趣味サイトです。非公式なので、あまり真に受けないでください',
  disc1:'<b>ただの趣味サイト。</b>ファンが遊びで作ったもので、非公式です。JKT48、JKT48 Operation Team、IDN、X、Apple、Spotify、stats.fm、Last.fm、MusicBrainz とは一切関係ありません。すべての名称・ブランドは各所有者のものです。通りすがりです。',
- disc2:'<b>著作権。</b>カバーは iTunes と Cover Art Archive、公演ポスターは AKB48 Wiki(Fandom)、メンバー写真は jkt48.com のものです。すべて権利者(© JKT48 Operation Team / PT Indonesia Musik Nusantara および関係者)に帰属します。個人のお気に入りリストを作るためだけに表示していて、販売も広告も収益もありません。権利者の方で削除をご希望なら、GitHubリポジトリ経由でご連絡ください。揉めずに削除します。',
+ disc2:'<b>著作権。</b>カバーは iTunes と Cover Art Archive、公演ポスター、追加の楽曲・リリース情報、卒業メンバーの写真は AKB48 Wiki(Fandom)、メンバー写真は jkt48.com のものです。すべて権利者(© JKT48 Operation Team / PT Indonesia Musik Nusantara および関係者)に帰属します。個人のお気に入りリストを作るためだけに表示していて、販売も広告も収益もありません。権利者の方で削除をご希望なら、GitHubリポジトリ経由でご連絡ください。揉めずに削除します。',
  disc3:'<b>データは間違っているかも。</b>アルバムと楽曲のリストは iTunes・MusicBrainz・Wikipedia を合わせたもの、メンバー一覧は 2026年11月19日時点の jkt48.com/member のスナップショットです。抜け、誤字、古い情報(新メンバーやチーム異動など)があるかもしれません。楽曲プレビューは iTunes のものです。',
  disc4:'<b>プライバシー。</b>このサイトにはサーバーがないので、あなたの情報は何も保存しません。リスト、リスト名、設定はこのブラウザの中にだけ残ります。検索やインポートのときは、ブラウザが関連サービス(iTunes、MusicBrainz、Wikipedia、stats.fm、Last.fm、メンバー写真用の wsrv.nl)と直接やり取りし、各サービスに独自のプライバシーポリシーがあります。共有リンクにはリストの中身がアドレスに入っているので、リンクを持っている人は誰でも見られます。名前やリンクに個人情報は入れないでくださいね。',
  disc5:'<b>Xへのシェアについて。</b>はい、ちょっと手間がかかります。ごめんなさい。Xは外部サイトがツイートに写真を自動で添付することを許しておらず、APIは有料で、このサイトは会社ではなく趣味です。そのため写真はご自身でコピーかドラッグしてください(任意の拡張機能も使えます)。このサイトが代わりに投稿することはなく、ログインを求めることもありません。Chrome拡張機能も非公式なので、自己責任でどうぞ。',
@@ -541,7 +543,7 @@ const noun = () => KIND[state.kind].noun;
 const one = () => KIND[state.kind].one;
 
 /* Snapshot member dari jkt48.com/member (19 Nov 2026). [nama, slug, tim, file foto]. Tim: L=Love D=Dream P=Passion T=Trainee. Foto © JKT48 Operation Team, dimuat langsung dari jkt48.com lewat proxy gambar wsrv.nl. */
-const TEAM = {L:'Team Love', D:'Team Dream', P:'Team Passion', T:'Trainee'};
+const TEAM = {L:'Team Love', D:'Team Dream', P:'Team Passion', T:'Trainee', X:'Ex-member'};
 const MEMBERS = [["Anindya Ramadhani","anindya-ramadhani-26","L","anindya_ramadhani.jpg"],["Aurellia","aurellia-31","L","aurellia.jpg"],["Aurhel Alana","aurhel-alana-33","L","aurhel_alana.jpg"],["Celline Thefani","celline-thefani-46","L","celline_thefani.jpg"],["Cynthia Yaputera","cynthia-yaputera-60","L","cynthia_yaputera.jpg"],["Fiony Alveria","fiony-alveria-91","L","fiony_alveria.jpg"],["Fritzy Rosmerian","fritzy-rosmerian-96","L","fritzy_rosmerian.jpg"],["Grace Octaviani","grace-octaviani-105","L","grace_octaviani.jpg"],["Hillary Abigail","hillary-abigail-114","L","hillary_abigail.jpg"],["Indah Cahya","indah-cahya-116","L","indah_cahya.jpg"],["Jazzlyn Trisha","jazzlyn-trisha-121","L","jazzlyn_trisha.jpg"],["Michelle Alexandra","michelle-alexandra-159","L","michelle_alexandra.jpg"],["Nayla Suji","nayla-suji-175","L","nayla_suji.jpg"],["Adeline Wijaya","adeline-wijaya-2","D","adeline_wijaya.jpg"],["Febriola Sinambela","febriola-sinambela-88","D","febriola_sinambela.jpg"],["Freya Jayawardana","freya-jayawardana-94","D","freya_jayawardana.jpg"],["Gabriela Abigail","gabriela-abigail-97","D","gabriela_abigail.jpg"],["Gita Sekar Andarini","gita-sekar-andarini-104","D","gita_sekar_andarini.jpg"],["Greesella Adhalia","greesella-adhalia-107","D","greesella_adhalia.jpg"],["Helisma Putri","helisma-putri-112","D","helisma_putri.jpg"],["Jesslyn Elly","jesslyn-elly-131","D","jesslyn_elly.jpg"],["Marsha Lenathea","marsha-lenathea-152","D","marsha_lenathea.jpg"],["Nina Tutachia","nina-tutachia-178","D","nina_tutachia.jpg"],["Oline Manuel","oline-manuel-185","D","oline_manuel.jpg"],["Shabilqis Naila","shabilqis-naila-221","D","shabilqis_naila.jpg"],["Abigail Rachel","abigail-rachel-1","P","abigail_rachel.jpg"],["Angelina Christy","angelina-christy-22","P","angelina_christy.jpg"],["Catherina Vallencia","catherina-vallencia-44","P","catherina_vallencia.jpg"],["Cornelia Vanisa","cornelia-vanisa-59","P","cornelia_vanisa.jpg"],["Dena Natalia","dena-natalia-64","P","dena_natalia.jpg"],["Desy Natalia","desy-natalia-67","P","desy_natalia.jpg"],["Feni Fitriyanti","feni-fitriyanti-89","P","2026/10/fenifitriyantiphoto-1-942dd7.jpg"],["Jessica Chandra","jessica-chandra-127","P","jessica_chandra.jpg"],["Kathrina Irene","kathrina-irene-143","P","kathrina_irene.jpg"],["Lulu Salsabila","lulu-salsabila-148","P","lulu_salsabila.jpg"],["Michelle Levia","michelle-levia-161","P","michelle_levia.jpg"],["Mutiara Azzahra","mutiara-azzahra-166","P","mutiara_azzahra.jpg"],["Raisha Syifa","raisha-syifa-195","P","raisha_syifa.jpg"],["Ribka Budiman","ribka-budiman-204","P","ribka_budiman.jpg"],["Victoria Kimberly","victoria-kimberly-244","P","victoria_kimberly.jpg"],["Afera Thalia","afera-thalia-6","T","afera_thalia.jpg"],["Astrella Virgiananda","astrella-virgiananda-28","T","Astrella_Virgiananda.jpg"],["Bong Aprilli","bong-aprilli-39","T","Bong_Aprilli.jpg"],["Carissa Dini","carissa-dini-43","T","carissa_dini.jpg"],["Christabella Bonita","christabella-bonita-52","T","christabella_bonita.jpg"],["Fahira Putri","fahira-putri-82","T","fahira_putri.jpg"],["Fatimah Azzahra","fatimah-azzahra-85","T","fatimah_azzahra.jpg"],["Hagia Sopia","hagia-sopia-108","T","Hagia_Sopia.jpg"],["Heidi Suyangga","heidi-suyangga-111","T","heidi_suyangga.jpg"],["Humaira Ramadhani","humaira-ramadhani-115","T","Humaira_Ramadhani.jpg"],["Jacqueline Immanuela","jacqueline-immanuela-120","T","Jacqueline_Immanuela.jpg"],["Jemima Evodie","jemima-evodie-123","T","Jemima_Evodie.jpg"],["Maxine Faye","maxine-faye-155","T","maxine_faye_lee.jpg"],["Mikaela Kusjanto","mikaela-kusjanto-162","T","Mikaela_Kusjanto.jpg"],["Nur Intan","nur-intan-182","T","Nur_Intan.jpg"],["Putry Jazyta","putry-jazyta-194","T","putry_jazyta.jpg"],["Ralyne Van Irwan","ralyne-van-irwan-196","T","ralyne_van_irwan.jpg"],["Sona Kalyana","sona-kalyana-231","T","sona_kalyana.jpg"]];
 const memberImg = f => 'https://wsrv.nl/?url='+encodeURIComponent('https://jkt48.com/api/v1/storages/media/jkt48-member/'+f)+'&w=600&h=900&fit=cover&a=top';
 const oshiItems = () => MEMBERS.map(([n,s,t,f]) => ({ id:'m:'+s, title:n, sub:TEAM[t], team:t, img:memberImg(f) }));
@@ -651,7 +653,7 @@ async function fetchStagePosters(){
       const j=await g('action=query&prop=pageimages|revisions&rvprop=content&rvslots=main&rvsection=0&piprop=thumbnail&pithumbsize=600&titles='+encodeURIComponent(list.slice(i,i+20).join('|')));
       Object.values(j.query.pages||{}).forEach(p=>{
         const w=(p.revisions&&p.revisions[0].slots.main['*'])||'', b=w.match(/'''([^']{3,80})'''/), nm=b?b[1].replace(/["“”]/g,'').trim():'';
-        if (nm && !/PAGENAME/.test(nm) && p.thumbnail) { const k=keyOf(nm); if (k && !map[k]) map[k]='https://wsrv.nl/?url='+encodeURIComponent(p.thumbnail.source.replace(/^https?:\/\//,''))+'&w=600'; }
+        if (nm && !/PAGENAME/.test(nm) && p.thumbnail) { const k=keyOf(nm); if (k && !map[k]) map[k]='https://wsrv.nl/?url='+encodeURIComponent(p.thumbnail.source.replace(/^https?:\/\//,'').replace(/\/revision\/.*$/,''))+'&w=600'; }
       });
     }
   } catch(e){}
@@ -681,12 +683,48 @@ async function loadSetlists(){
   } catch(e){}
   return out;
 }
+/* ---------- AKB48 Wiki (Fandom): lagu/rilisan yang tidak ada di layanan streaming (lost media) + daftar ex-member JKT48 ---------- */
+const WIKI = 'https://akb48.fandom.com/api.php?origin=*&format=json&';
+const wikiGet = async q => (await fetch(WIKI+q)).json();
+async function wikiCat(c){ const o=[]; let cont=''; try { do { const j=await wikiGet('action=query&list=categorymembers&cmtitle='+encodeURIComponent('Category:'+c)+'&cmlimit=500&cmnamespace=0'+cont); o.push(...j.query.categorymembers); cont=j.continue?'&cmcontinue='+encodeURIComponent(j.continue.cmcontinue):''; } while(cont); } catch(e){} return o; }
+const wikiClean = t => t.replace(/\s*\((JKT48|Digital)[^)]*\)\s*$/i,'').replace(/[＃#]/g,'').trim();
+const wikiThumb = (u,portrait) => 'https://wsrv.nl/?url='+encodeURIComponent(u.replace(/^https?:\/\//,'').replace(/\/revision\/.*$/,''))+(portrait?'&w=600&h=900&fit=cover&a=top':'&w=400');
+async function loadWikiMedia(kind){
+  if (kind==='song') return (await wikiCat('JKT48 Songs')).map(x=>({ id:'wk:'+x.pageid, title:wikiClean(x.title), sub:'JKT48 · AKB48 Wiki', img:null, src:'wiki' }));
+  const all=[]; for (const c of ['JKT48 Singles','JKT48 Original Singles','JKT48 Digital Singles','JKT48 Albums','JKT48 Album']) all.push(...await wikiCat(c));
+  const uniq=[...new Map(all.filter(x=>!/\((JKT48 )?(Song|Cover)\)$/i.test(x.title) && !/^(JKT48|Oricon)$/i.test(x.title.trim())).map(x=>[x.pageid,x])).values()], out=[];
+  for (let i=0;i<uniq.length;i+=20) {
+    const grp=uniq.slice(i,i+20); let pages={};
+    try { pages=(await wikiGet('action=query&prop=pageimages&piprop=thumbnail&pithumbsize=400&pageids='+grp.map(x=>x.pageid).join('|'))).query.pages||{}; } catch(e){}
+    grp.forEach(x=>{ const th=pages[x.pageid]&&pages[x.pageid].thumbnail; out.push({ id:'wk:'+x.pageid, title:wikiClean(x.title), sub:'JKT48 · AKB48 Wiki', img:th?wikiThumb(th.source):null, type:/Single\)/i.test(x.title)?'single':'album' }); });
+  }
+  return out;
+}
+/* ex-member: kategori "JKT48 Graduates"; angkatan, tahun aktif dan foto dibaca dari infobox halaman member */
+async function loadExMembers(){
+  const hit=cacheRead('ex'); if (hit) return hit;
+  const m=await wikiCat('JKT48 Graduates'), out=[];
+  for (let i=0;i<m.length;i+=20) {
+    try {
+      const j=await wikiGet('action=query&prop=pageimages|revisions&rvprop=content&rvslots=main&rvsection=0&piprop=thumbnail&pithumbsize=600&pageids='+m.slice(i,i+20).map(x=>x.pageid).join('|'));
+      Object.values(j.query.pages||{}).forEach(p=>{
+        const w=(p.revisions&&p.revisions[0].slots.main['*'])||'', grp=(w.match(/\|\s*group\s*=\s*([^\n|]*)/)||[])[1]||'';
+        if (grp && !/JKT48/i.test(grp)) return;                       // hanya JKT48
+        const gen=(w.match(/(\d+)(?:st|nd|rd|th) Generation/)||[])[1], act=w.match(/\|\s*active\s*=\s*(\d{4})\s*-\s*(\d{4})/);
+        out.push({ id:'x:'+p.pageid, title:p.title, sub:['Ex-member', gen?'Gen '+gen:'', act?act[1]+'–'+act[2]:''].filter(Boolean).join(' · '), team:'X', img:p.thumbnail?wikiThumb(p.thumbnail.source,true):placeholder(p.title) });
+      });
+    } catch(e){}
+  }
+  out.sort((a,b)=>a.title.localeCompare(b.title));
+  if (out.length) cacheWrite('ex', out);
+  return out;
+}
 function mergeLists(...lists){ // urutan = prioritas (yang lebih awal menang, karena punya cover)
   const seen = new Set(), out = [];
   for (const l of lists) for (const x of l) { const k = keyOf(x.title); if (!k || seen.has(k)) continue; seen.add(k); out.push(x); }
   return out;
 }
-const DATA_KEY = 'jkt48data8';
+const DATA_KEY = 'jkt48data10';
 function cacheRead(kind){ try { const d = JSON.parse(localStorage.getItem(DATA_KEY+kind)||'null'); if (d && Date.now()-d.t < 7*864e5 && d.items.length) return d.items; } catch(e){} return null; }
 function cacheWrite(kind,items){ try { localStorage.setItem(DATA_KEY+kind, JSON.stringify({t:Date.now(),items})); } catch(e){} }
 /* satu pemuatan per jenis data, walau dipanggil berkali-kali bersamaan (ganti tab cepat, klik beruntun) */
@@ -694,7 +732,7 @@ const loading = {};
 function load(kind){ return loading[kind] || (loading[kind] = loadInner(kind).finally(()=>{ delete loading[kind]; })); }
 async function loadInner(kind){
   if (cache[kind].length) return;
-  if (kind==='oshi') { cache.oshi = oshiItems(); return; }
+  if (kind==='oshi') { cache.oshi = oshiItems(); loadExMembers().then(ex=>{ if (!ex.length) return; cache.oshi = cache.oshi.concat(ex); if (state.kind==='oshi') renderResults(); }); return; }
   if (kind==='setlist') { // setlist teater dari Wikipedia Indonesia (di-cache seperti data lain)
     const hit0 = cacheRead('setlist'); if (hit0) { cache.setlist = hit0.map(x=>({...x, img:x.poster||setlistArt(x.title,x.tm,x.yr)})); return; } // poster dibuat ulang, tidak disimpan
     $('#msg').textContent = tr('Memuat daftar setlist teater...');
@@ -706,12 +744,12 @@ async function loadInner(kind){
   let out;
   if (kind==='album') {
     const [it, mb] = [await loadITunes('album'), await loadMB('album')];
-    out = mergeLists(it, mb);
+    out = mergeLists(it, mb, await loadWikiMedia('album'));
   } else {
     await load('album');
     const it = mergeLists(await loadITunes('song'), await loadITunesTracks(cache.album));
     const mb = await loadMB('song'), wk = await loadWiki();
-    out = mergeLists(it, mb, wk);
+    out = mergeLists(it, mb, wk, await loadWikiMedia('song'));
   }
   cache[kind] = out;
   if (out.length) cacheWrite(kind, out);
@@ -721,7 +759,7 @@ let renderTok = 0, lastItems = [];
 /* filter jenis/tahun yang sedang dipilih (dipakai daftar kotak dan dropdown saran) */
 function passFilter(x){
   const f = state.filter, yr = state.year;
-  const okF = f==='all' || (state.kind==='album' ? x.type===f : state.kind==='song' ? x.src===f : x.team===f);
+  const okF = (f==='all' && (state.kind!=='oshi' || x.team!=='X' || !!state.q.trim())) || (f!=='all' && (state.kind==='album' ? x.type===f : state.kind==='song' ? x.src===f : x.team===f));
   const okY = (state.kind!=='album' && state.kind!=='setlist') || yr==='all' || (x.sub||'').includes(yr);
   return okF && okY;
 }
@@ -743,8 +781,8 @@ async function renderResults(){
 }
 const FILTERS = {
   album:[['all','Semua'],['album','Album'],['single','Singel'],['ep','EP']],
-  song:[['all','Semua'],['rilis','Rilis resmi'],['setlist','Setlist teater']],
-  oshi:[['all','Semua'],['L','Love'],['D','Dream'],['P','Passion'],['T','Trainee']],
+  song:[['all','Semua'],['rilis','Rilis resmi'],['setlist','Setlist teater'],['wiki','Hanya di wiki']],
+  oshi:[['all','Semua'],['L','Love'],['D','Dream'],['P','Passion'],['T','Trainee'],['X','Ex-member']],
   setlist:[['all','Semua']]
 };
 function renderFilters(){
@@ -1087,9 +1125,9 @@ function lum(col){ const m=col.match(/\d+/g); return m?(0.299*m[0]+0.587*m[1]+0.
 const OSHI_LOOKS = ['photocard','polaroid','idcard','photo'];
 const OSHI_LOOK_NAMES = { photocard:'Photocard', polaroid:'Polaroid', idcard:'ID Card', photo:'Foto', cds:'CDs', tapes:'Tapes', photobook:'Photobook' };
 const OSHI_MENU = ['photocard','polaroid','idcard','photo','cds','tapes','photobook']; // CD dan kaset tetap ada: tren foto tipis berjajar di X
-const TEAM_COLOR = { L:'#e20785', D:'#00a4a5', P:'#f69220', T:'#8f8f8f' }; // warna tim menurut AKB48 Wiki: Love magenta (hati), Dream cyan (bintang), Passion amber (api), Trainee abu-abu
+const TEAM_COLOR = { L:'#e20785', D:'#00a4a5', P:'#f69220', T:'#8f8f8f', X:'#8e7cc3' }; // warna tim menurut AKB48 Wiki: Love magenta (hati), Dream cyan (bintang), Passion amber (api), Trainee abu-abu
 const oshiNo = p => { const i = MEMBERS.findIndex(m=>'m:'+m[1]===String(p.id)); return i<0 ? 0 : i+1; };
-function teamOf(p){ const m = MEMBERS.find(m=>'m:'+m[1]===String(p.id)); return m ? m[2] : (p.team||'T'); }
+function teamOf(p){ const m = MEMBERS.find(m=>'m:'+m[1]===String(p.id)); return m ? m[2] : (p.team || Object.keys(TEAM).find(k=>TEAM[k]===p.sub || (k==='X' && /^Ex-member/.test(p.sub||''))) || 'T'); }
 function drawCoverFit(c,im,x,y,w,h,focusY){ // object-fit: cover, fokus ke atas supaya wajah tidak terpotong
   c.save(); c.beginPath(); c.rect(x,y,w,h); c.clip();
   if (im) { const iw=im.naturalWidth||im.width, ih=im.naturalHeight||im.height, s=Math.max(w/iw,h/ih), sw=w/s, sh=h/s; c.drawImage(im,(iw-sw)/2,(ih-sh)*(focusY==null?0:focusY),sw,sh,x,y,w,h); }
