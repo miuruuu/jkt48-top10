@@ -138,7 +138,7 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
 <div class="wrap">
   <header class="hero">
     <div class="eyebrow">JKT48 · FAN MADE</div>
-    <div class="lang"><button type="button" data-l="id">ID</button><button type="button" data-l="en">EN</button></div>
+    <div class="lang"><button type="button" data-l="id">ID</button><button type="button" data-l="en">EN</button><button type="button" data-l="ja">日本語</button></div>
     <h1 id="h1">Susun Top 10 JKT48-mu</h1>
     <p data-k="hero">Pilih album, lagu, atau oshi favoritmu, atur tampilannya, lalu bagikan ke X, story, atau lewat link.</p>
   </header>
@@ -279,7 +279,7 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 /* ---------- bahasa: Indonesia (bawaan teks) / English ---------- */
 let LANG = 'id';
-try { const l = localStorage.getItem('jkt48lang'); LANG = l==='en'||l==='id' ? l : ((navigator.language||'id').toLowerCase().startsWith('id') ? 'id' : 'en'); } catch(e){}
+try { const l = localStorage.getItem('jkt48lang'), nl = (navigator.language||'id').toLowerCase(); LANG = ['en','id','ja'].includes(l) ? l : (nl.startsWith('id') ? 'id' : nl.startsWith('ja') ? 'ja' : 'en'); } catch(e){}
 const EN = {
  'Pilih favoritmu':'Pick your favorites','Impor':'Import','Semua waktu':'All time','6 bulan':'6 months','4 minggu':'4 weeks','Hapus semua':'Clear all','Jumlah:':'Count:',
  'Belum ada pilihan. Klik cover di atas.':'Nothing picked yet. Click a cover above.','· drag untuk urutkan':'· drag to reorder','Simpan daftar':'Save list','Muat':'Load','Hapus':'Delete','Daftar tersimpan…':'Saved lists…',
@@ -335,24 +335,84 @@ const EN_HTML = {
  disc5:'<b>Sharing to X.</b> This site does not post on your behalf and never asks you to log in to any account. The Post to X button only opens the tweet composer; you attach the photos yourself. The optional Chrome extension is also unofficial and used at your own risk.',
  disc6:'<b>No warranty.</b> The site and extension are provided as is without any warranty, and may stop working at any time if third-party services change.'
 };
-const tr = (s, v) => { let r = (LANG==='en' && EN[s]) || s; if (v) for (const k in v) r = r.split('{'+k+'}').join(v[k]); return r; };
+const JA = {
+ 'Pilih favoritmu':'お気に入りを選ぶ','Impor':'インポート','Semua waktu':'全期間','6 bulan':'6か月','4 minggu':'4週間','Hapus semua':'すべて削除','Jumlah:':'件数:',
+ 'Belum ada pilihan. Klik cover di atas.':'まだ選ばれていません。上のカバーをクリックしてください。','· drag untuk urutkan':'· ドラッグで並べ替え','Simpan daftar':'リストを保存','Muat':'読み込む','Hapus':'削除','Daftar tersimpan…':'保存したリスト…',
+ 'Gaya tampilan':'表示スタイル','Tema poster':'ポスターテーマ','tanpa':'なし','Latar':'背景','Latar 2':'背景2','Teks':'文字','Aksen':'アクセント','Font poster':'ポスターのフォント','Bagikan':'シェア',
+ 'Foto terpisah':'写真を分ける','1 gambar':'1枚にまとめる','Unduh foto':'写真をダウンロード','Salin gambar':'画像をコピー','Post ke X':'Xに投稿','Bagikan lewat…':'他の方法で共有…','Unduh gambar':'画像をダウンロード','Buat video':'動画を作る',
+ 'Salin link':'リンクをコピー','Semua':'すべて','Cuma #1':'1位のみ','♪ Suara':'♪ 音','Unduh video':'動画をダウンロード','Buat top-mu sendiri':'自分のランキングを作る',
+ 'Album':'アルバム','Sakura':'サクラ','Mint':'ミント','Royal':'ロイヤル','Mono':'モノ','Klasik':'クラシック','Malam':'ナイト','Laut':'海','Senja':'夕焼け','Kustom':'カスタム','Bawaan':'標準','Bulat':'丸ゴシック','Tegas':'太字',
+ 'Singel':'シングル','Rilis resmi':'公式リリース','Setlist teater':'劇場セットリスト','Semua tahun':'全年','Tahun rilis':'リリース年',
+ 'Cari album JKT48...':'JKT48のアルバムを検索...','Cari lagu JKT48...':'JKT48の楽曲を検索...','Cari member JKT48...':'JKT48のメンバーを検索...','Nama daftar (mis. Top 2026)':'リスト名(例: トップ2026)',
+ 'Tambahkan kata-kata untuk postinganmu':'投稿の文章を入力','Namamu (opsional)':'あなたの名前(任意)','Link-mu, mis. x.com/kamu':'あなたのリンク(例: x.com/you)',
+ 'Sumber impor':'インポート元','Rentang waktu':'期間','Daftar tersimpan':'保存したリスト','Fotomu, berurutan':'あなたの写真(順番どおり)','Putar cuplikan lagu 30 detik':'30秒のプレビューを再生',
+ 'Naik':'上へ','Tambah manual':'手動で追加','Salin gambar ini':'この画像をコピー','Seret ke kotak tweet, atau klik tombol salin':'ツイート欄にドラッグ、またはコピーボタンをクリック',
+ 'Impor top JKT48-mu dari stats.fm atau Last.fm (profil harus publik).':'stats.fm または Last.fm からJKT48のトップをインポート(プロフィールは公開設定が必要)。',
+ 'Untuk Instagram atau TikTok story. Tambahkan lagu saat kamu posting.':'InstagramやTikTokのストーリーズ用。投稿時に曲を追加してください。','Gambar diunduh dulu, lalu lampirkan di tweet.':'先に画像をダウンロードして、ツイートに添付してください。',
+ 'Username Last.fm':'Last.fm ユーザー名','Username stats.fm':'stats.fm ユーザー名',
+ 'lagu':'楽曲','album':'アルバム','member':'メンバー','oleh':'作成:','putaran':'再生','jam didengarkan':'時間聴取','{n}× diputar':'{n}回再生','Pilih favoritmu dulu':'まずお気に入りを選んでください',
+ 'Memuat lagu... {a}/{b}':'楽曲を読み込み中... {a}/{b}','Memuat daftar dari iTunes dan MusicBrainz...':'iTunesとMusicBrainzからリストを読み込み中...','Gagal memuat data. Buka lewat server (http), bukan file.':'データを読み込めませんでした。ファイルではなくサーバー(http)経由で開いてください。',
+ 'Tidak ketemu. Klik + untuk menambah manual.':'見つかりません。「+」で手動追加できます。','Menampilkan 300 dari {n}. Ketik untuk mencari.':'{n}件中300件を表示中。検索して絞り込んでください。',
+ 'Tersalin: {name}. Tekan Ctrl+V di kotak tweet.':'コピーしました: {name}。ツイート欄で Ctrl+V を押してください。','Browser ini menolak menyalin gambar. Seret fotonya atau pakai Unduh foto.':'このブラウザでは画像をコピーできませんでした。写真をドラッグするか、ダウンロードを使ってください。',
+ 'Pilih favoritmu dulu.':'まずお気に入りを選んでください。','Satu gambar berisi seluruh daftar. Klik Salin gambar lalu Ctrl+V di kotak tweet.':'リスト全体を1枚の画像にしました。「画像をコピー」を押して、ツイート欄で Ctrl+V してください。',
+ '{n} foto, satu per {one}, berurutan. Seret atau salin tiap foto, atau unduh semuanya. X menerima sampai 20 foto per post.':'{one}ごとに1枚、全{n}枚を順番どおりに用意しました。各写真をドラッグまたはコピーするか、まとめてダウンロードできます。Xは1投稿につき最大20枚までです。',
+ 'Gagal membuat gambar.':'画像を作成できませんでした。','Susun Top {n} JKT48-mu':'あなたのJKT48トップ{n}を作ろう','Top {n}-mu':'あなたのトップ{n}','Maksimal {n}.':'最大{n}件です。',
+ 'Ketik username dulu.':'先にユーザー名を入力してください。','Mengambil data...':'データを取得中...','Username tidak ditemukan di stats.fm.':'stats.fm にそのユーザー名は見つかりません。',
+ 'Profil stats.fm itu privat. Ubah jadi publik di pengaturan privasinya.':'そのstats.fmのプロフィールは非公開です。プライバシー設定で公開にしてください。',
+ 'Belum ada {kind} JKT48 di rentang waktu itu untuk {who}.':'その期間、{who} のJKT48の{kind}はまだありません。','Berhasil: {n} {kind} teratas dari {who}. Urutan masih bisa kamu ubah.':'完了: {who} のトップ{n}の{kind}を取り込みました。順番は変更できます。',
+ 'Gagal mengambil dari stats.fm. Coba lagi sebentar.':'stats.fm から取得できませんでした。少し待ってからもう一度お試しください。','Mengambil data dari Last.fm (bisa beberapa detik)...':'Last.fm からデータを取得中(数秒かかることがあります)...',
+ 'Username tidak ditemukan di Last.fm.':'Last.fm にそのユーザー名は見つかりません。','Profil Last.fm itu privat. Matikan "Hide recent listening information" di pengaturan privasinya.':'そのLast.fmのプロフィールは非公開です。プライバシー設定の「Hide recent listening information」をオフにしてください。',
+ 'Gagal mengambil dari Last.fm. Coba lagi sebentar.':'Last.fm から取得できませんでした。少し待ってからもう一度お試しください。','Beri nama daftar dulu.':'先にリスト名を入力してください。','Daftarmu masih kosong.':'リストがまだ空です。',
+ 'Penyimpanan browser penuh. Hapus daftar lama dulu.':'ブラウザの保存容量がいっぱいです。古いリストを削除してください。','Tersimpan: "{n}".':'保存しました: 「{n}」','Pilih daftar dulu.':'先にリストを選んでください。','Dimuat: "{n}".':'読み込みました: 「{n}」','Dihapus: "{n}".':'削除しました: 「{n}」',
+ '✓ Ekstensi aktif':'✓ 拡張機能が有効',
+ '<b>Ekstensi aktif.</b> Tab X terbuka dan fotomu akan menempel sendiri di kotak tweet dalam beberapa detik. Kalau tidak muncul, pakai langkah manual: tombol <b>Unduh foto</b>.':'<b>拡張機能が有効です。</b>Xのタブが開き、数秒でツイート欄に写真が自動で添付されます。表示されない場合は、<b>写真をダウンロード</b>ボタンで手動の方法をお使いください。',
+ '<b>Gambar sudah disalin.</b> Di tab X yang terbuka, klik kotak tweet lalu tekan <b>Ctrl+V</b>.':'<b>画像をコピーしました。</b>開いたXのタブでツイート欄をクリックし、<b>Ctrl+V</b>を押してください。',
+ 'Tab X terbuka, tapi browser menolak menyalin gambar. Pakai <b>Unduh foto</b> lalu seret ke tweet.':'Xのタブは開きましたが、ブラウザが画像のコピーを拒否しました。<b>写真をダウンロード</b>して、ツイートにドラッグしてください。',
+ '<b>Langkah berikutnya:</b> foto sudah diunduh. 1) Buka folder <b>Unduhan</b>. 2) Pilih semua foto <b>jkt48-top10-…</b> (Ctrl+A). 3) Seret ke kotak tweet di tab X. <br>Atau tanpa folder: di pratinjau klik tombol <b>⧉</b> di tiap foto lalu <b>Ctrl+V</b> di kotak tweet, atau seret fotonya langsung.':'<b>次の手順:</b>写真をダウンロードしました。1) <b>ダウンロード</b>フォルダを開く。2) <b>jkt48-top10-…</b> の写真をすべて選択(Ctrl+A)。3) Xのタブのツイート欄にドラッグ。<br>フォルダを開かない方法: プレビューの各写真の <b>⧉</b> ボタンでコピーし、ツイート欄で <b>Ctrl+V</b>、または写真を直接ドラッグしてください。',
+ 'Gambar tersalin. Tekan Ctrl+V di kotak tweet.':'画像をコピーしました。ツイート欄で Ctrl+V を押してください。','Browser ini menolak menyalin gambar. Pakai Unduh foto.':'このブラウザでは画像をコピーできませんでした。写真のダウンロードをお使いください。',
+ 'Perangkat ini tidak mendukung menu share dengan foto. Pakai "Unduh foto".':'この端末は写真付きの共有メニューに対応していません。「写真をダウンロード」をお使いください。',
+ 'Membuat video...':'動画を作成中...','Video diunduh. Tambahkan lagu saat kamu posting.':'動画をダウンロードしました。投稿時に曲を追加してください。','Link disalin.':'リンクをコピーしました。','Merekam...':'録画中...','Video diunduh (tanpa suara). Tambahkan lagu saat kamu posting.':'動画をダウンロードしました(音なし)。投稿時に曲を追加してください。'
+};
+const JA_HTML = {
+ hero:'お気に入りのアルバム・楽曲・推しを選んで、見た目を整え、X・ストーリーズ・リンクでシェアしよう。',
+ tipSum:'ヒント: Xをアプリとしてインストールすると、共有ボタンから写真を送れます',
+ tipOl:'<li>ChromeまたはEdgeで <b>x.com</b> を開き、アプリとしてインストールします(アドレスバーのインストールアイコン、またはメニュー ⋮ → <b>保存して共有 → ページをアプリとしてインストール</b>)。</li><li>このサイトに戻って <b>他の方法で共有…</b> をクリック。Windowsの共有メニューに <b>X</b> が表示されるはずです。</li><li>Xを選ぶと、写真が添付された状態でツイート欄が開きます。ファイルは保存されません。</li>',
+ tipP:'Xは画像の共有先として自身を登録しています(マニフェストで確認できます)が、これはお使いのブラウザやOSに依存し、受け付ける枚数もX次第です。Xが表示されない場合は、上の他の方法をお使いください。',
+ extSum:'Chrome拡張機能(任意): すべての写真をツイートに自動で添付',
+ extOl:'<li><a href="jkt48-top-extension.zip" download>拡張機能(.zip)をダウンロード</a>して、フォルダに展開します。</li><li><code>chrome://extensions</code> を開き、<b>デベロッパーモード</b>をオンにして、<b>パッケージ化されていない拡張機能を読み込む</b>からそのフォルダを選びます。</li><li>このサイトを再読み込みすると、上に「拡張機能が有効」と表示されます。<b>Xに投稿</b>を押すと、写真がツイート欄に自動で添付されます。</li>',
+ extP:'<b>免責:</b> この拡張機能はファンによる非公式のもので、XおよびJKT48とは無関係です。このサイトとx.comでのみ動作し、写真はブラウザ内に一時的に保存されるだけで、サーバーには何も送信しません。Xが画面を変更すると動作しなくなる可能性があります。自己責任でご利用ください。不安な場合は先にコードをお読みください。',
+ viewFoot:'JKT48 Top 10 で作成 · ファンサイト(非公式)',
+ discSum:'免責事項 · 非公式のファンサイトです。JKT48およびXとは無関係です',
+ disc1:'<b>非公式のファンサイト。</b>JKT48 Top 10 はファンが作成したもので、JKT48、JKT48 Operation Team、IDN、X(Twitter)、Apple、Spotify、stats.fm、Last.fm、MusicBrainz とは提携・承認・後援の関係にありません。すべての名称・ブランドはそれぞれの所有者に帰属します。',
+ disc2:'<b>著作権。</b>アルバムカバーは iTunes と Cover Art Archive、メンバー写真は jkt48.com のものです。すべて権利者(© JKT48 Operation Team / PT Indonesia Musik Nusantara および関係者)に帰属し、個人のお気に入りリストを作る目的でのみ表示しています。権利者の方で削除をご希望の場合は、GitHubリポジトリ経由で制作者にご連絡ください。',
+ disc3:'<b>データの正確性。</b>アルバムと楽曲のリストは iTunes・MusicBrainz・Wikipedia を統合したもので、メンバー一覧は 2026年11月19日時点の jkt48.com/member のスナップショットです。抜け、誤字、古い情報(新メンバーやチーム異動など)が含まれる場合があります。楽曲プレビューは iTunes のもので、このサイトのものではありません。',
+ disc4:'<b>プライバシー。</b>このサイトにはサーバーがなく、あなたのデータを保存しません。リスト、リスト名、設定はこのブラウザ内にのみ保存されます。検索やインポートの際は、ブラウザが関連サービス(iTunes、MusicBrainz、Wikipedia、stats.fm、Last.fm、メンバー写真用の wsrv.nl)に直接接続し、各サービスには独自のプライバシーポリシーがあります。共有リンクにはリストの内容がアドレスに含まれるため、リンクを知っている人は誰でも見られます。名前やリンクに個人情報を入れないでください。',
+ disc5:'<b>Xへの共有。</b>このサイトはあなたに代わって投稿せず、アカウントへのログインも求めません。「Xに投稿」ボタンはツイート作成画面を開くだけで、写真はご自身で添付します。任意のChrome拡張機能も非公式で、自己責任でご利用ください。',
+ disc6:'<b>無保証。</b>このサイトと拡張機能は現状のまま提供され、いかなる保証もありません。第三者サービスの変更により、予告なく動作しなくなる場合があります。'
+};
+const LOC = () => LANG==='en' ? 'en-US' : LANG==='ja' ? 'ja-JP' : 'id-ID';
+const NOUN_JA = { albums:'アルバム', songs:'楽曲', oshi:'推し' };
+const nounL = k => LANG==='ja' ? NOUN_JA[KIND[k].noun] : KIND[k].noun;
+const posterHead = n => LANG==='ja' ? `私のトップ${n}` : `my top ${n}`;
+const listTitleText = (n,k) => LANG==='ja' ? `JKT48 ${nounL(k)} トップ${n}` : `Top ${n} ${nounL(k)} JKT48`;
+const tr = (s, v) => { const D = LANG==='en' ? EN : LANG==='ja' ? JA : null; let r = (D && D[s]) || s; if (v) for (const k in v) r = r.split('{'+k+'}').join(v[k]); return r; };
 /* terjemahkan teks statis di dalam sebuah elemen (teks, atribut, dan blok data-k) */
 function applyLangTree(root){
   if (!root) return;
-  const en = LANG==='en';
+  const D = LANG==='en' ? EN : LANG==='ja' ? JA : null, DH = LANG==='en' ? EN_HTML : LANG==='ja' ? JA_HTML : null;
   const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   const nodes = []; for (let n; (n=w.nextNode());) nodes.push(n);
   for (const n of nodes) {
     const p = n.parentElement; if (!p || /^(SCRIPT|STYLE|TEXTAREA)$/.test(p.tagName) || p.closest('[data-k]')) continue;
     if (n._o===undefined) n._o = n.nodeValue; const key = n._o.trim();
-    n.nodeValue = en && EN[key] ? n._o.replace(key, EN[key]) : n._o;
+    n.nodeValue = D && D[key] ? n._o.replace(key, D[key]) : n._o;
   }
   const els = [...root.querySelectorAll('[placeholder],[title],[aria-label],[data-k]'), ...(root.matches&&root.matches('[data-k]')?[root]:[])];
   for (const el of els) {
     for (const a of ['placeholder','title','aria-label']) if (el.hasAttribute(a)) {
-      const k='_o_'+a; if (el[k]===undefined) el[k]=el.getAttribute(a); const v=el[k]; el.setAttribute(a, en && EN[v] ? EN[v] : v);
+      const k='_o_'+a; if (el[k]===undefined) el[k]=el.getAttribute(a); const v=el[k]; el.setAttribute(a, D && D[v] ? D[v] : v);
     }
-    if (el.dataset.k) { if (el._oh===undefined) el._oh=el.innerHTML; el.innerHTML = en && EN_HTML[el.dataset.k] ? EN_HTML[el.dataset.k] : el._oh; }
+    if (el.dataset.k) { if (el._oh===undefined) el._oh=el.innerHTML; el.innerHTML = DH && DH[el.dataset.k] ? DH[el.dataset.k] : el._oh; }
   }
 }
 function setLang(l){
@@ -696,9 +756,9 @@ function scene(c,W,H,o,t){
   const k = i => clamp(t*1.7 - i*0.09, 0, 1);
   const anim = (i,fn) => { const e=ease(k(i)); if(e<=0) return; c.save(); c.globalAlpha=e; c.translate(0,(1-e)*40); fn(); c.restore(); };
   c.textBaseline='alphabetic';
-  const kindWord = KIND[o.kind].noun;
+  const kindWord = nounL(o.kind);
   if (tall) {
-    c.fillStyle=ink; c.font='800 120px system-ui,sans-serif'; c.textAlign='left'; c.fillText('my top '+(n||MAX),70,200);
+    c.fillStyle=ink; c.font='800 120px system-ui,sans-serif'; c.textAlign='left'; c.fillText(posterHead(n||MAX),70,200);
     c.fillStyle=RED; c.font='800 120px system-ui,sans-serif'; c.fillText('JKT48',70,320);
     c.fillStyle=mu; c.font='600 40px system-ui,sans-serif'; c.textAlign='right'; c.fillText(kindWord,W-70,320); c.textAlign='left';
     const st = statsLine(picks); if (st) { c.fillStyle=mu; c.font='600 34px system-ui,sans-serif'; c.fillText(st,70,385); }
@@ -739,7 +799,7 @@ function scene(c,W,H,o,t){
 
 function statsLine(picks){
   const pl=picks.reduce((s,p)=>s+(p.plays||0),0), ms=picks.reduce((s,p)=>s+(p.ms||0),0); if (!pl) return '';
-  const h=Math.round(ms/36e5); return `${pl.toLocaleString(LANG==='en'?'en-US':'id-ID')} ${tr('putaran')}`+(h?` · ${h} ${tr('jam didengarkan')}`:'');
+  const h=Math.round(ms/36e5); return `${pl.toLocaleString(LOC())} ${tr('putaran')}`+(h?` · ${h} ${tr('jam didengarkan')}`:'');
 }
 /* ---------- spin ---------- */
 function drawSpin(c,a,pick,idx,n,time,o){
@@ -760,7 +820,7 @@ function drawSpin(c,a,pick,idx,n,time,o){
   c.textAlign='center'; c.fillStyle=RED; c.font='800 44px system-ui,sans-serif'; c.fillText('#'+(idx+1),cx,cy+R+100);
   c.fillStyle=ink; c.font='800 58px system-ui,sans-serif'; c.fillText(fitText(c,pick.title,W-140),cx,cy+R+170);
   c.fillStyle=mu; c.font='500 36px system-ui,sans-serif'; c.fillText(fitText(c,pick.sub,W-140),cx,cy+R+222);
-  if (pick.plays) { c.fillStyle=RED; c.font='700 32px system-ui,sans-serif'; c.fillText(tr('{n}× diputar',{n:pick.plays.toLocaleString(LANG==='en'?'en-US':'id-ID')}),cx,cy+R+272); }
+  if (pick.plays) { c.fillStyle=RED; c.font='700 32px system-ui,sans-serif'; c.fillText(tr('{n}× diputar',{n:pick.plays.toLocaleString(LOC())}),cx,cy+R+272); }
   c.fillStyle=mu; c.font='600 26px system-ui,sans-serif'; c.fillText('JKT48 Top '+n,cx,H-36);
 }
 
@@ -806,7 +866,7 @@ function photoCanvas(o,i){
     c.font='800 64px system-ui,sans-serif'; c.fillText(fitText(c,p.title,s),x,y+s+110);
     c.fillStyle='rgba(255,255,255,.7)'; c.font='500 44px system-ui,sans-serif'; c.fillText(fitText(c,p.sub,s),x,y+s+176);
     const by=y+s+260; c.fillStyle='rgba(255,255,255,.3)'; rr(c,x,by,s,10,5); c.fill(); c.fillStyle='#fff'; rr(c,x,by,s*0.36,10,5); c.fill(); c.beginPath(); c.arc(x+s*0.36,by+5,14,0,7); c.fill();
-    c.font='500 30px system-ui,sans-serif'; c.fillStyle='rgba(255,255,255,.7)'; c.fillText(p.plays?tr('{n}× diputar',{n:p.plays.toLocaleString(LANG==='en'?'en-US':'id-ID')}):'1:12',x,by+60); if (!p.plays) { c.textAlign='right'; c.fillText('-2:48',x+s,by+60); } c.textAlign='left';
+    c.font='500 30px system-ui,sans-serif'; c.fillStyle='rgba(255,255,255,.7)'; c.fillText(p.plays?tr('{n}× diputar',{n:p.plays.toLocaleString(LOC())}):'1:12',x,by+60); if (!p.plays) { c.textAlign='right'; c.fillText('-2:48',x+s,by+60); } c.textAlign='left';
     const cy=by+200, mx=W/2; c.fillStyle='#fff'; c.beginPath(); c.arc(mx,cy,70,0,7); c.fill(); c.fillStyle='#222'; c.fillRect(mx-22,cy-28,16,56); c.fillRect(mx+6,cy-28,16,56);
     c.fillStyle='#fff'; [[-1],[1]].forEach(([d])=>{ c.beginPath(); c.moveTo(mx+d*130,cy-36); c.lineTo(mx+d*130,cy+36); c.lineTo(mx+d*190,cy); c.closePath(); c.fill(); });
     if (o.num) badge(c,110,110,56,i+1);
@@ -871,7 +931,7 @@ async function downloadAll(files){ for (const f of files){ dl(f.blob,f.name); aw
 let tok=0, spinRAF=0, spinT0=0;
 async function refresh(){
   const my=++tok, o=await opts(); if (my!==tok) return;
-  const cap=$('#caption'); if (!cap.dataset.dirty) cap.value = `my top ${o.picks.length||MAX} ${noun()} of JKT48\nvia ${location.host||'jkt48top'}/`;
+  const cap=$('#caption'); if (!cap.dataset.dirty) { const n=o.picks.length||MAX, via=`via ${location.host||'jkt48top'}/`; cap.value = LANG==='ja' ? `JKT48の${nounL(state.kind)}トップ${n}\n${via}` : `my top ${n} ${noun()} of JKT48\n${via}`; }
   renderLooks(o);
   if (state.share==='post') {
     const single = state.postMode==='single';
@@ -921,7 +981,7 @@ function startSpin(o){
 }
 function renderLink(){
   const arr=cur(), nm=$('#nm').value.trim();
-  $('#linkTitle').innerHTML = `Top ${arr.length||MAX} ${noun()} JKT48 <span style="color:var(--mute);font-weight:400;font-size:13px">${nm?tr('oleh')+' '+esc(nm):''}</span>`;
+  $('#linkTitle').innerHTML = `${listTitleText(arr.length||MAX,state.kind)} <span style="color:var(--mute);font-weight:400;font-size:13px">${nm?tr('oleh')+' '+esc(nm):''}</span>`;
   $('#slots').innerHTML = Array.from({length:Math.max(MAX,arr.length)},(_,i)=>`<div>${arr[i]?`<img src="${arr[i].img}" alt="">`:''}</div>`).join('');
 }
 function renderLooks(o){
@@ -1240,15 +1300,15 @@ async function showView(d){
   const look=['cds','tapes','covers','vinyl','player'].includes(d.l)?d.l:'cds', name=String(d.nm||'').slice(0,40);
   const themeId = d.th==='custom' || THEMES[d.th] ? d.th : (d.d ? 'night' : 'classic'), theme = buildTheme(themeId, d.cu && typeof d.cu==='object' ? d.cu : {});
   const o={picks,assets:await loadAll(picks),look,num:!!d.n,theme,night:theme.dark,font:FONTS[d.f]?d.f:'sys',kind:d.k,name};
-  document.title=`Top ${picks.length} ${KIND[d.k].noun} JKT48${name?' '+tr('oleh')+' '+name:''}`;
-  $('#vTitle').textContent=`Top ${picks.length} ${KIND[d.k].noun} JKT48`;
+  document.title=`${listTitleText(picks.length,d.k)}${name?' '+tr('oleh')+' '+name:''}`;
+  $('#vTitle').textContent=listTitleText(picks.length,d.k);
   const by=$('#vBy'); by.textContent=''; const parts=[];
   if (name) parts.push(document.createTextNode(tr('oleh')+' '+name));
   const href=safeLink(d.lk); if (href) { const a=document.createElement('a'); a.href=href; a.target='_blank'; a.rel='noopener nofollow ugc'; a.textContent=href.replace(/^https?:\/\//,'').replace(/\/$/,''); a.style.color='#fff'; parts.push(a); }
   const st=statsLine(picks); if (st) parts.push(document.createTextNode(st));
   parts.forEach((p,i)=>{ if (i) by.append(' · '); by.append(p); });
   scene($('#cvView').getContext('2d'),1600,900,o,1);
-  $('#vList').innerHTML=picks.map((p,i)=>`<li><span class="n">${i+1}</span><img src="${esc(p.img)}" alt=""><div><b>${esc(p.title)}</b><span>${esc(p.sub)}${p.plays?` · ${tr('{n}× diputar',{n:p.plays.toLocaleString(LANG==='en'?'en-US':'id-ID')})}`:''}</span></div></li>`).join('');
+  $('#vList').innerHTML=picks.map((p,i)=>`<li><span class="n">${i+1}</span><img src="${esc(p.img)}" alt=""><div><b>${esc(p.title)}</b><span>${esc(p.sub)}${p.plays?` · ${tr('{n}× diputar',{n:p.plays.toLocaleString(LOC())})}`:''}</span></div></li>`).join('');
   $('#vDl').onclick=()=>dlCanvas($('#cvView'),'jkt48-top.png');
   $('#vMake').onclick=()=>{ document.body.classList.remove('view'); document.title='JKT48 Top 10'; history.replaceState(null,'',location.pathname+location.search); renderList(); renderResults(); };
 }
