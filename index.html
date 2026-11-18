@@ -30,6 +30,23 @@ input[type=search],input[type=text]{width:100%;padding:11px 14px;border-radius:1
 .res{flex:0 0 auto;width:62px;cursor:pointer;border:0;background:none;padding:0;color:inherit;font:inherit}
 .res img{width:62px;height:62px;border-radius:8px;object-fit:cover;display:block;background:var(--line)}
 .res.used img{outline:3px solid var(--red);outline-offset:-3px}
+#viewWrap{display:none}
+body.view #viewWrap{display:block}
+body.view .hero:not(.vhero),body.view .tabs,body.view .grid{display:none}
+#viewWrap .card{margin-top:16px}
+#vList li{display:flex;align-items:center;gap:12px;padding:8px 4px;border-bottom:1px solid var(--line)}
+#vList li:last-child{border-bottom:0}
+#vList .n{width:26px;text-align:right;font-weight:800;color:var(--red)}
+#vList img{width:52px;height:52px;border-radius:8px;object-fit:cover}
+#vList b,#vList span{display:block}
+#vList span{color:var(--mute);font-size:12px}
+.saved{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.saved select,.saved input{padding:10px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;min-width:0;width:100%}
+.saved .btn{padding:10px 14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.chip{border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:5px 12px;border-radius:99px;cursor:pointer;font:inherit;font-size:13px}
+.chip.on{background:var(--red);border-color:var(--red);color:#fff}
+.chips select{padding:5px 8px;border-radius:99px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:13px}
 .imp{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
 .imp input{flex:1 1 140px;min-width:0}
 .imp select#impSrc{flex:0 0 auto}
@@ -94,12 +111,13 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
 <div class="wrap">
   <header class="hero">
     <div class="eyebrow">JKT48 · FAN MADE</div>
-    <h1>Susun Top 10 JKT48-mu</h1>
-    <p>Pilih album atau lagu favoritmu, atur tampilannya, lalu bagikan ke X, story, atau lewat link.</p>
+    <h1 id="h1">Susun Top 10 JKT48-mu</h1>
+    <p>Pilih album, lagu, atau oshi favoritmu, atur tampilannya, lalu bagikan ke X, Threads, story, atau lewat link.</p>
   </header>
   <div class="tabs">
     <button class="tab on" data-kind="album">Albums</button>
     <button class="tab" data-kind="song">Songs</button>
+    <button class="tab" data-kind="oshi">Oshi</button>
   </div>
   <div class="grid">
     <div>
@@ -113,13 +131,20 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
           <button class="btn dark" id="sfGo" type="button">Impor</button>
         </div>
         <div class="msg" id="sfMsg">Impor top JKT48-mu dari stats.fm atau Last.fm (profil harus publik).</div>
+        <div id="filters" class="chips"></div>
         <div id="results" class="results"></div>
         <div id="msg" class="msg"></div>
       </div>
       <div class="card">
-        <h2><b class="step">♪</b>Top 10-mu <small>· drag untuk urutkan</small><button class="linkbtn" id="clear">Hapus semua</button></h2>
+        <h2><b class="step">♪</b><span id="listTitle">Top 10-mu</span> <small>· drag untuk urutkan</small><button class="linkbtn" id="clear">Hapus semua</button></h2>
+        <div class="chips" id="modes" style="margin:0 0 10px"><span style="font-size:13px;color:var(--mute)">Jumlah:</span><button class="chip" data-n="3">Top 3</button><button class="chip" data-n="5">Top 5</button><button class="chip on" data-n="10">Top 10</button><button class="chip" data-n="20">Top 20</button></div>
         <ol id="list"></ol>
         <div id="empty" class="empty">Belum ada pilihan. Klik cover di atas.</div>
+        <div class="saved">
+          <div class="two"><input type="text" id="listName" placeholder="Nama daftar (mis. Top 2026)"><button class="btn" id="saveList" type="button">Simpan daftar</button></div>
+          <div class="two"><select id="savedSel" aria-label="Daftar tersimpan"><option value="">Daftar tersimpan…</option></select><div style="display:flex;gap:6px"><button class="btn" id="loadList" type="button" style="flex:1">Muat</button><button class="btn" id="delList" type="button" style="flex:0 0 auto">Hapus</button></div></div>
+          <div class="msg" id="listMsg"></div>
+        </div>
       </div>
     </div>
     <div>
@@ -145,7 +170,7 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
             <textarea id="caption" rows="2" maxlength="280" placeholder="Tambahkan kata-kata untuk postinganmu" style="width:100%;border:0;background:none;color:var(--ink);font:inherit;font-size:14px;resize:none;outline:none;padding:0;margin-bottom:8px"></textarea>
             <div id="strip" class="strip" tabindex="0" aria-label="Fotomu, berurutan"></div>
           </div></div>
-          <div class="btns"><button class="btn" id="dlPost">Unduh foto</button><button class="btn dark" id="toX">Post ke X</button><button class="btn" id="shareSheet">Bagikan lewat…</button></div>
+          <div class="btns"><button class="btn" id="dlPost">Unduh foto</button><button class="btn dark" id="toX">Post ke X</button><button class="btn dark" id="toThreads">Post ke Threads</button><button class="btn" id="shareSheet">Bagikan lewat…</button></div>
           <div class="sub" id="postSub">Gambar diunduh dulu, lalu lampirkan di tweet.</div>
         </div>
         <div id="p-story" hidden>
@@ -163,6 +188,7 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
         </div>
         <div id="p-spin" hidden>
           <div class="seg" id="spinSeg"><button class="on" data-m="all">Semua</button><button data-m="one">Cuma #1</button></div>
+          <div class="seg" id="spinFmt"><button class="on" data-f="sq">1:1</button><button data-f="tall">9:16</button><button id="audioBtn" class="on" type="button" title="Putar cuplikan lagu 30 detik">♪ Suara</button></div>
           <canvas id="cvSpin" class="pv" width="1080" height="1080" style="width:100%"></canvas>
           <div class="btns"><button class="btn dark" id="mkSpin">Unduh video</button></div>
           <div class="sub" id="spinMsg"></div>
@@ -170,18 +196,38 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
       </div>
     </div>
   </div>
+  <div id="viewWrap">
+    <header class="hero vhero">
+      <div class="eyebrow">JKT48 · TOP LIST</div>
+      <h1 id="vTitle"></h1>
+      <p id="vBy"></p>
+    </header>
+    <div class="card"><canvas id="cvView" width="1600" height="900" style="width:100%;height:auto;border-radius:14px;display:block"></canvas></div>
+    <div class="card"><ol id="vList" style="max-height:none"></ol></div>
+    <div class="btns"><button class="btn" id="vDl" type="button">Unduh gambar</button><button class="btn dark" id="vMake" type="button">Buat top-mu sendiri</button></div>
+    <div class="sub">Dibuat dengan JKT48 Top 10 · situs fan, bukan resmi.</div>
+  </div>
+  <div class="sub" style="margin-top:28px">Data: iTunes, MusicBrainz, Wikipedia, stats.fm, Last.fm. Foto member © JKT48 Operation Team, dimuat dari jkt48.com. Situs fan, tidak berafiliasi dengan JKT48.</div>
 </div>
 <script>
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const state = { kind:'album', look:'cds', num:false, night:false, share:'post', spin:'all', q:'', picks:{album:[],song:[]} };
-const cache = {album:[],song:[]};
-const MAX = 10, RED = '#e4002b';
-try { const s = JSON.parse(localStorage.getItem('jkt48top')||'null'); if (s && s.album) state.picks = s; } catch(e){}
-const save = () => { try{ localStorage.setItem('jkt48top', JSON.stringify(state.picks)); }catch(e){} };
+const state = { kind:'album', look:'cds', num:false, night:false, share:'post', spin:'all', spinFmt:'sq', audio:true, q:'', filter:'all', year:'all', picks:{album:[],song:[],oshi:[]} };
+const cache = {album:[],song:[],oshi:[]};
+let MAX = 10; const RED = '#e4002b';
+try { const s = JSON.parse(localStorage.getItem('jkt48top')||'null'); if (s && s.album) Object.assign(state.picks, s); const m = +localStorage.getItem('jkt48max'); if ([3,5,10,20].includes(m)) MAX = m; } catch(e){}
+const save = () => { try{ localStorage.setItem('jkt48top', JSON.stringify(state.picks)); localStorage.setItem('jkt48max', MAX); }catch(e){} };
 const big = u => u.replace(/\d+x\d+bb/, '600x600bb');
 const cur = () => state.picks[state.kind];
-const noun = () => state.kind==='album' ? 'albums' : 'songs';
+const KIND = { album:{noun:'albums', one:'album', ph:'Cari album JKT48...'}, song:{noun:'songs', one:'lagu', ph:'Cari lagu JKT48...'}, oshi:{noun:'oshi', one:'member', ph:'Cari member JKT48...'} };
+const noun = () => KIND[state.kind].noun;
+const one = () => KIND[state.kind].one;
+
+/* Snapshot member dari jkt48.com/member (19 Nov 2026). [nama, slug, tim, file foto]. Tim: L=Love D=Dream P=Passion T=Trainee. Foto © JKT48 Operation Team, dimuat langsung dari jkt48.com lewat proxy gambar wsrv.nl. */
+const TEAM = {L:'Team Love', D:'Team Dream', P:'Team Passion', T:'Trainee'};
+const MEMBERS = [["Anindya Ramadhani","anindya-ramadhani-26","L","anindya_ramadhani.jpg"],["Aurellia","aurellia-31","L","aurellia.jpg"],["Aurhel Alana","aurhel-alana-33","L","aurhel_alana.jpg"],["Celline Thefani","celline-thefani-46","L","celline_thefani.jpg"],["Cynthia Yaputera","cynthia-yaputera-60","L","cynthia_yaputera.jpg"],["Fiony Alveria","fiony-alveria-91","L","fiony_alveria.jpg"],["Fritzy Rosmerian","fritzy-rosmerian-96","L","fritzy_rosmerian.jpg"],["Grace Octaviani","grace-octaviani-105","L","grace_octaviani.jpg"],["Hillary Abigail","hillary-abigail-114","L","hillary_abigail.jpg"],["Indah Cahya","indah-cahya-116","L","indah_cahya.jpg"],["Jazzlyn Trisha","jazzlyn-trisha-121","L","jazzlyn_trisha.jpg"],["Michelle Alexandra","michelle-alexandra-159","L","michelle_alexandra.jpg"],["Nayla Suji","nayla-suji-175","L","nayla_suji.jpg"],["Adeline Wijaya","adeline-wijaya-2","D","adeline_wijaya.jpg"],["Febriola Sinambela","febriola-sinambela-88","D","febriola_sinambela.jpg"],["Freya Jayawardana","freya-jayawardana-94","D","freya_jayawardana.jpg"],["Gabriela Abigail","gabriela-abigail-97","D","gabriela_abigail.jpg"],["Gita Sekar Andarini","gita-sekar-andarini-104","D","gita_sekar_andarini.jpg"],["Greesella Adhalia","greesella-adhalia-107","D","greesella_adhalia.jpg"],["Helisma Putri","helisma-putri-112","D","helisma_putri.jpg"],["Jesslyn Elly","jesslyn-elly-131","D","jesslyn_elly.jpg"],["Marsha Lenathea","marsha-lenathea-152","D","marsha_lenathea.jpg"],["Nina Tutachia","nina-tutachia-178","D","nina_tutachia.jpg"],["Oline Manuel","oline-manuel-185","D","oline_manuel.jpg"],["Shabilqis Naila","shabilqis-naila-221","D","shabilqis_naila.jpg"],["Abigail Rachel","abigail-rachel-1","P","abigail_rachel.jpg"],["Angelina Christy","angelina-christy-22","P","angelina_christy.jpg"],["Catherina Vallencia","catherina-vallencia-44","P","catherina_vallencia.jpg"],["Cornelia Vanisa","cornelia-vanisa-59","P","cornelia_vanisa.jpg"],["Dena Natalia","dena-natalia-64","P","dena_natalia.jpg"],["Desy Natalia","desy-natalia-67","P","desy_natalia.jpg"],["Feni Fitriyanti","feni-fitriyanti-89","P","2026/10/fenifitriyantiphoto-1-942dd7.jpg"],["Jessica Chandra","jessica-chandra-127","P","jessica_chandra.jpg"],["Kathrina Irene","kathrina-irene-143","P","kathrina_irene.jpg"],["Lulu Salsabila","lulu-salsabila-148","P","lulu_salsabila.jpg"],["Michelle Levia","michelle-levia-161","P","michelle_levia.jpg"],["Mutiara Azzahra","mutiara-azzahra-166","P","mutiara_azzahra.jpg"],["Raisha Syifa","raisha-syifa-195","P","raisha_syifa.jpg"],["Ribka Budiman","ribka-budiman-204","P","ribka_budiman.jpg"],["Victoria Kimberly","victoria-kimberly-244","P","victoria_kimberly.jpg"],["Afera Thalia","afera-thalia-6","T","afera_thalia.jpg"],["Astrella Virgiananda","astrella-virgiananda-28","T","Astrella_Virgiananda.jpg"],["Bong Aprilli","bong-aprilli-39","T","Bong_Aprilli.jpg"],["Carissa Dini","carissa-dini-43","T","carissa_dini.jpg"],["Christabella Bonita","christabella-bonita-52","T","christabella_bonita.jpg"],["Fahira Putri","fahira-putri-82","T","fahira_putri.jpg"],["Fatimah Azzahra","fatimah-azzahra-85","T","fatimah_azzahra.jpg"],["Hagia Sopia","hagia-sopia-108","T","Hagia_Sopia.jpg"],["Heidi Suyangga","heidi-suyangga-111","T","heidi_suyangga.jpg"],["Humaira Ramadhani","humaira-ramadhani-115","T","Humaira_Ramadhani.jpg"],["Jacqueline Immanuela","jacqueline-immanuela-120","T","Jacqueline_Immanuela.jpg"],["Jemima Evodie","jemima-evodie-123","T","Jemima_Evodie.jpg"],["Maxine Faye","maxine-faye-155","T","maxine_faye_lee.jpg"],["Mikaela Kusjanto","mikaela-kusjanto-162","T","Mikaela_Kusjanto.jpg"],["Nur Intan","nur-intan-182","T","Nur_Intan.jpg"],["Putry Jazyta","putry-jazyta-194","T","putry_jazyta.jpg"],["Ralyne Van Irwan","ralyne-van-irwan-196","T","ralyne_van_irwan.jpg"],["Sona Kalyana","sona-kalyana-231","T","sona_kalyana.jpg"]];
+const memberImg = f => 'https://wsrv.nl/?url='+encodeURIComponent('https://jkt48.com/api/v1/storages/media/jkt48-member/'+f)+'&w=600&h=600&fit=cover&a=top';
+const oshiItems = () => MEMBERS.map(([n,s,t,f]) => ({ id:'m:'+s, title:n, sub:TEAM[t], team:t, img:memberImg(f) }));
 
 /* ---------- data: iTunes (cover + rilisan resmi) + MusicBrainz (diskografi komunitas, termasuk lagu setlist teater) ---------- */
 const MB_ARTIST = 'b1da8509-4462-46f9-8eda-137c0e4d8cfa'; // JKT48
@@ -190,8 +236,8 @@ const wait = ms => new Promise(r=>setTimeout(r,ms));
 const keyOf = t => String(t).toLowerCase().replace(/\(.*?\)/g,'').replace(/ - .*$/,'').replace(/[^a-z0-9]+/g,'');
 function norm(r, kind){
   return kind==='album'
-    ? { id:String(r.collectionId), title:r.collectionName.replace(/ - (Single|EP)$/i,''), sub:'JKT48'+(r.releaseDate?' · '+r.releaseDate.slice(0,4):''), img:r.artworkUrl100 }
-    : { id:String(r.trackId), title:r.trackName, sub:r.collectionName.replace(/ - (Single|EP)$/i,''), img:r.artworkUrl100 };
+    ? { id:String(r.collectionId), title:r.collectionName.replace(/ - (Single|EP)$/i,''), sub:'JKT48'+(r.releaseDate?' · '+r.releaseDate.slice(0,4):''), img:r.artworkUrl100, type:/ - Single$/i.test(r.collectionName)?'single':/ - EP$/i.test(r.collectionName)?'ep':'album' }
+    : { id:String(r.trackId), title:r.trackName, sub:r.collectionName.replace(/ - (Single|EP)$/i,''), img:r.artworkUrl100, src:'rilis', prev:r.previewUrl||null };
 }
 async function mbGet(path){
   const r = await fetch(MB+path+(path.includes('?')?'&':'?')+'fmt=json',{headers:{Accept:'application/json'}});
@@ -224,14 +270,14 @@ async function loadMB(kind){
     if (kind==='album') {
       for (let off=0; off<400; off+=100) {
         const j = await mbGet(`/release-group?artist=${MB_ARTIST}&type=album|single|ep&limit=100&offset=${off}`);
-        for (const g of j['release-groups']) out.push({ id:'mb:'+g.id, title:g.title, sub:'JKT48'+(g['first-release-date']?' · '+g['first-release-date'].slice(0,4):''), img:`https://coverartarchive.org/release-group/${g.id}/front-250` });
+        for (const g of j['release-groups']) out.push({ id:'mb:'+g.id, title:g.title, sub:'JKT48'+(g['first-release-date']?' · '+g['first-release-date'].slice(0,4):''), img:`https://coverartarchive.org/release-group/${g.id}/front-250`, type:String(g['primary-type']||'album').toLowerCase() });
         if (off+100 >= j['release-group-count']) break;
         await wait(1100);
       }
     } else {
       for (let off=0; off<1500; off+=100) {
         const j = await mbGet(`/recording?artist=${MB_ARTIST}&limit=100&offset=${off}`);
-        for (const r of j.recordings) out.push({ id:'mb:'+r.id, title:r.title, sub:'JKT48', img:null });
+        for (const r of j.recordings) out.push({ id:'mb:'+r.id, title:r.title, sub:'JKT48', img:null, src:'rilis' });
         if (off+100 >= j['recording-count']) break;
         $('#msg').textContent = `Memuat lagu... ${Math.min(off+100,j['recording-count'])}/${j['recording-count']}`;
         await wait(1100);
@@ -255,7 +301,7 @@ async function loadWiki(){
         const title = raw.replace(/\s*[（(].*$/,'').trim(); if (!title) continue;
         const via = (c[1]?.textContent||'').replace(/\[\d+\]/g,'').trim(), set = (c[2]?.textContent||'').replace(/\[\d+\]/g,'').trim();
         const where = [via,set].find(x=>x && x!=='-' && x!=='—' && x.length<60);
-        out.push({ id:'wk:'+title.toLowerCase().replace(/[^a-z0-9]+/g,'-'), title, sub: where ? 'JKT48 · '+where : 'JKT48', img:null });
+        out.push({ id:'wk:'+title.toLowerCase().replace(/[^a-z0-9]+/g,'-'), title, sub: where ? 'JKT48 · '+where : 'JKT48', img:null, src:'setlist' });
       }
     }
   } catch(e){}
@@ -266,11 +312,12 @@ function mergeLists(...lists){ // urutan = prioritas (yang lebih awal menang, ka
   for (const l of lists) for (const x of l) { const k = keyOf(x.title); if (!k || seen.has(k)) continue; seen.add(k); out.push(x); }
   return out;
 }
-const DATA_KEY = 'jkt48data4';
+const DATA_KEY = 'jkt48data5';
 function cacheRead(kind){ try { const d = JSON.parse(localStorage.getItem(DATA_KEY+kind)||'null'); if (d && Date.now()-d.t < 7*864e5 && d.items.length) return d.items; } catch(e){} return null; }
 function cacheWrite(kind,items){ try { localStorage.setItem(DATA_KEY+kind, JSON.stringify({t:Date.now(),items})); } catch(e){} }
 async function load(kind){
   if (cache[kind].length) return;
+  if (kind==='oshi') { cache.oshi = oshiItems(); return; }
   const hit = cacheRead(kind); if (hit) { cache[kind] = hit; return; }
   $('#msg').textContent = 'Memuat daftar dari iTunes dan MusicBrainz...';
   let out;
@@ -290,13 +337,30 @@ async function load(kind){
 async function renderResults(){
   await load(state.kind);
   const q = state.q.toLowerCase(), used = new Set(cur().map(p=>String(p.id)));
-  const items = cache[state.kind].filter(x => !q || x.title.toLowerCase().includes(q) || x.sub.toLowerCase().includes(q));
+  renderFilters();
+  const f = state.filter, yr = state.year;
+  const okF = x => f==='all' || (state.kind==='album' ? x.type===f : state.kind==='song' ? x.src===f : x.team===f);
+  const okY = x => state.kind!=='album' || yr==='all' || (x.sub||'').includes(yr);
+  const items = cache[state.kind].filter(x => okF(x) && okY(x) && (!q || x.title.toLowerCase().includes(q) || x.sub.toLowerCase().includes(q)));
   const manual = state.q.trim() ? `<button class="res" data-manual="1" title="Tambah manual"><div style="width:62px;height:62px;border-radius:8px;border:2px dashed var(--red);display:grid;place-items:center;color:var(--red);font-size:26px;font-weight:700">+</div></button>` : '';
   const shown = items.slice(0,300);
   $('#results').innerHTML = manual + shown.map(x =>
     `<button class="res ${used.has(String(x.id))?'used':''}" data-id="${esc(x.id)}" title="${esc(x.title)}">` +
     (x.img ? `<img loading="lazy" src="${x.img}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'ph',textContent:this.closest('.res').title}))">` : `<div class="ph">${esc(x.title)}</div>`) + `</button>`).join('');
   $('#msg').textContent = !items.length && cache[state.kind].length ? 'Tidak ketemu. Klik + untuk menambah manual.' : (items.length>300 ? `Menampilkan 300 dari ${items.length}. Ketik untuk mencari.` : '');
+}
+const FILTERS = {
+  album:[['all','Semua'],['album','Album'],['single','Singel'],['ep','EP']],
+  song:[['all','Semua'],['rilis','Rilis resmi'],['setlist','Setlist teater']],
+  oshi:[['all','Semua'],['L','Love'],['D','Dream'],['P','Passion'],['T','Trainee']]
+};
+function renderFilters(){
+  const host = $('#filters'); let html = FILTERS[state.kind].map(([k,l])=>`<button class="chip ${state.filter===k?'on':''}" data-f="${k}">${l}</button>`).join('');
+  if (state.kind==='album') {
+    const years = [...new Set(cache.album.map(a=>(a.sub||'').match(/\d{4}/)?.[0]).filter(Boolean))].sort().reverse();
+    html += `<select id="yearSel" aria-label="Tahun rilis"><option value="all">Semua tahun</option>${years.map(y=>`<option ${state.year===y?'selected':''}>${y}</option>`).join('')}</select>`;
+  }
+  host.innerHTML = html;
 }
 function renderList(){
   const arr = cur();
@@ -325,15 +389,19 @@ function loadImg(src){
   return imgCache[src] = new Promise(res => {
     const im = new Image(); im.crossOrigin = 'anonymous';
     im.onload = () => {
-      let col = '#8a7f86';
+      let col = '#8a7f86', src = im;
+      if (Math.abs(im.naturalWidth-im.naturalHeight) > 2) { // foto non-persegi: potong jadi persegi (wajah di atas)
+        try { const s=Math.min(im.naturalWidth,im.naturalHeight), q=document.createElement('canvas'); q.width=q.height=s;
+          q.getContext('2d').drawImage(im, (im.naturalWidth-s)/2, im.naturalHeight>im.naturalWidth?0:(im.naturalHeight-s)/2, s, s, 0, 0, s, s); src=q; } catch(e){}
+      }
       try {
         const t = document.createElement('canvas'); t.width = t.height = 8;
-        const x = t.getContext('2d'); x.drawImage(im,0,0,8,8);
+        const x = t.getContext('2d'); x.drawImage(src,0,0,8,8);
         const d = x.getImageData(0,0,8,8).data; let r=0,g=0,b=0;
         for (let i=0;i<d.length;i+=4){ r+=d[i]; g+=d[i+1]; b+=d[i+2]; }
         const n = d.length/4; col = `rgb(${r/n|0},${g/n|0},${b/n|0})`;
       } catch(e){}
-      res({im,col});
+      res({im:src,col});
     };
     im.onerror = () => res({im:null,col:'#8a7f86'});
     im.src = big(src);
@@ -446,11 +514,12 @@ function scene(c,W,H,o,t){
   const k = i => clamp(t*1.7 - i*0.09, 0, 1);
   const anim = (i,fn) => { const e=ease(k(i)); if(e<=0) return; c.save(); c.globalAlpha=e; c.translate(0,(1-e)*40); fn(); c.restore(); };
   c.textBaseline='alphabetic';
-  const kindWord = o.kind==='album'?'albums':'songs';
+  const kindWord = KIND[o.kind].noun;
   if (tall) {
-    c.fillStyle=ink; c.font='800 120px system-ui,sans-serif'; c.textAlign='left'; c.fillText('my top '+Math.max(n,1),70,200);
+    c.fillStyle=ink; c.font='800 120px system-ui,sans-serif'; c.textAlign='left'; c.fillText('my top '+(n||MAX),70,200);
     c.fillStyle=RED; c.font='800 120px system-ui,sans-serif'; c.fillText('JKT48',70,320);
     c.fillStyle=mu; c.font='600 40px system-ui,sans-serif'; c.textAlign='right'; c.fillText(kindWord,W-70,320); c.textAlign='left';
+    const st = statsLine(picks); if (st) { c.fillStyle=mu; c.font='600 34px system-ui,sans-serif'; c.fillText(st,70,385); }
   }
   if (!n){ c.fillStyle=mu; c.font='600 40px system-ui,sans-serif'; c.textAlign='center'; c.fillText('Pilih favoritmu dulu',W/2,H/2); return; }
   const feat = look==='covers'||look==='vinyl'||look==='player';
@@ -460,7 +529,8 @@ function scene(c,W,H,o,t){
       const avail=W-140, gap=14, w=Math.min(150,(avail-(n-1)*gap)/n), h=Math.min(660,H-250), tot=n*w+(n-1)*gap, x0=(W-tot)/2, y=(H-h)/2+numPad/2;
       picks.forEach((p,i)=>anim(i,()=>spine(c,x0+i*(w+gap),y,w,h,p,assets[i],look,i,o)));
     } else {
-      const per=5, rows=Math.ceil(n/per), gap=20, w=(W-140-(per-1)*gap)/per, h=560;
+      const per=n>10?7:5, rows=Math.ceil(n/per), gap=n>10?14:20, w=(W-140-(per-1)*gap)/per;
+      const h=Math.min(560,(H-440-130-numPad-(rows-1)*90)/rows);
       const y0=440+numPad;
       picks.forEach((p,i)=>{
         const r=Math.floor(i/per), cI=i%per, cnt=Math.min(per,n-r*per), x0=(W-(cnt*w+(cnt-1)*gap))/2;
@@ -485,11 +555,15 @@ function scene(c,W,H,o,t){
   c.fillText(o.name? 'by '+o.name : 'JKT48 Top 10', 60, H-(tall?60:34));
 }
 
+function statsLine(picks){
+  const pl=picks.reduce((s,p)=>s+(p.plays||0),0), ms=picks.reduce((s,p)=>s+(p.ms||0),0); if (!pl) return '';
+  const h=Math.round(ms/36e5); return `${pl.toLocaleString('id-ID')} putaran`+(h?` · ${h} jam didengarkan`:'');
+}
 /* ---------- spin ---------- */
 function drawSpin(c,a,pick,idx,n,time,o){
-  const W=1080, night=o.night, paper=night?'#101013':'#f6f3ee', ink=night?'#f6ecee':'#17110f', mu=night?'#9b9094':'#7b706b';
-  c.fillStyle=paper; c.fillRect(0,0,W,W);
-  const cx=W/2, cy=420, R=350, ang=time*4, pop=ease(clamp(time%1.6/0.35,0,1));
+  const W=c.canvas.width, H=c.canvas.height, night=o.night, paper=night?'#101013':'#f6f3ee', ink=night?'#f6ecee':'#17110f', mu=night?'#9b9094':'#7b706b';
+  c.fillStyle=paper; c.fillRect(0,0,W,H);
+  const cx=W/2, cy=H*(H>W?0.34:0.39), R=W*0.325, ang=time*4, pop=ease(clamp(time%1.6/0.35,0,1));
   c.save(); c.translate(cx,cy); c.scale(0.9+0.1*pop,0.9+0.1*pop); c.globalAlpha=pop;
   c.shadowColor='rgba(0,0,0,.35)'; c.shadowBlur=40; c.shadowOffsetY=18;
   c.fillStyle='#0d0d0f'; c.beginPath(); c.arc(0,0,R,0,7); c.fill(); c.shadowColor='transparent';
@@ -504,7 +578,8 @@ function drawSpin(c,a,pick,idx,n,time,o){
   c.textAlign='center'; c.fillStyle=RED; c.font='800 44px system-ui,sans-serif'; c.fillText('#'+(idx+1),cx,cy+R+100);
   c.fillStyle=ink; c.font='800 58px system-ui,sans-serif'; c.fillText(fitText(c,pick.title,W-140),cx,cy+R+170);
   c.fillStyle=mu; c.font='500 36px system-ui,sans-serif'; c.fillText(fitText(c,pick.sub,W-140),cx,cy+R+222);
-  c.font='600 26px system-ui,sans-serif'; c.fillText('JKT48 Top 10',cx,W-36);
+  if (pick.plays) { c.fillStyle=RED; c.font='700 32px system-ui,sans-serif'; c.fillText(`${pick.plays.toLocaleString('id-ID')}× diputar`,cx,cy+R+272); }
+  c.fillStyle=mu; c.font='600 26px system-ui,sans-serif'; c.fillText('JKT48 Top '+n,cx,H-36);
 }
 
 /* ---------- render pipeline ---------- */
@@ -548,7 +623,7 @@ function photoCanvas(o,i){
     c.font='800 64px system-ui,sans-serif'; c.fillText(fitText(c,p.title,s),x,y+s+110);
     c.fillStyle='rgba(255,255,255,.7)'; c.font='500 44px system-ui,sans-serif'; c.fillText(fitText(c,p.sub,s),x,y+s+176);
     const by=y+s+260; c.fillStyle='rgba(255,255,255,.3)'; rr(c,x,by,s,10,5); c.fill(); c.fillStyle='#fff'; rr(c,x,by,s*0.36,10,5); c.fill(); c.beginPath(); c.arc(x+s*0.36,by+5,14,0,7); c.fill();
-    c.font='500 30px system-ui,sans-serif'; c.fillStyle='rgba(255,255,255,.7)'; c.fillText('1:12',x,by+60); c.textAlign='right'; c.fillText('-2:48',x+s,by+60); c.textAlign='left';
+    c.font='500 30px system-ui,sans-serif'; c.fillStyle='rgba(255,255,255,.7)'; c.fillText(p.plays?`${p.plays.toLocaleString('id-ID')}× diputar`:'1:12',x,by+60); if (!p.plays) { c.textAlign='right'; c.fillText('-2:48',x+s,by+60); } c.textAlign='left';
     const cy=by+200, mx=W/2; c.fillStyle='#fff'; c.beginPath(); c.arc(mx,cy,70,0,7); c.fill(); c.fillStyle='#222'; c.fillRect(mx-22,cy-28,16,56); c.fillRect(mx+6,cy-28,16,56);
     c.fillStyle='#fff'; [[-1],[1]].forEach(([d])=>{ c.beginPath(); c.moveTo(mx+d*130,cy-36); c.lineTo(mx+d*130,cy+36); c.lineTo(mx+d*190,cy); c.closePath(); c.fill(); });
     if (o.num) badge(c,110,110,56,i+1);
@@ -590,30 +665,56 @@ async function downloadAll(files){ for (const f of files){ dl(f.blob,f.name); aw
 let tok=0, spinRAF=0, spinT0=0;
 async function refresh(){
   const my=++tok, o=await opts(); if (my!==tok) return;
-  const cap=$('#caption'); if (!cap.dataset.dirty) cap.value = `my top ${o.picks.length||10} ${noun()} of JKT48\nvia ${location.host||'jkt48top'}/`;
+  const cap=$('#caption'); if (!cap.dataset.dirty) cap.value = `my top ${o.picks.length||MAX} ${noun()} of JKT48\nvia ${location.host||'jkt48top'}/`;
   renderLooks(o);
   if (state.share==='post') {
-    $('#postSub').textContent = o.picks.length ? `${o.picks.length} foto, satu per ${state.kind==='album'?'album':'lagu'}, berurutan. X menerima sampai 20 foto per post.` : 'Pilih favoritmu dulu.';
+    $('#postSub').textContent = o.picks.length ? `${o.picks.length} foto, satu per ${one()}, berurutan. X menerima sampai 20 foto per post.` : 'Pilih favoritmu dulu.';
     $('#strip').replaceChildren(...o.picks.map((_,i)=>photoCanvas(o,i)));
   }
   if (state.share==='story') scene($('#cvStory').getContext('2d'),1080,1920,o,1);
   if (state.share==='link') renderLink();
   if (state.share==='spin') startSpin(o);
 }
+/* cuplikan lagu 30 dtk dari iTunes (hanya untuk didengar di halaman; video unduhan tidak bersuara karena iTunes tidak mengizinkan perekaman audio) */
+const aud = new Audio(); aud.volume = 0.7;
+async function getPreview(p){
+  if (p.prev !== undefined && p.prev !== null) return p.prev;
+  p.prev = '';
+  try {
+    const j = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(p.title+' JKT48')}&entity=song&limit=8&country=ID`).then(r=>r.json());
+    const mine = j.results.filter(r=>/JKT48/i.test(r.artistName) && r.previewUrl);
+    const hit = mine.find(r=>keyOf(r.trackName)===keyOf(p.title)) || mine.find(r=>keyOf(r.collectionName||'')===keyOf(p.title)) || null;
+    if (hit) p.prev = hit.previewUrl;
+  } catch(e){}
+  return p.prev;
+}
+function stopAudio(){ try { aud.pause(); aud.removeAttribute('src'); aud.load(); } catch(e){} }
+async function playFor(p){
+  stopAudio(); if (!state.audio || state.kind==='oshi') return;
+  const u = await getPreview(p); if (!u || state.share!=='spin' || !state.audio) return;
+  aud.src = u; aud.currentTime = 0; aud.play().catch(()=>{});
+}
+function sizeSpin(){
+  const cv=$('#cvSpin'), tall=state.spinFmt==='tall'; cv.width=1080; cv.height=tall?1920:1080;
+  cv.style.width=tall?'auto':'100%'; cv.style.height=tall?'480px':'auto';
+}
+let spinRun = 0;
 function startSpin(o){
-  cancelAnimationFrame(spinRAF); const c=$('#cvSpin').getContext('2d');
-  if (!o.picks.length){ c.fillStyle='#888'; c.fillRect(0,0,1080,1080); return; }
-  spinT0=performance.now();
+  cancelAnimationFrame(spinRAF); const my=++spinRun; sizeSpin(); const c=$('#cvSpin').getContext('2d');
+  if (!o.picks.length){ c.fillStyle='#888'; c.fillRect(0,0,c.canvas.width,c.canvas.height); stopAudio(); return; }
+  spinT0=performance.now(); let last=-1;
   (function f(){
+    if (my!==spinRun) return;
     const t=(performance.now()-spinT0)/1000, n=state.spin==='all'?o.picks.length:1, i=Math.floor(t/1.6)%n;
+    if (i!==last){ last=i; playFor(o.picks[i]); }
     drawSpin(c,o.assets[i],o.picks[i],i,n,t,o);
     if (state.share==='spin') spinRAF=requestAnimationFrame(f);
   })();
 }
 function renderLink(){
   const arr=cur(), nm=$('#nm').value.trim();
-  $('#linkTitle').innerHTML = `Top ${arr.length||10} ${noun()} JKT48 <span style="color:var(--mute);font-weight:400;font-size:13px">${nm?'oleh '+esc(nm):''}</span>`;
-  $('#slots').innerHTML = Array.from({length:10},(_,i)=>`<div>${arr[i]?`<img src="${arr[i].img}" alt="">`:''}</div>`).join('');
+  $('#linkTitle').innerHTML = `Top ${arr.length||MAX} ${noun()} JKT48 <span style="color:var(--mute);font-weight:400;font-size:13px">${nm?'oleh '+esc(nm):''}</span>`;
+  $('#slots').innerHTML = Array.from({length:Math.max(MAX,arr.length)},(_,i)=>`<div>${arr[i]?`<img src="${arr[i].img}" alt="">`:''}</div>`).join('');
 }
 function renderLooks(o){
   const host=$('#looks'); if (!host.children.length){
@@ -649,22 +750,36 @@ const ext = m => m.includes('mp4')?'mp4':'webm';
 /* ---------- events ---------- */
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t===b));
-  state.kind=b.dataset.kind; state.q=''; $('#q').value='';
-  $('#q').placeholder = state.kind==='album'?'Cari album JKT48...':'Cari lagu JKT48...';
-  renderResults(); renderList();
+  state.kind=b.dataset.kind; state.q=''; $('#q').value=''; state.filter='all'; state.year='all';
+  $('#q').placeholder = KIND[state.kind].ph;
+  const isOshi = state.kind==='oshi'; $('.imp').hidden = isOshi; $('#sfMsg').hidden = isOshi;
+  renderResults(); renderList(); renderHeads();
 });
 $('#q').oninput = e => { state.q=e.target.value; renderResults(); };
+$('#filters').onclick = e => { const b=e.target.closest('.chip'); if(!b) return; state.filter=b.dataset.f; renderResults(); };
+$('#filters').onchange = e => { if (e.target.id==='yearSel') { state.year=e.target.value; renderResults(); } };
+/* jumlah item (Top 3 / 5 / 10 / 20) */
+function renderHeads(){
+  $('#h1').textContent = `Susun Top ${MAX} JKT48-mu`;
+  $('#listTitle').textContent = `Top ${MAX}-mu`;
+  document.querySelectorAll('#modes .chip').forEach(c=>c.classList.toggle('on',+c.dataset.n===MAX));
+}
+$('#modes').onclick = e => {
+  const b=e.target.closest('.chip'); if(!b) return; MAX=+b.dataset.n;
+  for (const k of Object.keys(state.picks)) state.picks[k]=state.picks[k].slice(0,MAX);
+  renderHeads(); renderList(); renderResults();
+};
 $('#results').onclick = e => {
   const b=e.target.closest('.res'); if(!b) return;
   if (b.dataset.manual) { // lagu/album yang tidak ada di iTunes (mis. lagu setlist teater)
-    const arr=cur(), t=state.q.trim(); if (arr.length>=MAX){ $('#msg').textContent='Maksimal 10.'; return; }
+    const arr=cur(), t=state.q.trim(); if (arr.length>=MAX){ $('#msg').textContent=`Maksimal ${MAX}.`; return; }
     arr.push({id:'c'+Date.now(), title:t, sub:'JKT48', img:placeholder(t), custom:true});
     state.q=''; $('#q').value=''; renderList(); renderResults(); return;
   }
   const arr=cur(), id=b.dataset.id, ix=arr.findIndex(p=>String(p.id)===id);
   if (ix>=0) arr.splice(ix,1);
   else {
-    if (arr.length>=MAX){ $('#msg').textContent='Maksimal 10.'; return; }
+    if (arr.length>=MAX){ $('#msg').textContent=`Maksimal ${MAX}.`; return; }
     const it={...cache[state.kind].find(x=>String(x.id)===id)}; if (!it.img) it.img=placeholder(it.title); arr.push(it);
   }
   renderList(); renderResults();
@@ -702,6 +817,7 @@ async function importStatsfm(){
       else { const t=row.track, al=t.albums&&t.albums[0]; it = { id:'sf:'+t.id, title:t.name, sub:al?al.name:'JKT48', img:al?al.image:null }; }
       const k = keyOf(it.title); if (!k || seen.has(k)) continue; seen.add(k);
       if (!it.img) it.img = placeholder(it.title);
+      it.plays = row.streams||0; it.ms = row.playedMs||0;
       items.push(it); if (items.length>=MAX) break;
     }
     if (!items.length) { msg.textContent = `Belum ada ${kind==='album'?'album':'lagu'} JKT48 di rentang waktu itu untuk @${u.customId||u.id}.`; return; }
@@ -731,7 +847,7 @@ async function importLastfm(user, msg, btn){
         const k = keyOf(r.name); if (!k || seen.has(k)) continue; seen.add(k);
         const hit = covers.get(k), lf = (r.image||[]).slice(-1)[0], lfImg = lf && lf['#text'] && !lf['#text'].includes(LFM_NOART) ? lf['#text'] : null;
         const img = (hit && hit.img) || lfImg || placeholder(r.name);
-        items.push({ id:'lf:'+k, title:r.name, sub: hit ? hit.sub : 'JKT48', img });
+        items.push({ id:'lf:'+k, title:r.name, sub: hit ? hit.sub : 'JKT48', img, plays:+r.playcount||0, ms:0 });
         if (items.length>=MAX) break;
       }
       if (page >= +(root['@attr'].totalPages||1)) break;
@@ -745,6 +861,32 @@ async function importLastfm(user, msg, btn){
 $('#impSrc').onchange = e => { $('#sfUser').placeholder = e.target.value==='lastfm' ? 'Username Last.fm' : 'Username stats.fm'; };
 $('#sfGo').onclick = importStatsfm;
 $('#sfUser').onkeydown = e => { if (e.key==='Enter') importStatsfm(); };
+/* ---------- daftar tersimpan (di browser ini) ---------- */
+const LISTS_KEY = 'jkt48lists';
+const readLists = () => { try { return JSON.parse(localStorage.getItem(LISTS_KEY)||'{}') || {}; } catch(e){ return {}; } };
+const writeLists = o => { try { localStorage.setItem(LISTS_KEY, JSON.stringify(o)); return true; } catch(e){ return false; } };
+function renderSaved(sel){
+  const names = Object.keys(readLists()).sort();
+  $('#savedSel').innerHTML = '<option value="">Daftar tersimpan…</option>' + names.map(n=>`<option ${n===sel?'selected':''}>${esc(n)}</option>`).join('');
+}
+$('#saveList').onclick = () => {
+  const name = $('#listName').value.trim(), msg = $('#listMsg');
+  if (!name) { msg.textContent = 'Beri nama daftar dulu.'; return; }
+  if (!Object.values(state.picks).some(a=>a.length)) { msg.textContent = 'Daftarmu masih kosong.'; return; }
+  const all = readLists(); all[name] = { picks:JSON.parse(JSON.stringify(state.picks)), max:MAX, look:state.look, kind:state.kind };
+  if (!writeLists(all)) { msg.textContent = 'Penyimpanan browser penuh. Hapus daftar lama dulu.'; return; }
+  renderSaved(name); msg.textContent = `Tersimpan: "${name}".`;
+};
+$('#loadList').onclick = () => {
+  const name = $('#savedSel').value, d = readLists()[name]; if (!d) { $('#listMsg').textContent = 'Pilih daftar dulu.'; return; }
+  MAX = d.max || 10; state.picks = Object.assign({album:[],song:[],oshi:[]}, d.picks); if (d.look) state.look = d.look;
+  if (d.kind && KIND[d.kind]) { state.kind = d.kind; document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.kind===state.kind)); $('.imp').hidden = state.kind==='oshi'; $('#sfMsg').hidden = state.kind==='oshi'; $('#q').placeholder = KIND[state.kind].ph; }
+  $('#listName').value = name; renderHeads(); renderList(); renderResults(); $('#listMsg').textContent = `Dimuat: "${name}".`;
+};
+$('#delList').onclick = () => {
+  const name = $('#savedSel').value, all = readLists(); if (!all[name]) return;
+  delete all[name]; writeLists(all); renderSaved(); $('#listMsg').textContent = `Dihapus: "${name}".`;
+};
 $('#clear').onclick=()=>{ state.picks[state.kind]=[]; renderList(); renderResults(); };
 
 $('#looks').onclick=e=>{ const b=e.target.closest('.look'); if(!b) return; state.look=b.dataset.look; refresh(); };
@@ -754,7 +896,12 @@ $('#stabs').onclick=e=>{
   const b=e.target.closest('.stab'); if(!b) return; state.share=b.dataset.s;
   document.querySelectorAll('.stab').forEach(t=>t.classList.toggle('on',t===b));
   ['post','story','link','spin'].forEach(s=>$('#p-'+s).hidden = s!==state.share);
-  cancelAnimationFrame(spinRAF); refresh();
+  cancelAnimationFrame(spinRAF); if (state.share!=='spin') stopAudio(); refresh();
+};
+$('#spinFmt').onclick=e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  if (b.id==='audioBtn') { state.audio=!state.audio; b.classList.toggle('on',state.audio); if (!state.audio) stopAudio(); else refresh(); return; }
+  state.spinFmt=b.dataset.f; document.querySelectorAll('#spinFmt button[data-f]').forEach(t=>t.classList.toggle('on',t===b)); refresh();
 };
 $('#spinSeg').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; state.spin=b.dataset.m; document.querySelectorAll('#spinSeg button').forEach(t=>t.classList.toggle('on',t===b)); refresh(); };
 $('#nm').oninput=()=>refresh();
@@ -778,6 +925,12 @@ $('#toX').onclick=async()=>{
   openX();
   await downloadAll(await postFiles());
 };
+$('#toThreads').onclick=async()=>{
+  if (isMobile()) { if (await shareSheet()) return; }
+  // Komputer: buka halaman tulis Threads (pakai login Threads/Instagram-mu sendiri), lalu foto diunduh untuk dilampirkan
+  window.open('https://www.threads.com/intent/post?text='+encodeURIComponent($('#caption').value.trim()),'_blank','noopener');
+  await downloadAll(await postFiles());
+};
 $('#shareSheet').onclick=async()=>{ if (!(await shareSheet())) $('#postSub').textContent='Perangkat ini tidak mendukung menu share dengan foto. Pakai "Unduh foto".'; };
 $('#dlStoryImg').onclick=()=>dlCanvas($('#cvStory'),'jkt48-top10-story.png');
 $('#mkStory').onclick=async()=>{
@@ -794,7 +947,7 @@ $('#mkStory').onclick=async()=>{
 $('#copy').onclick=async()=>{
   // seluruh daftar dikodekan di link (judul + alamat cover), jadi tidak perlu server atau lookup
   const data={k:state.kind,l:state.look,n:+state.num,d:+state.night,nm:$('#nm').value.trim(),lk:$('#lk').value.trim(),
-    p:cur().map(p=>[p.title,p.sub,p.img&&!p.img.startsWith('data:')?p.img:0])};
+    p:cur().map(p=>[p.title,p.sub,p.img&&!p.img.startsWith('data:')?p.img:0,p.plays||0,p.ms||0])};
   const b64=btoa(unescape(encodeURIComponent(JSON.stringify(data)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
   const url=location.href.split('#')[0]+'#d='+b64;
   try{ await navigator.clipboard.writeText(url); $('#linkMsg').textContent='Link disalin.'; }catch(e){ $('#linkMsg').textContent=url; }
@@ -803,27 +956,51 @@ $('#mkSpin').onclick=async()=>{
   const btn=$('#mkSpin'), msg=$('#spinMsg'); btn.disabled=true; msg.textContent='Merekam...';
   try {
     cancelAnimationFrame(spinRAF);
+    stopAudio(); sizeSpin();
     const o=await opts(), c=$('#cvSpin').getContext('2d'), n=state.spin==='all'?o.picks.length:1, ms=Math.max(3,n*1.6)*1000;
     const {blob,mime}=await record($('#cvSpin'),ms,(s)=>{ const i=Math.floor(s/1.6)%n; drawSpin(c,o.assets[i],o.picks[i],i,n,s,o); });
-    dl(blob,'jkt48-top10-spin.'+ext(mime)); msg.textContent='Video diunduh.';
+    dl(blob,'jkt48-top10-spin.'+ext(mime)); msg.textContent='Video diunduh (tanpa suara). Tambahkan lagu saat kamu posting.';
   } catch(e){ msg.textContent=e.message; }
   btn.disabled=false; refresh();
 };
 
 /* ---------- boot (supports shared links) ---------- */
 (async()=>{
-  const m=location.hash.match(/^#d=([\w-]+)/);
-  if (m) try {
-    const d=JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/-/g,'+').replace(/_/g,'/')))));
-    if (/^(album|song)$/.test(d.k)) {
-      state.kind=d.k; state.look=d.l||state.look; state.num=!!d.n; state.night=!!d.d; $('#nm').value=d.nm||''; $('#lk').value=d.lk||'';
-      state.picks[d.k]=d.p.slice(0,MAX).map(([title,sub,img],i)=>({id:'s'+i,title,sub,img:img||placeholder(title)}));
-      document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.kind===state.kind));
-      $('#swNum').classList.toggle('on',state.num); $('#swNight').classList.toggle('on',state.night);
-    }
-  } catch(e){}
+  const shared = decodeShare();
+  renderSaved(); renderHeads(); $('#swNum').classList.toggle('on',state.num); $('#swNight').classList.toggle('on',state.night);
+  if (shared) { showView(shared); return; }
   renderList(); renderResults();
 })();
+
+/* ---------- halaman hasil untuk link share (#d=...): tampil seperti pameran, bukan editor ---------- */
+function decodeShare(){
+  const m=location.hash.match(/^#d=([\w-]+)/); if (!m) return null;
+  try {
+    const d=JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/-/g,'+').replace(/_/g,'/')))));
+    return (/^(album|song|oshi)$/.test(d.k) && Array.isArray(d.p) && d.p.length) ? d : null;
+  } catch(e){ return null; }
+}
+function safeLink(s){
+  s=(s||'').trim(); if (!s) return null; if (!/^https?:\/\//i.test(s)) s='https://'+s;
+  try { const u=new URL(s); return /^https?:$/.test(u.protocol) ? u.href : null; } catch(e){ return null; }
+}
+async function showView(d){
+  document.body.classList.add('view');
+  const picks=d.p.slice(0,20).map(([title,sub,img,plays,ms],i)=>({id:'s'+i,title:String(title),sub:String(sub||''),img:(typeof img==='string'&&/^https:\/\//.test(img))?img:placeholder(String(title)),plays:+plays||0,ms:+ms||0}));
+  const look=['cds','tapes','covers','vinyl','player'].includes(d.l)?d.l:'cds', name=String(d.nm||'').slice(0,40);
+  const o={picks,assets:await loadAll(picks),look,num:!!d.n,night:!!d.d,kind:d.k,name};
+  document.title=`Top ${picks.length} ${KIND[d.k].noun} JKT48${name?' oleh '+name:''}`;
+  $('#vTitle').textContent=`Top ${picks.length} ${KIND[d.k].noun} JKT48`;
+  const by=$('#vBy'); by.textContent=''; const parts=[];
+  if (name) parts.push(document.createTextNode('oleh '+name));
+  const href=safeLink(d.lk); if (href) { const a=document.createElement('a'); a.href=href; a.target='_blank'; a.rel='noopener nofollow ugc'; a.textContent=href.replace(/^https?:\/\//,'').replace(/\/$/,''); a.style.color='#fff'; parts.push(a); }
+  const st=statsLine(picks); if (st) parts.push(document.createTextNode(st));
+  parts.forEach((p,i)=>{ if (i) by.append(' · '); by.append(p); });
+  scene($('#cvView').getContext('2d'),1600,900,o,1);
+  $('#vList').innerHTML=picks.map((p,i)=>`<li><span class="n">${i+1}</span><img src="${esc(p.img)}" alt=""><div><b>${esc(p.title)}</b><span>${esc(p.sub)}${p.plays?` · ${p.plays.toLocaleString('id-ID')}× diputar`:''}</span></div></li>`).join('');
+  $('#vDl').onclick=()=>dlCanvas($('#cvView'),'jkt48-top.png');
+  $('#vMake').onclick=()=>{ document.body.classList.remove('view'); document.title='JKT48 Top 10'; history.replaceState(null,'',location.pathname+location.search); renderList(); renderResults(); };
+}
 </script>
 </body>
 </html>
