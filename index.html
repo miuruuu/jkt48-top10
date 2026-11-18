@@ -46,6 +46,7 @@ input[type=search],input[type=text]{width:100%;padding:11px 14px;border-radius:1
 .hint.ok{color:#168a4a;font-weight:700}
 .guide{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--soft);font-size:13px;line-height:1.5}
 .guide b{color:var(--red)}
+.note{margin-top:12px;padding:10px 14px;border-radius:14px;border:1px dashed var(--line);font-size:12.5px;line-height:1.5;color:var(--mute)}
 details.ext{margin-top:14px;font-size:13px;border-top:1px solid var(--line);padding-top:10px}
 details.ext summary{cursor:pointer;font-weight:600}
 details.ext ol{padding-left:20px;margin:10px 0}
@@ -137,10 +138,10 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
 <body>
 <div class="wrap">
   <header class="hero">
-    <div class="eyebrow">JKT48 · FAN MADE</div>
+    <div class="eyebrow" data-k="eyebrow">jkt48 · web iseng</div>
     <div class="lang"><button type="button" data-l="id">ID</button><button type="button" data-l="en">EN</button><button type="button" data-l="ja">日本語</button></div>
     <h1 id="h1">Susun Top 10 JKT48-mu</h1>
-    <p data-k="hero">Pilih album, lagu, atau oshi favoritmu, atur tampilannya, lalu bagikan ke X, story, atau lewat link.</p>
+    <p data-k="hero">web iseng buat nyusun top 10 album, lagu, atau oshi jkt48 lu. pilih, atur tampilannya, terus pamerin ke x atau mana aja. nggak resmi, nggak serius, nggak ada duit yang berpindah tangan.</p>
   </header>
   <div class="tabs">
     <button class="tab on" data-kind="album">Albums</button>
@@ -211,6 +212,7 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
           <div class="btns"><button class="btn" id="dlPost">Unduh foto</button><button class="btn" id="copyImg" hidden>Salin gambar</button><button class="btn dark" id="toX">Post ke X</button><button class="btn" id="shareSheet">Bagikan lewat…</button></div>
           <div class="sub" id="postSub">Gambar diunduh dulu, lalu lampirkan di tweet.</div>
           <div class="guide" id="guide" hidden></div>
+          <div class="note" data-k="shareNote">info: share ke x emang agak makan waktu. x nggak ngizinin web mana pun nempelin foto ke tweet, jadi lu harus salin atau seret fotonya sendiri. ini web iseng, bukan perusahaan, ya gini adanya.</div>
           <details class="ext">
             <summary data-k="tipSum">Tip: pasang X sebagai aplikasi, lalu foto masuk lewat tombol Bagikan</summary>
             <ol data-k="tipOl">
@@ -262,16 +264,16 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
     <div class="card"><canvas id="cvView" width="1600" height="900" style="width:100%;height:auto;border-radius:14px;display:block"></canvas></div>
     <div class="card"><ol id="vList" style="max-height:none"></ol></div>
     <div class="btns"><button class="btn" id="vDl" type="button">Unduh gambar</button><button class="btn dark" id="vMake" type="button">Buat top-mu sendiri</button></div>
-    <div class="sub" data-k="viewFoot">Dibuat dengan JKT48 Top 10 · situs fan, bukan resmi.</div>
+    <div class="sub" data-k="viewFoot">dibikin pakai jkt48 top 10 · web iseng, bukan resmi.</div>
   </div>
   <details class="ext disc" id="disclaimer" style="margin-top:28px">
-    <summary data-k="discSum">Disclaimer · situs fan tidak resmi, tidak berafiliasi dengan JKT48 atau X</summary>
-    <p data-k="disc1"><b>Situs fan, tidak resmi.</b> JKT48 Top 10 dibuat oleh penggemar dan tidak berafiliasi dengan, didukung, atau disponsori oleh JKT48, JKT48 Operation Team, IDN, X (Twitter), Apple, Spotify, stats.fm, Last.fm, maupun MusicBrainz. Semua nama dan merek milik pemiliknya masing-masing.</p>
-    <p data-k="disc2"><b>Hak cipta.</b> Cover album berasal dari iTunes dan Cover Art Archive, foto member dari jkt48.com. Seluruhnya milik pemegang haknya (© JKT48 Operation Team / PT Indonesia Musik Nusantara dan pihak terkait) dan hanya ditampilkan untuk membuat daftar favorit pribadi. Kalau kamu pemilik hak dan ingin sesuatu dihapus, hubungi pembuat situs lewat repo GitHub-nya.</p>
-    <p data-k="disc3"><b>Akurasi data.</b> Daftar album dan lagu digabung dari iTunes, MusicBrainz, dan Wikipedia, dan daftar member adalah snapshot dari jkt48.com/member per 19 November 2026. Bisa ada kekurangan, salah ketik, atau data yang sudah berubah (misalnya member baru atau pindah tim). Cuplikan lagu dari iTunes, bukan dari situs ini.</p>
-    <p data-k="disc4"><b>Privasi.</b> Situs ini tidak punya server dan tidak menyimpan datamu. Daftar, nama daftar, dan pengaturanmu hanya tersimpan di browser ini. Saat kamu mencari atau mengimpor, browser-mu menghubungi langsung layanan terkait (iTunes, MusicBrainz, Wikipedia, stats.fm, Last.fm, dan wsrv.nl untuk foto member), yang punya kebijakan privasi sendiri. Link share memuat isi daftarmu di dalam alamatnya, jadi siapa pun yang punya link bisa melihatnya; jangan menaruh data pribadi di nama atau link.</p>
-    <p data-k="disc5"><b>Berbagi ke X.</b> Situs ini tidak memposting atas namamu dan tidak meminta login ke akun mana pun. Tombol Post ke X hanya membuka halaman tulis tweet; fotonya kamu lampirkan sendiri. Ekstensi Chrome opsional juga tidak resmi dan dipakai atas risikomu sendiri.</p>
-    <p data-k="disc6"><b>Tanpa jaminan.</b> Situs dan ekstensinya diberikan apa adanya tanpa jaminan apa pun, dan bisa berhenti bekerja sewaktu-waktu jika layanan pihak ketiga berubah.</p>
+    <summary data-k="discSum">disclaimer · web iseng, nggak resmi, jangan dibawa serius-serius amat</summary>
+    <p data-k="disc1"><b>web iseng.</b> ini proyek iseng buatan fans, bukan resmi. gw nggak punya hubungan apa-apa sama jkt48, jkt48 operation team, idn, x, apple, spotify, stats.fm, last.fm, maupun musicbrainz. semua nama dan merek punya yang punya masing-masing. gw cuma numpang lewat.</p>
+    <p data-k="disc2"><b>hak cipta.</b> cover dari itunes dan cover art archive, foto member dari jkt48.com. semuanya punya yang punya (© jkt48 operation team / pt indonesia musik nusantara dan pihak terkait). gw nampilin ini cuma biar lu bisa bikin daftar favorit pribadi: nggak jualan, nggak pasang iklan, nggak nyari cuan. kalau lu pemilik hak dan minta sesuatu diturunin, kontak gw lewat repo github-nya, gw turunin tanpa drama.</p>
+    <p data-k="disc3"><b>datanya bisa ngaco.</b> daftar album dan lagu digabung dari itunes, musicbrainz, dan wikipedia, sedangkan daftar member itu snapshot jkt48.com/member per 19 november 2026. bisa ada yang kurang, salah ketik, atau udah basi (member baru, pindah tim, dst). cuplikan lagu dari itunes, bukan dari sini.</p>
+    <p data-k="disc4"><b>privasi.</b> web ini nggak punya server, jadi gw nggak nyimpen apa-apa soal lu. daftar, nama daftar, dan pengaturan cuma ada di browser lu. pas nyari atau impor, browser lu ngobrol langsung sama layanan terkait (itunes, musicbrainz, wikipedia, stats.fm, last.fm, dan wsrv.nl buat foto member) yang punya kebijakan privasi masing-masing. link share isinya daftar lu di dalam alamatnya, jadi siapa pun yang pegang link bisa liat. jangan taruh data pribadi di nama atau link, ya.</p>
+    <p data-k="disc5"><b>soal share ke x.</b> iya, emang agak makan waktu, maaf. x nggak ngizinin web mana pun nempelin foto ke tweet, dan api-nya berbayar, sementara ini web iseng, bukan perusahaan. jadi lu salin atau seret fotonya sendiri (atau pakai ekstensi opsional). web ini nggak pernah ngepost atas nama lu dan nggak minta login ke akun mana pun. ekstensi chrome-nya juga nggak resmi, pakai atas risiko sendiri.</p>
+    <p data-k="disc6"><b>tanpa jaminan.</b> dikasih apa adanya, bisa rusak kapan aja kalau layanan pihak ketiga berubah. kalau rusak gw bakal sedih tapi nggak ngegas. nemu bug? kabarin aja.</p>
   </details>
 </div>
 <script>
@@ -319,21 +321,23 @@ const EN = {
  'Membuat video...':'Making video...','Video diunduh. Tambahkan lagu saat kamu posting.':'Video downloaded. Add a song when you post.','Link disalin.':'Link copied.','Merekam...':'Recording...','Video diunduh (tanpa suara). Tambahkan lagu saat kamu posting.':'Video downloaded (no sound). Add a song when you post.'
 };
 const EN_HTML = {
- hero:'Pick your favorite albums, songs or oshi, style them, then share to X, stories or via a link.',
+ hero:'a just-for-fun site to build your jkt48 top 10 albums, songs or oshi. pick, style it, flex it on x or wherever. unofficial, not serious, no money changes hands.',
+ eyebrow:'jkt48 · just for fun',
+ shareNote:'heads up: sharing to x takes a few extra steps. x does not let any website attach photos to a tweet for you, so you have to copy or drag them yourself. it is a for-fun site, not a company, so this is what you get.',
  tipSum:'Tip: install X as an app, then send photos with the Share button',
  tipOl:'<li>Open <b>x.com</b> in Chrome or Edge and install it as an app (install icon in the address bar, or menu ⋮ → <b>Save and share → Install page as app</b>).</li><li>Come back to this site and click <b>Share via…</b>. The Windows share menu should list <b>X</b>.</li><li>Pick X: the tweet box opens with the photos already attached, nothing saved to disk.</li>',
  tipP:'X registers itself as a share target for images (you can see it in its manifest), but this depends on your browser and operating system, and how many photos X accepts is up to X. If X is not listed, use the other methods above.',
  extSum:'Chrome extension (optional): attach all photos to the tweet automatically',
  extOl:'<li><a href="jkt48-top-extension.zip" download>Download the extension (.zip)</a> and extract it to a folder.</li><li>Open <code>chrome://extensions</code>, turn on <b>Developer mode</b>, click <b>Load unpacked</b>, and pick that folder.</li><li>Reload this site. "Extension active" appears at the top. Click <b>Post to X</b> and the photos attach themselves to the tweet box.</li>',
  extP:'<b>Disclaimer:</b> this extension is made by a fan, unofficial, and not affiliated with X or JKT48. It only runs on this site and x.com, only keeps your photos temporarily in the browser, and sends nothing to any server. X can change its page at any time, which may break the extension. Use at your own risk and read the code first if in doubt.',
- viewFoot:'Made with JKT48 Top 10 · a fan site, not official.',
- discSum:'Disclaimer · unofficial fan site, not affiliated with JKT48 or X',
- disc1:'<b>Unofficial fan site.</b> JKT48 Top 10 is made by a fan and is not affiliated with, endorsed by, or sponsored by JKT48, JKT48 Operation Team, IDN, X (Twitter), Apple, Spotify, stats.fm, Last.fm, or MusicBrainz. All names and brands belong to their respective owners.',
- disc2:'<b>Copyright.</b> Album covers come from iTunes and the Cover Art Archive, member photos from jkt48.com. All of it belongs to the rights holders (© JKT48 Operation Team / PT Indonesia Musik Nusantara and related parties) and is only shown to build a personal favorites list. If you are a rights holder and want something removed, contact the site maker through its GitHub repo.',
- disc3:'<b>Data accuracy.</b> The album and song lists are merged from iTunes, MusicBrainz and Wikipedia, and the member list is a snapshot of jkt48.com/member as of 19 November 2026. There may be gaps, typos or outdated data (for example new members or team changes). Song previews come from iTunes, not from this site.',
- disc4:'<b>Privacy.</b> This site has no server and does not store your data. Your lists, list names and settings are only saved in this browser. When you search or import, your browser contacts the relevant services directly (iTunes, MusicBrainz, Wikipedia, stats.fm, Last.fm, and wsrv.nl for member photos), which have their own privacy policies. A share link contains your list in its address, so anyone with the link can see it; do not put personal data in the name or link.',
- disc5:'<b>Sharing to X.</b> This site does not post on your behalf and never asks you to log in to any account. The Post to X button only opens the tweet composer; you attach the photos yourself. The optional Chrome extension is also unofficial and used at your own risk.',
- disc6:'<b>No warranty.</b> The site and extension are provided as is without any warranty, and may stop working at any time if third-party services change.'
+ viewFoot:'made with jkt48 top 10 · just for fun, not official.',
+ discSum:'disclaimer · just for fun, unofficial, do not take it too seriously',
+ disc1:'<b>just for fun.</b> this is a fan-made side project, not official. i have no connection to jkt48, jkt48 operation team, idn, x, apple, spotify, stats.fm, last.fm or musicbrainz. all names and brands belong to their owners. i am just passing through.',
+ disc2:'<b>copyright.</b> covers come from itunes and the cover art archive, member photos from jkt48.com. all of it belongs to the rights holders (© jkt48 operation team / pt indonesia musik nusantara and related parties). i only show it so you can build a personal favorites list: no selling, no ads, no cash. if you own the rights and want something taken down, reach me through the github repo and i will remove it, no drama.',
+ disc3:'<b>the data can be wrong.</b> the album and song lists are merged from itunes, musicbrainz and wikipedia, and the member list is a snapshot of jkt48.com/member from 19 november 2026. there may be gaps, typos, or stale stuff (new members, team changes, etc). song previews come from itunes, not from here.',
+ disc4:'<b>privacy.</b> this site has no server, so i store nothing about you. your lists, list names and settings only live in this browser. when you search or import, your browser talks directly to the services involved (itunes, musicbrainz, wikipedia, stats.fm, last.fm, and wsrv.nl for member photos), and they have their own privacy policies. a share link carries your list inside its address, so anyone holding the link can see it. do not put personal info in the name or link, okay?',
+ disc5:'<b>about sharing to x.</b> yes, it takes a few extra steps, sorry. x does not let a website attach photos to a tweet for you, and its api costs money, while this is a for-fun site, not a company. so you copy or drag the photos yourself (or use the optional extension). this site never posts for you and never asks you to log in anywhere. the chrome extension is unofficial too, use it at your own risk.',
+ disc6:'<b>no warranty.</b> served as is, and it can break any time a third-party service changes. if it breaks i will be sad but not angry. found a bug? just tell me.'
 };
 const JA = {
  'Pilih favoritmu':'お気に入りを選ぶ','Impor':'インポート','Semua waktu':'全期間','6 bulan':'6か月','4 minggu':'4週間','Hapus semua':'すべて削除','Jumlah:':'件数:',
@@ -374,21 +378,23 @@ const JA = {
  'Membuat video...':'動画を作成中...','Video diunduh. Tambahkan lagu saat kamu posting.':'動画をダウンロードしました。投稿時に曲を追加してください。','Link disalin.':'リンクをコピーしました。','Merekam...':'録画中...','Video diunduh (tanpa suara). Tambahkan lagu saat kamu posting.':'動画をダウンロードしました(音なし)。投稿時に曲を追加してください。'
 };
 const JA_HTML = {
- hero:'お気に入りのアルバム・楽曲・推しを選んで、見た目を整え、X・ストーリーズ・リンクでシェアしよう。',
+ hero:'JKT48のアルバム・楽曲・推しのトップ10を作るだけの趣味サイトです。選んで、整えて、Xなどで自慢してください。非公式、ガチじゃない、お金も動きません。',
+ eyebrow:'JKT48 · 趣味サイト',
+ shareNote:'ご注意: Xへのシェアは少し手間がかかります。Xは外部サイトがツイートに写真を自動添付することを許していないため、写真はご自身でコピーかドラッグしてください。企業ではなく趣味で作ったサイトなので、そこはご容赦を。',
  tipSum:'ヒント: Xをアプリとしてインストールすると、共有ボタンから写真を送れます',
  tipOl:'<li>ChromeまたはEdgeで <b>x.com</b> を開き、アプリとしてインストールします(アドレスバーのインストールアイコン、またはメニュー ⋮ → <b>保存して共有 → ページをアプリとしてインストール</b>)。</li><li>このサイトに戻って <b>他の方法で共有…</b> をクリック。Windowsの共有メニューに <b>X</b> が表示されるはずです。</li><li>Xを選ぶと、写真が添付された状態でツイート欄が開きます。ファイルは保存されません。</li>',
  tipP:'Xは画像の共有先として自身を登録しています(マニフェストで確認できます)が、これはお使いのブラウザやOSに依存し、受け付ける枚数もX次第です。Xが表示されない場合は、上の他の方法をお使いください。',
  extSum:'Chrome拡張機能(任意): すべての写真をツイートに自動で添付',
  extOl:'<li><a href="jkt48-top-extension.zip" download>拡張機能(.zip)をダウンロード</a>して、フォルダに展開します。</li><li><code>chrome://extensions</code> を開き、<b>デベロッパーモード</b>をオンにして、<b>パッケージ化されていない拡張機能を読み込む</b>からそのフォルダを選びます。</li><li>このサイトを再読み込みすると、上に「拡張機能が有効」と表示されます。<b>Xに投稿</b>を押すと、写真がツイート欄に自動で添付されます。</li>',
  extP:'<b>免責:</b> この拡張機能はファンによる非公式のもので、XおよびJKT48とは無関係です。このサイトとx.comでのみ動作し、写真はブラウザ内に一時的に保存されるだけで、サーバーには何も送信しません。Xが画面を変更すると動作しなくなる可能性があります。自己責任でご利用ください。不安な場合は先にコードをお読みください。',
- viewFoot:'JKT48 Top 10 で作成 · ファンサイト(非公式)',
- discSum:'免責事項 · 非公式のファンサイトです。JKT48およびXとは無関係です',
- disc1:'<b>非公式のファンサイト。</b>JKT48 Top 10 はファンが作成したもので、JKT48、JKT48 Operation Team、IDN、X(Twitter)、Apple、Spotify、stats.fm、Last.fm、MusicBrainz とは提携・承認・後援の関係にありません。すべての名称・ブランドはそれぞれの所有者に帰属します。',
- disc2:'<b>著作権。</b>アルバムカバーは iTunes と Cover Art Archive、メンバー写真は jkt48.com のものです。すべて権利者(© JKT48 Operation Team / PT Indonesia Musik Nusantara および関係者)に帰属し、個人のお気に入りリストを作る目的でのみ表示しています。権利者の方で削除をご希望の場合は、GitHubリポジトリ経由で制作者にご連絡ください。',
- disc3:'<b>データの正確性。</b>アルバムと楽曲のリストは iTunes・MusicBrainz・Wikipedia を統合したもので、メンバー一覧は 2026年11月19日時点の jkt48.com/member のスナップショットです。抜け、誤字、古い情報(新メンバーやチーム異動など)が含まれる場合があります。楽曲プレビューは iTunes のもので、このサイトのものではありません。',
- disc4:'<b>プライバシー。</b>このサイトにはサーバーがなく、あなたのデータを保存しません。リスト、リスト名、設定はこのブラウザ内にのみ保存されます。検索やインポートの際は、ブラウザが関連サービス(iTunes、MusicBrainz、Wikipedia、stats.fm、Last.fm、メンバー写真用の wsrv.nl)に直接接続し、各サービスには独自のプライバシーポリシーがあります。共有リンクにはリストの内容がアドレスに含まれるため、リンクを知っている人は誰でも見られます。名前やリンクに個人情報を入れないでください。',
- disc5:'<b>Xへの共有。</b>このサイトはあなたに代わって投稿せず、アカウントへのログインも求めません。「Xに投稿」ボタンはツイート作成画面を開くだけで、写真はご自身で添付します。任意のChrome拡張機能も非公式で、自己責任でご利用ください。',
- disc6:'<b>無保証。</b>このサイトと拡張機能は現状のまま提供され、いかなる保証もありません。第三者サービスの変更により、予告なく動作しなくなる場合があります。'
+ viewFoot:'JKT48 Top 10 で作成 · 趣味のサイト(非公式)',
+ discSum:'免責事項 · 趣味サイトです。非公式なので、あまり真に受けないでください',
+ disc1:'<b>ただの趣味サイト。</b>ファンが遊びで作ったもので、非公式です。JKT48、JKT48 Operation Team、IDN、X、Apple、Spotify、stats.fm、Last.fm、MusicBrainz とは一切関係ありません。すべての名称・ブランドは各所有者のものです。通りすがりです。',
+ disc2:'<b>著作権。</b>カバーは iTunes と Cover Art Archive、メンバー写真は jkt48.com のものです。すべて権利者(© JKT48 Operation Team / PT Indonesia Musik Nusantara および関係者)に帰属します。個人のお気に入りリストを作るためだけに表示していて、販売も広告も収益もありません。権利者の方で削除をご希望なら、GitHubリポジトリ経由でご連絡ください。揉めずに削除します。',
+ disc3:'<b>データは間違っているかも。</b>アルバムと楽曲のリストは iTunes・MusicBrainz・Wikipedia を合わせたもの、メンバー一覧は 2026年11月19日時点の jkt48.com/member のスナップショットです。抜け、誤字、古い情報(新メンバーやチーム異動など)があるかもしれません。楽曲プレビューは iTunes のものです。',
+ disc4:'<b>プライバシー。</b>このサイトにはサーバーがないので、あなたの情報は何も保存しません。リスト、リスト名、設定はこのブラウザの中にだけ残ります。検索やインポートのときは、ブラウザが関連サービス(iTunes、MusicBrainz、Wikipedia、stats.fm、Last.fm、メンバー写真用の wsrv.nl)と直接やり取りし、各サービスに独自のプライバシーポリシーがあります。共有リンクにはリストの中身がアドレスに入っているので、リンクを持っている人は誰でも見られます。名前やリンクに個人情報は入れないでくださいね。',
+ disc5:'<b>Xへのシェアについて。</b>はい、ちょっと手間がかかります。ごめんなさい。Xは外部サイトがツイートに写真を自動で添付することを許しておらず、APIは有料で、このサイトは会社ではなく趣味です。そのため写真はご自身でコピーかドラッグしてください(任意の拡張機能も使えます)。このサイトが代わりに投稿することはなく、ログインを求めることもありません。Chrome拡張機能も非公式なので、自己責任でどうぞ。',
+ disc6:'<b>無保証。</b>現状のまま提供します。第三者サービスが変わればいつでも壊れます。壊れたら悲しくなりますが、怒りはしません。バグを見つけたら教えてください。'
 };
 const LOC = () => LANG==='en' ? 'en-US' : LANG==='ja' ? 'ja-JP' : 'id-ID';
 const NOUN_JA = { albums:'アルバム', songs:'楽曲', oshi:'推し' };
