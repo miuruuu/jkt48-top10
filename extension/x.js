@@ -27,7 +27,8 @@
   }
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-  const attached = () => document.querySelector('[data-testid="attachments"] img, [data-testid="attachments"] video, [data-testid="attachments"] [role="group"], [data-testid="tweetPhoto"], [role="dialog"] img[src^="blob:"], [role="dialog"] video[src^="blob:"], main img[src^="blob:"], [data-testid="removeMedia"], [aria-label*="Remove media" i], [aria-label*="Hapus media" i]');
+  const scope = () => document.querySelector('[role="dialog"]') || document;
+  const attached = () => scope().querySelector('[data-testid="attachments"] img, [data-testid="attachments"] video, [data-testid="attachments"] [role="group"], [data-testid="tweetPhoto"], [role="dialog"] img[src^="blob:"], [role="dialog"] video[src^="blob:"], main img[src^="blob:"], [data-testid="removeMedia"], [aria-label*="Remove media" i], [aria-label*="Hapus media" i]');
 
   function banner(text, final) {
     let b = document.getElementById('jkt48-ext-note');
@@ -47,8 +48,9 @@
     if (!files.length) return;
     banner('JKT48 Top 10: menempelkan foto...');
 
-    const editor = await waitFor(() => document.querySelector('[data-testid="tweetTextarea_0"], [data-testid^="tweetTextarea"], [role="textbox"][contenteditable], [contenteditable="true"], [contenteditable="plaintext-only"], textarea'), 25000);
-    const input = await waitFor(() => document.querySelector('input[type="file"][data-testid="fileInput"]') || document.querySelector('input[type="file"][accept*="image"]'), 10000);
+    await waitFor(() => document.querySelector('[role="dialog"] [data-testid="tweetTextarea_0"], [role="dialog"] [contenteditable]'), 12000);
+    const editor = await waitFor(() => scope().querySelector('[data-testid="tweetTextarea_0"], [data-testid^="tweetTextarea"], [role="textbox"][contenteditable], [contenteditable="true"], [contenteditable="plaintext-only"], textarea'), 25000);
+    const input = await waitFor(() => scope().querySelector('input[type="file"][data-testid="fileInput"]') || scope().querySelector('input[type="file"][accept*="image"]'), 10000);
 
     banner('JKT48 Top 10: kotak tweet ' + (editor ? 'ketemu' : 'TIDAK ketemu') + ', input file ' + (input ? 'ketemu' : 'TIDAK ketemu') + ', ' + files.length + ' foto...');
     const dt = new DataTransfer();
