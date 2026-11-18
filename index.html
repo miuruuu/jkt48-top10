@@ -30,6 +30,21 @@ input[type=search],input[type=text]{width:100%;padding:11px 14px;border-radius:1
 .res{flex:0 0 auto;width:62px;cursor:pointer;border:0;background:none;padding:0;color:inherit;font:inherit}
 .res img{width:62px;height:62px;border-radius:8px;object-fit:cover;display:block;background:var(--line)}
 .res.used img{outline:3px solid var(--red);outline-offset:-3px}
+.hint{margin-left:auto;font-size:12px;color:var(--mute);align-self:center}
+.hint.ok{color:#168a4a;font-weight:700}
+.guide{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--soft);font-size:13px;line-height:1.5}
+.guide b{color:var(--red)}
+details.ext{margin-top:14px;font-size:13px;border-top:1px solid var(--line);padding-top:10px}
+details.ext summary{cursor:pointer;font-weight:600}
+details.ext ol{padding-left:20px;margin:10px 0}
+details.ext p{color:var(--mute);margin:8px 0 0}
+details.ext code{background:var(--soft);padding:1px 5px;border-radius:5px}
+.strip figure{margin:0;position:relative;flex:0 0 auto}
+.strip figure canvas{cursor:grab}
+.strip .cp{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:26px;height:26px;border:0;border-radius:8px;background:rgba(0,0,0,.7);color:#fff;cursor:pointer;font-size:14px;line-height:1;display:grid;place-items:center;opacity:0;transition:opacity .15s;z-index:2}
+.strip figure:hover .cp,.strip .cp:focus-visible{opacity:1}
+@media (hover:none){.strip .cp{opacity:1}}
+.strip .cp:hover{background:var(--red)}
 #viewWrap{display:none}
 body.view #viewWrap{display:block}
 body.view .hero:not(.vhero),body.view .tabs,body.view .grid{display:none}
@@ -165,13 +180,24 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
           <button class="stab" data-s="spin">Spin</button>
         </div>
         <div id="p-post">
+          <div class="seg" id="postMode" style="justify-content:flex-start"><button class="on" data-m="multi">Foto terpisah</button><button data-m="single">1 gambar</button><span class="hint" id="extState"></span></div>
           <div class="tweet"><div class="av"></div><div class="tc">
             <p style="margin-bottom:4px"><b>You</b> <span style="color:var(--mute)">@you · now</span></p>
             <textarea id="caption" rows="2" maxlength="280" placeholder="Tambahkan kata-kata untuk postinganmu" style="width:100%;border:0;background:none;color:var(--ink);font:inherit;font-size:14px;resize:none;outline:none;padding:0;margin-bottom:8px"></textarea>
             <div id="strip" class="strip" tabindex="0" aria-label="Fotomu, berurutan"></div>
           </div></div>
-          <div class="btns"><button class="btn" id="dlPost">Unduh foto</button><button class="btn dark" id="toX">Post ke X</button><button class="btn" id="shareSheet">Bagikan lewat…</button></div>
+          <div class="btns"><button class="btn" id="dlPost">Unduh foto</button><button class="btn" id="copyImg" hidden>Salin gambar</button><button class="btn dark" id="toX">Post ke X</button><button class="btn" id="shareSheet">Bagikan lewat…</button></div>
           <div class="sub" id="postSub">Gambar diunduh dulu, lalu lampirkan di tweet.</div>
+          <div class="guide" id="guide" hidden></div>
+          <details class="ext">
+            <summary>Ekstensi Chrome (opsional): tempel semua foto ke tweet otomatis</summary>
+            <ol>
+              <li><a href="jkt48-top-extension.zip" download>Unduh ekstensi (.zip)</a> lalu ekstrak ke satu folder.</li>
+              <li>Buka <code>chrome://extensions</code>, nyalakan <b>Developer mode</b>, klik <b>Load unpacked</b>, pilih folder tadi.</li>
+              <li>Muat ulang situs ini. Tulisan "Ekstensi aktif" akan muncul di atas. Klik <b>Post ke X</b> dan foto akan menempel sendiri di kotak tweet.</li>
+            </ol>
+            <p><b>Disclaimer:</b> ekstensi ini buatan penggemar, tidak resmi, dan tidak berafiliasi dengan X atau JKT48. Ia hanya berjalan di situs ini dan x.com, hanya menyimpan fotomu sementara di browser, dan tidak mengirim apa pun ke server. Karena X bisa mengubah tampilannya kapan saja, ekstensi bisa berhenti bekerja. Pakai atas risikomu sendiri dan baca kodenya dulu kalau ragu.</p>
+          </details>
         </div>
         <div id="p-story" hidden>
           <canvas id="cvStory" class="pv" width="1080" height="1920" style="height:440px;width:auto"></canvas>
@@ -207,12 +233,20 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
     <div class="btns"><button class="btn" id="vDl" type="button">Unduh gambar</button><button class="btn dark" id="vMake" type="button">Buat top-mu sendiri</button></div>
     <div class="sub">Dibuat dengan JKT48 Top 10 · situs fan, bukan resmi.</div>
   </div>
-  <div class="sub" style="margin-top:28px">Data: iTunes, MusicBrainz, Wikipedia, stats.fm, Last.fm. Foto member © JKT48 Operation Team, dimuat dari jkt48.com. Situs fan, tidak berafiliasi dengan JKT48.</div>
+  <details class="ext disc" id="disclaimer" style="margin-top:28px">
+    <summary>Disclaimer · situs fan tidak resmi, tidak berafiliasi dengan JKT48 atau X</summary>
+    <p><b>Situs fan, tidak resmi.</b> JKT48 Top 10 dibuat oleh penggemar dan tidak berafiliasi dengan, didukung, atau disponsori oleh JKT48, JKT48 Operation Team, IDN, X (Twitter), Apple, Spotify, stats.fm, Last.fm, maupun MusicBrainz. Semua nama dan merek milik pemiliknya masing-masing.</p>
+    <p><b>Hak cipta.</b> Cover album berasal dari iTunes dan Cover Art Archive, foto member dari jkt48.com. Seluruhnya milik pemegang haknya (© JKT48 Operation Team / PT Indonesia Musik Nusantara dan pihak terkait) dan hanya ditampilkan untuk membuat daftar favorit pribadi. Kalau kamu pemilik hak dan ingin sesuatu dihapus, hubungi pembuat situs lewat repo GitHub-nya.</p>
+    <p><b>Akurasi data.</b> Daftar album dan lagu digabung dari iTunes, MusicBrainz, dan Wikipedia, dan daftar member adalah snapshot dari jkt48.com/member per 19 November 2026. Bisa ada kekurangan, salah ketik, atau data yang sudah berubah (misalnya member baru atau pindah tim). Cuplikan lagu dari iTunes, bukan dari situs ini.</p>
+    <p><b>Privasi.</b> Situs ini tidak punya server dan tidak menyimpan datamu. Daftar, nama daftar, dan pengaturanmu hanya tersimpan di browser ini. Saat kamu mencari atau mengimpor, browser-mu menghubungi langsung layanan terkait (iTunes, MusicBrainz, Wikipedia, stats.fm, Last.fm, dan wsrv.nl untuk foto member), yang punya kebijakan privasi sendiri. Link share memuat isi daftarmu di dalam alamatnya, jadi siapa pun yang punya link bisa melihatnya; jangan menaruh data pribadi di nama atau link.</p>
+    <p><b>Berbagi ke X.</b> Situs ini tidak memposting atas namamu dan tidak meminta login ke akun mana pun. Tombol Post ke X hanya membuka halaman tulis tweet; fotonya kamu lampirkan sendiri. Ekstensi Chrome opsional juga tidak resmi dan dipakai atas risikomu sendiri.</p>
+    <p><b>Tanpa jaminan.</b> Situs dan ekstensinya diberikan apa adanya tanpa jaminan apa pun, dan bisa berhenti bekerja sewaktu-waktu jika layanan pihak ketiga berubah.</p>
+  </details>
 </div>
 <script>
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const state = { kind:'album', look:'cds', num:false, night:false, share:'post', spin:'all', spinFmt:'sq', audio:true, q:'', filter:'all', year:'all', picks:{album:[],song:[],oshi:[]} };
+const state = { postMode:'multi', kind:'album', look:'cds', num:false, night:false, share:'post', spin:'all', spinFmt:'sq', audio:true, q:'', filter:'all', year:'all', picks:{album:[],song:[],oshi:[]} };
 const cache = {album:[],song:[],oshi:[]};
 let MAX = 10; const RED = '#e4002b';
 try { const s = JSON.parse(localStorage.getItem('jkt48top')||'null'); if (s && s.album) Object.assign(state.picks, s); const m = +localStorage.getItem('jkt48max'); if ([3,5,10,20].includes(m)) MAX = m; } catch(e){}
@@ -655,11 +689,34 @@ function cdSpineDraw(c,x,y,w,h,p,a,night){
   c.strokeStyle='rgba(255,255,255,.85)'; c.lineWidth=2*u; rr(c,px+pw*0.12,py+ph-pw*0.62,pw*0.76,pw*0.42,4*u); c.stroke(); c.fillText('JKT48',px+pw/2,py+ph-pw*0.41);
   c.restore(); c.restore();
 }
+/* mode "1 gambar": seluruh daftar dalam satu foto (bisa disalin ke clipboard lalu Ctrl+V di tweet) */
+function singleCanvas(o){
+  const cv=document.createElement('canvas'); cv.width=1600; cv.height=900; scene(cv.getContext('2d'),1600,900,o,1); return cv;
+}
+const postCanvases = o => state.postMode==='single' ? [singleCanvas(o)] : o.picks.map((_,i)=>photoCanvas(o,i));
 async function postFiles(){
   const o=await opts();
-  const cvs = o.picks.map((_,i)=>photoCanvas(o,i));
+  const cvs = postCanvases(o), one1 = cvs.length===1;
   const blobs = await Promise.all(cvs.map(cv=>new Promise(r=>cv.toBlob(r,'image/png'))));
-  return blobs.map((b,i)=>({blob:b,name:`jkt48-top10-${String(i+1).padStart(2,'0')}.png`}));
+  return blobs.map((b,i)=>({blob:b,name: one1 ? 'jkt48-top10.png' : `jkt48-top10-${String(i+1).padStart(2,'0')}.png`}));
+}
+const blobToDataURL = b => new Promise(r=>{ const f=new FileReader(); f.onload=()=>r(f.result); f.readAsDataURL(b); });
+async function copyBlob(blob){
+  try { await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]); return true; } catch(e){ return false; }
+}
+/* satu foto di strip: bisa diseret ke kotak tweet atau disalin dengan tombol kecil */
+function stripItem(cv,name){
+  const fig=document.createElement('figure'); fig.append(cv);
+  cv.toBlob(b=>{ cv._blob=b; },'image/png'); cv.draggable=true; cv.title='Seret ke kotak tweet, atau klik tombol salin';
+  cv.addEventListener('dragstart',e=>{
+    if (!cv._blob) return; const f=new File([cv._blob],name,{type:'image/png'});
+    try { e.dataTransfer.items.add(f); } catch(_){}
+    try { cv._url=cv._url||URL.createObjectURL(cv._blob); e.dataTransfer.setData('DownloadURL',`image/png:${name}:${cv._url}`); } catch(_){}
+    e.dataTransfer.effectAllowed='copy';
+  });
+  const b=document.createElement('button'); b.type='button'; b.className='cp'; b.title='Salin gambar ini'; b.textContent='⧉';
+  b.onclick=async()=>{ if (!cv._blob) return; const ok=await copyBlob(cv._blob); b.textContent=ok?'✓':'!'; setTimeout(()=>b.textContent='⧉',1200); $('#postSub').textContent = ok ? `Tersalin: ${name}. Tekan Ctrl+V di kotak tweet.` : 'Browser ini menolak menyalin gambar. Seret fotonya atau pakai Unduh foto.'; };
+  fig.append(b); return fig;
 }
 async function downloadAll(files){ for (const f of files){ dl(f.blob,f.name); await new Promise(r=>setTimeout(r,350)); } }
 let tok=0, spinRAF=0, spinT0=0;
@@ -668,8 +725,10 @@ async function refresh(){
   const cap=$('#caption'); if (!cap.dataset.dirty) cap.value = `my top ${o.picks.length||MAX} ${noun()} of JKT48\nvia ${location.host||'jkt48top'}/`;
   renderLooks(o);
   if (state.share==='post') {
-    $('#postSub').textContent = o.picks.length ? `${o.picks.length} foto, satu per ${one()}, berurutan. X menerima sampai 20 foto per post.` : 'Pilih favoritmu dulu.';
-    $('#strip').replaceChildren(...o.picks.map((_,i)=>photoCanvas(o,i)));
+    const single = state.postMode==='single';
+    $('#copyImg').hidden = !single;
+    $('#postSub').textContent = !o.picks.length ? 'Pilih favoritmu dulu.' : single ? 'Satu gambar berisi seluruh daftar. Klik Salin gambar lalu Ctrl+V di kotak tweet.' : `${o.picks.length} foto, satu per ${one()}, berurutan. Seret atau salin tiap foto, atau unduh semuanya. X menerima sampai 20 foto per post.`;
+    $('#strip').replaceChildren(...postCanvases(o).map((cv,i)=>stripItem(cv, single?'jkt48-top10.png':`jkt48-top10-${String(i+1).padStart(2,'0')}.png`)));
   }
   if (state.share==='story') scene($('#cvStory').getContext('2d'),1080,1920,o,1);
   if (state.share==='link') renderLink();
@@ -919,11 +978,42 @@ async function shareSheet(){
   } catch(e){ if (e && e.name==='AbortError') return true; }
   return false;
 }
+/* ---------- ekstensi Chrome opsional: jembatan antara situs ini dan x.com ---------- */
+let extReady = false, extAck = null;
+window.addEventListener('message', e => {
+  if (e.source!==window || !e.data || typeof e.data!=='object') return;
+  if (e.data.jkt48==='ext-ready') { extReady = true; const s=$('#extState'); if (s){ s.textContent='✓ Ekstensi aktif'; s.className='hint ok'; } }
+  if (e.data.jkt48==='photos-ack' && extAck) { extAck(true); extAck=null; }
+});
+window.postMessage({jkt48:'ping'}, location.origin);
+async function sendToExt(files){
+  const payload = await Promise.all(files.map(async f=>({name:f.name,dataUrl:await blobToDataURL(f.blob)})));
+  return new Promise(res=>{ extAck=res; window.postMessage({jkt48:'photos',files:payload}, location.origin); setTimeout(()=>{ if (extAck){ extAck(false); extAck=null; } }, 5000); });
+}
+function showGuide(html){ const g=$('#guide'); g.innerHTML=html; g.hidden=false; }
+$('#postMode').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; state.postMode=b.dataset.m; document.querySelectorAll('#postMode button').forEach(t=>t.classList.toggle('on',t===b)); $('#guide').hidden=true; refresh(); };
+$('#copyImg').onclick=async()=>{
+  const files=await postFiles(); const ok=await copyBlob(files[0].blob);
+  $('#postSub').textContent = ok ? 'Gambar tersalin. Tekan Ctrl+V di kotak tweet.' : 'Browser ini menolak menyalin gambar. Pakai Unduh foto.';
+};
 $('#toX').onclick=async()=>{
   if (isMobile()) { if (await shareSheet()) return; }
-  // Komputer: buka halaman tulis tweet X (pakai login X-mu sendiri), lalu foto diunduh untuk dilampirkan
-  openX();
+  const single = state.postMode==='single';
+  const url='https://twitter.com/intent/tweet?text='+encodeURIComponent($('#caption').value.trim());
+  // dengan ekstensi: foto dikirim dulu, lalu ekstensi menempelkannya di halaman X
+  if (extReady) {
+    const files = await postFiles();
+    if (await sendToExt(files)) { window.open(url,'_blank','noopener'); showGuide('<b>Ekstensi aktif.</b> Tab X terbuka dan fotomu akan menempel sendiri di kotak tweet dalam beberapa detik. Kalau tidak muncul, pakai langkah manual: tombol <b>Unduh foto</b>.'); return; }
+  }
+  // tanpa ekstensi: buka tulis tweet (pakai login X-mu sendiri) lalu bantu lewat clipboard atau unduhan
+  if (single) {
+    const files = await postFiles(); const ok = await copyBlob(files[0].blob); window.open(url,'_blank','noopener');
+    showGuide(ok ? '<b>Gambar sudah disalin.</b> Di tab X yang terbuka, klik kotak tweet lalu tekan <b>Ctrl+V</b>.' : 'Tab X terbuka, tapi browser menolak menyalin gambar. Pakai <b>Unduh foto</b> lalu seret ke tweet.');
+    return;
+  }
+  window.open(url,'_blank','noopener');
   await downloadAll(await postFiles());
+  showGuide('<b>Langkah berikutnya:</b> foto sudah diunduh. 1) Buka folder <b>Unduhan</b>. 2) Pilih semua foto <b>jkt48-top10-…</b> (Ctrl+A). 3) Seret ke kotak tweet di tab X. <br>Atau tanpa folder: di pratinjau klik tombol <b>⧉</b> di tiap foto lalu <b>Ctrl+V</b> di kotak tweet, atau seret fotonya langsung.');
 };
 $('#shareSheet').onclick=async()=>{ if (!(await shareSheet())) $('#postSub').textContent='Perangkat ini tidak mendukung menu share dengan foto. Pakai "Unduh foto".'; };
 $('#dlStoryImg').onclick=()=>dlCanvas($('#cvStory'),'jkt48-top10-story.png');
