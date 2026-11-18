@@ -173,6 +173,7 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
     <button class="tab on" data-kind="album">Albums</button>
     <button class="tab" data-kind="song">Songs</button>
     <button class="tab" data-kind="oshi">Oshi</button>
+    <button class="tab" data-kind="setlist">Setlists</button>
   </div>
   <div class="grid">
     <div>
@@ -320,6 +321,8 @@ const EN = {
  'Gaya tampilan':'Display style','Tema poster':'Poster theme','tanpa':'none','Latar':'Background','Latar 2':'Background 2','Teks':'Text','Aksen':'Accent','Font poster':'Poster font','Bagikan':'Share',
  'Foto terpisah':'Separate photos','1 gambar':'1 image','Unduh foto':'Download photos','Salin gambar':'Copy image','Post ke X':'Post to X','Bagikan lewat…':'Share via…','Unduh gambar':'Download image','Buat video':'Make video',
  'Salin link':'Copy link','Semua':'All','Cuma #1':'Just #1','♪ Suara':'♪ Sound','Unduh video':'Download video','Buat top-mu sendiri':'Make your own top list',
+ 'Cari setlist teater JKT48...':'Search JKT48 theater setlists...','Memuat daftar setlist teater...':'Loading theater setlists...',
+ 'Photobook: sampul + {n} halaman, berurutan. Seret atau salin tiap halaman, atau unduh ZIP. X menerima sampai 20 foto per post.':'Photobook: cover + {n} pages, in order. Drag or copy each page, or download the ZIP. X accepts up to 20 photos per post.',
  'Salin berurutan':'Copy one by one','Unduh ZIP':'Download ZIP','Salin berikutnya ({a}/{b})':'Copy next ({a}/{b})','Foto {a}/{b} tersalin. Tempel dengan Ctrl+V di tweet, lalu klik lagi untuk foto berikutnya.':'Photo {a}/{b} copied. Paste with Ctrl+V in the tweet, then click again for the next one.','Foto terakhir ({a}/{b}) tersalin. Tempel dengan Ctrl+V. Klik lagi untuk mengulang dari awal.':'Last photo ({a}/{b}) copied. Paste with Ctrl+V. Click again to start over.','ZIP diunduh: semua foto dalam satu file.':'ZIP downloaded: all photos in one file.',
  'Foto':'Photo','Terang':'Light','Otomatis (ikut perangkat)':'Auto (follow device)','Gelap':'Dark','Pencarian terakhir':'Recent searches','Hapus riwayat':'Clear history','Hasil untuk "{q}"':'Results for "{q}"','{n} cocok':'{n} matches','Tidak ada yang cocok.':'No matches.','Tambah "{q}" manual':'Add "{q}" manually','Kalau tidak ada di daftar':'If it is not in the list',
  '+ tambah semua':'+ add all','Tambah semua yang tampil (sampai penuh)':'Add everything shown (until full)','Ditambah {n} item.':'Added {n} item(s).','Tambah manual dengan foto sendiri':'Add manually with your own photo','Foto sendiri hanya tersimpan di browser ini dan tidak ikut link share.':'Your own photo is only kept in this browser and is not included in the share link.','Gagal membuka foto itu.':'Could not open that photo.',
@@ -381,6 +384,8 @@ const JA = {
  'Gaya tampilan':'表示スタイル','Tema poster':'ポスターテーマ','tanpa':'なし','Latar':'背景','Latar 2':'背景2','Teks':'文字','Aksen':'アクセント','Font poster':'ポスターのフォント','Bagikan':'シェア',
  'Foto terpisah':'写真を分ける','1 gambar':'1枚にまとめる','Unduh foto':'写真をダウンロード','Salin gambar':'画像をコピー','Post ke X':'Xに投稿','Bagikan lewat…':'他の方法で共有…','Unduh gambar':'画像をダウンロード','Buat video':'動画を作る',
  'Salin link':'リンクをコピー','Semua':'すべて','Cuma #1':'1位のみ','♪ Suara':'♪ 音','Unduh video':'動画をダウンロード','Buat top-mu sendiri':'自分のランキングを作る',
+ 'Cari setlist teater JKT48...':'JKT48の劇場公演を検索...','Memuat daftar setlist teater...':'劇場公演リストを読み込み中...',
+ 'Photobook: sampul + {n} halaman, berurutan. Seret atau salin tiap halaman, atau unduh ZIP. X menerima sampai 20 foto per post.':'フォトブック: 表紙+{n}ページを順番に用意しました。各ページをドラッグ/コピー、またはZIPでダウンロード。Xは1投稿につき最大20枚までです。',
  'Salin berurutan':'1枚ずつコピー','Unduh ZIP':'ZIPをダウンロード','Salin berikutnya ({a}/{b})':'次をコピー({a}/{b})','Foto {a}/{b} tersalin. Tempel dengan Ctrl+V di tweet, lalu klik lagi untuk foto berikutnya.':'{a}/{b}枚目をコピーしました。ツイートに Ctrl+V で貼り付け、もう一度クリックして次へ。','Foto terakhir ({a}/{b}) tersalin. Tempel dengan Ctrl+V. Klik lagi untuk mengulang dari awal.':'最後の写真({a}/{b})をコピーしました。Ctrl+V で貼り付け。もう一度クリックで最初から。','ZIP diunduh: semua foto dalam satu file.':'ZIPをダウンロードしました。すべての写真が1つのファイルに入っています。',
  'Foto':'フォト','Terang':'ライト','Otomatis (ikut perangkat)':'自動(端末に合わせる)','Gelap':'ダーク','Pencarian terakhir':'最近の検索','Hapus riwayat':'履歴を消去','Hasil untuk "{q}"':'「{q}」の結果','{n} cocok':'{n}件ヒット','Tidak ada yang cocok.':'一致するものがありません。','Tambah "{q}" manual':'「{q}」を手動で追加','Kalau tidak ada di daftar':'リストにない場合',
  '+ tambah semua':'+ すべて追加','Tambah semua yang tampil (sampai penuh)':'表示中のものをすべて追加(上限まで)','Ditambah {n} item.':'{n}件追加しました。','Tambah manual dengan foto sendiri':'自分の写真で手動追加','Foto sendiri hanya tersimpan di browser ini dan tidak ikut link share.':'自分の写真はこのブラウザにだけ保存され、共有リンクには含まれません。','Gagal membuka foto itu.':'その写真を開けませんでした。',
@@ -437,7 +442,7 @@ const JA_HTML = {
  disc6:'<b>無保証。</b>現状のまま提供します。第三者サービスが変わればいつでも壊れます。壊れたら悲しくなりますが、怒りはしません。バグを見つけたら教えてください。'
 };
 const LOC = () => LANG==='en' ? 'en-US' : LANG==='ja' ? 'ja-JP' : 'id-ID';
-const NOUN_JA = { albums:'アルバム', songs:'楽曲', oshi:'推し' };
+const NOUN_JA = { albums:'アルバム', songs:'楽曲', oshi:'推し', setlists:'劇場公演' };
 const nounL = k => LANG==='ja' ? NOUN_JA[KIND[k].noun] : KIND[k].noun;
 const posterHead = n => LANG==='ja' ? `私のトップ${n}` : `my top ${n}`;
 const listTitleText = (n,k) => LANG==='ja' ? `JKT48 ${nounL(k)} トップ${n}` : `Top ${n} ${nounL(k)} JKT48`;
@@ -469,8 +474,8 @@ function setLang(l){
   applyLangTree(document.body);
   renderHeads(); renderThemeUI(); renderResults(); renderList(); renderSaved($('#savedSel').value); $('#sfUser').placeholder = tr($('#impSrc').value==='lastfm' ? 'Username Last.fm' : 'Username stats.fm'); $('#q').placeholder = tr(KIND[state.kind].ph);
 }
-const state = { vinyl:'auto', theme:'classic', custom:{bg:'#fff1f3',ink:'#2a1218',acc:'#e4002b',bg2:''}, font:'sys', postMode:'multi', kind:'album', look:'cds', num:false, night:false, share:'post', spin:'all', spinFmt:'sq', audio:true, q:'', filter:'all', year:'all', picks:{album:[],song:[],oshi:[]} };
-const cache = {album:[],song:[],oshi:[]};
+const state = { vinyl:'auto', theme:'classic', custom:{bg:'#fff1f3',ink:'#2a1218',acc:'#e4002b',bg2:''}, font:'sys', postMode:'multi', kind:'album', look:'cds', num:false, night:false, share:'post', spin:'all', spinFmt:'sq', audio:true, q:'', filter:'all', year:'all', picks:{album:[],song:[],oshi:[],setlist:[]} };
+const cache = {album:[],song:[],oshi:[],setlist:[]};
 let MAX = 10; let RED = '#e4002b'; let THEME_FONT = 'system-ui,sans-serif';
 
 /* ---------- tema poster: preset + kustom + font ---------- */
@@ -509,7 +514,7 @@ try { const th = JSON.parse(localStorage.getItem('jkt48theme')||'null'); if (th)
 const save = () => { try{ localStorage.setItem('jkt48top', JSON.stringify(state.picks)); localStorage.setItem('jkt48max', MAX); localStorage.setItem('jkt48theme', JSON.stringify({id:state.theme,custom:state.custom,font:state.font,vinyl:state.vinyl})); }catch(e){} };
 const big = u => u.replace(/\d+x\d+bb/, '600x600bb');
 const cur = () => state.picks[state.kind];
-const KIND = { album:{noun:'albums', one:'album', ph:'Cari album JKT48...'}, song:{noun:'songs', one:'lagu', ph:'Cari lagu JKT48...'}, oshi:{noun:'oshi', one:'member', ph:'Cari member JKT48...'} };
+const KIND = { album:{noun:'albums', one:'album', ph:'Cari album JKT48...'}, song:{noun:'songs', one:'lagu', ph:'Cari lagu JKT48...'}, oshi:{noun:'oshi', one:'member', ph:'Cari member JKT48...'}, setlist:{noun:'setlists', one:'setlist', ph:'Cari setlist teater JKT48...'} };
 const noun = () => KIND[state.kind].noun;
 const one = () => KIND[state.kind].one;
 
@@ -597,12 +602,47 @@ async function loadWiki(){
   } catch(e){}
   return out;
 }
+/* poster setlist buatan sendiri (tirai panggung + judul), karena setlist teater tidak punya cover di iTunes */
+function setlistArt(title,team,yr){
+  const c=document.createElement('canvas'); c.width=c.height=600; const x=c.getContext('2d'), h=hashStr(String(title))%360;
+  const g=x.createLinearGradient(0,0,0,600); g.addColorStop(0,`hsl(${h},74%,47%)`); g.addColorStop(1,`hsl(${(h+35)%360},74%,24%)`); x.fillStyle=g; x.fillRect(0,0,600,600);
+  x.fillStyle='rgba(255,255,255,.07)'; for (let i=0;i<14;i++) x.fillRect(i*46+6,0,20,600);          // lipatan tirai
+  const sp=x.createRadialGradient(300,40,10,300,40,520); sp.addColorStop(0,'rgba(255,240,200,.45)'); sp.addColorStop(1,'rgba(255,240,200,0)'); x.fillStyle=sp; x.fillRect(0,0,600,600); // lampu sorot
+  x.fillStyle='rgba(255,255,255,.85)'; x.font='700 26px system-ui,sans-serif'; x.textBaseline='top'; x.fillText('THEATER SETLIST',44,44);
+  x.fillStyle='#fff'; x.font='800 66px system-ui,sans-serif'; const words=String(title).split(/\s+/); let line='', y=190; const lines=[];
+  for (const w of words){ if (x.measureText(line+' '+w).width>510 && line){ lines.push(line); line=w; } else line=(line?line+' ':'')+w; } lines.push(line);
+  lines.slice(0,4).forEach(l=>{ x.fillText(l,44,y); y+=74; });
+  x.fillStyle='rgba(255,255,255,.8)'; x.font='600 28px system-ui,sans-serif'; x.fillText([team,yr].filter(Boolean).join(' · ').slice(0,34),44,530);
+  return c.toDataURL('image/jpeg',0.85);
+}
+async function loadSetlists(){
+  const out=[];
+  try {
+    const j = await fetch('https://id.wikipedia.org/w/api.php?action=parse&page='+encodeURIComponent('Daftar lagu yang direkam oleh JKT48')+'&prop=text&format=json&origin=*&formatversion=2').then(r=>r.json());
+    const doc = new DOMParser().parseFromString(j.parse.text,'text/html');
+    const t = [...doc.querySelectorAll('table')].find(tb=>/Nama setlist/i.test((tb.rows[1]&&tb.rows[1].cells[0]&&tb.rows[1].cells[0].textContent)||''));
+    if (!t) return out;
+    const seen = new Set();
+    for (const r of [...t.rows].slice(2)) {
+      const c = [...r.cells]; if (!c.length) continue; const first = c[0];
+      if (!(first.rowSpan>1 || c.length>=5)) continue;                       // baris pertama sebuah setlist
+      const raw = first.textContent.replace(/\[\d+\]/g,'').replace(/\s+/g,' ').trim();
+      if (!raw || raw.includes('**') || /^(Tim |Anggota |Siswi |Generasi |Gabungan |Akademi )/i.test(raw)) continue; // bukan nama setlist
+      const main = raw.replace(/\s*\(.*$/,'').trim(), alt = (raw.match(/\((.*)\)\s*$/)||[])[1] || '';
+      const team = (c[1]?c[1].textContent:'').replace(/\[\d+\]/g,'').replace(/\(.*$/,'').replace(/\s+/g,' ').trim();
+      const yr = ((c[2]?c[2].textContent:'').match(/\b(20\d{2})\b/)||[])[1] || '';
+      const k = keyOf(main); if (!k || seen.has(k)) continue; seen.add(k);
+      out.push({ id:'sl:'+k, title:main, sub:[alt||'Setlist',team,yr].filter(Boolean).join(' · '), tm:team, yr, img:setlistArt(main,team,yr), type:'setlist' });
+    }
+  } catch(e){}
+  return out;
+}
 function mergeLists(...lists){ // urutan = prioritas (yang lebih awal menang, karena punya cover)
   const seen = new Set(), out = [];
   for (const l of lists) for (const x of l) { const k = keyOf(x.title); if (!k || seen.has(k)) continue; seen.add(k); out.push(x); }
   return out;
 }
-const DATA_KEY = 'jkt48data5';
+const DATA_KEY = 'jkt48data6';
 function cacheRead(kind){ try { const d = JSON.parse(localStorage.getItem(DATA_KEY+kind)||'null'); if (d && Date.now()-d.t < 7*864e5 && d.items.length) return d.items; } catch(e){} return null; }
 function cacheWrite(kind,items){ try { localStorage.setItem(DATA_KEY+kind, JSON.stringify({t:Date.now(),items})); } catch(e){} }
 /* satu pemuatan per jenis data, walau dipanggil berkali-kali bersamaan (ganti tab cepat, klik beruntun) */
@@ -611,6 +651,12 @@ function load(kind){ return loading[kind] || (loading[kind] = loadInner(kind).fi
 async function loadInner(kind){
   if (cache[kind].length) return;
   if (kind==='oshi') { cache.oshi = oshiItems(); return; }
+  if (kind==='setlist') { // setlist teater dari Wikipedia Indonesia (di-cache seperti data lain)
+    const hit0 = cacheRead('setlist'); if (hit0) { cache.setlist = hit0.map(x=>({...x, img:setlistArt(x.title,x.tm,x.yr)})); return; } // poster dibuat ulang, tidak disimpan
+    $('#msg').textContent = tr('Memuat daftar setlist teater...');
+    cache.setlist = await loadSetlists(); if (cache.setlist.length) cacheWrite('setlist', cache.setlist.map(({img,...r})=>r));
+    $('#msg').textContent = cache.setlist.length ? '' : tr('Gagal memuat data. Buka lewat server (http), bukan file.'); return;
+  }
   const hit = cacheRead(kind); if (hit) { cache[kind] = hit; return; }
   $('#msg').textContent = tr('Memuat daftar dari iTunes dan MusicBrainz...');
   let out;
@@ -632,7 +678,7 @@ let renderTok = 0, lastItems = [];
 function passFilter(x){
   const f = state.filter, yr = state.year;
   const okF = f==='all' || (state.kind==='album' ? x.type===f : state.kind==='song' ? x.src===f : x.team===f);
-  const okY = state.kind!=='album' || yr==='all' || (x.sub||'').includes(yr);
+  const okY = (state.kind!=='album' && state.kind!=='setlist') || yr==='all' || (x.sub||'').includes(yr);
   return okF && okY;
 }
 async function renderResults(){
@@ -654,12 +700,13 @@ async function renderResults(){
 const FILTERS = {
   album:[['all','Semua'],['album','Album'],['single','Singel'],['ep','EP']],
   song:[['all','Semua'],['rilis','Rilis resmi'],['setlist','Setlist teater']],
-  oshi:[['all','Semua'],['L','Love'],['D','Dream'],['P','Passion'],['T','Trainee']]
+  oshi:[['all','Semua'],['L','Love'],['D','Dream'],['P','Passion'],['T','Trainee']],
+  setlist:[['all','Semua']]
 };
 function renderFilters(){
   const host = $('#filters'); let html = FILTERS[state.kind].map(([k,l])=>`<button class="chip ${state.filter===k?'on':''}" data-f="${k}">${tr(l)}</button>`).join('');
-  if (state.kind==='album') {
-    const years = [...new Set(cache.album.map(a=>(a.sub||'').match(/\d{4}/)?.[0]).filter(Boolean))].sort().reverse();
+  if (state.kind==='album' || state.kind==='setlist') {
+    const years = [...new Set(cache[state.kind].map(a=>(a.sub||'').match(/\d{4}/)?.[0]).filter(Boolean))].sort().reverse();
     html += `<select id="yearSel" aria-label="${tr('Tahun rilis')}"><option value="all">${tr('Semua tahun')}</option>${years.map(y=>`<option ${state.year===y?'selected':''}>${y}</option>`).join('')}</select>`;
   }
   html += `<button class="chip" data-addall="1" title="${tr('Tambah semua yang tampil (sampai penuh)')}">${tr('+ tambah semua')}</button>`;
@@ -844,6 +891,7 @@ function featured(c,x,y,s,p,a,look,o,i){
 function scene(c,W,H,o,t){
   const {picks,assets,look}=o, n=picks.length, tall=H>W;
   applyTheme(o); const th=o.theme, paper=th.bg, ink=th.ink, mu=th.mu;
+  if (look==='photobook' && n) { photobookCover(c,W,H,o); return; } // kolase sampul photobook untuk poster, 1 gambar, dan halaman hasil
   fillBg(c,W,H,th);
   const k = i => clamp(t*1.7 - i*0.09, 0, 1);
   const anim = (i,fn) => { const e=ease(k(i)); if(e<=0) return; c.save(); c.globalAlpha=e; c.translate(0,(1-e)*40); fn(); c.restore(); };
@@ -993,8 +1041,8 @@ function photoCanvas(o,i){
 function lum(col){ const m=col.match(/\d+/g); return m?(0.299*m[0]+0.587*m[1]+0.114*m[2])/255:0.5; }
 /* ---------- format khusus Oshi: Photocard, Polaroid, ID Card, Foto (CD/Vinyl/Player tidak cocok untuk orang) ---------- */
 const OSHI_LOOKS = ['photocard','polaroid','idcard','photo'];
-const OSHI_LOOK_NAMES = { photocard:'Photocard', polaroid:'Polaroid', idcard:'ID Card', photo:'Foto', cds:'CDs', tapes:'Tapes' };
-const OSHI_MENU = ['photocard','polaroid','idcard','photo','cds','tapes']; // CD dan kaset tetap ada: tren foto tipis berjajar di X
+const OSHI_LOOK_NAMES = { photocard:'Photocard', polaroid:'Polaroid', idcard:'ID Card', photo:'Foto', cds:'CDs', tapes:'Tapes', photobook:'Photobook' };
+const OSHI_MENU = ['photocard','polaroid','idcard','photo','cds','tapes','photobook']; // CD dan kaset tetap ada: tren foto tipis berjajar di X
 const TEAM_COLOR = { L:'#e4002b', D:'#2a6fdb', P:'#f5a300', T:'#6b7280' }; // warna dekorasi buatan kita, bukan warna resmi
 const oshiNo = p => { const i = MEMBERS.findIndex(m=>'m:'+m[1]===String(p.id)); return i<0 ? 0 : i+1; };
 function teamOf(p){ const m = MEMBERS.find(m=>'m:'+m[1]===String(p.id)); return m ? m[2] : (p.team||'T'); }
@@ -1102,6 +1150,81 @@ function spineText(c,x,yTop,yBottom,artist,title,T,o){ // artis (kecil) lalu jud
   setF(); while (fs > o.minTitle && c.measureText(title).width > maxLen) { fs -= 2*u; setF(); }
   c.fillStyle = T.ink; c.fillText(fitText(c,title,maxLen), aw + o.gap, 0); c.restore();
 }
+/* ---------- Photobook: halaman scrapbook lucu (sampul + satu halaman per item): pastel, stiker, selotip, tulisan tangan ---------- */
+const PB = [
+  { bg:'#ffe3ec', acc:'#ff5c93', soft:'#ffc2d6', ink:'#5a2a3c' },
+  { bg:'#e9e4ff', acc:'#7a66ff', soft:'#cfc6ff', ink:'#33295c' },
+  { bg:'#dcf5e8', acc:'#2fb37a', soft:'#b4e7cd', ink:'#1f4a38' },
+  { bg:'#fff1cf', acc:'#ffa41c', soft:'#ffdf9a', ink:'#5a3d0e' },
+  { bg:'#ffe4d6', acc:'#ff7a59', soft:'#ffc7b2', ink:'#5c2c1c' },
+  { bg:'#dff1ff', acc:'#3d9bff', soft:'#b9dcff', ink:'#1c3f5e' }
+];
+const HAND = '"Segoe Script","Bradley Hand","Comic Sans MS","Chalkboard SE",cursive';
+function pbHeartPath(c,x,y,s){ c.beginPath(); c.moveTo(x,y+s*0.4); c.bezierCurveTo(x-s*1.15,y-s*0.25,x-s*0.6,y-s*1.05,x,y-s*0.42); c.bezierCurveTo(x+s*0.6,y-s*1.05,x+s*1.15,y-s*0.25,x,y+s*0.4); c.closePath(); }
+function pbHeart(c,x,y,s,col,rot){ c.save(); c.translate(x,y); c.rotate(rot||0); c.fillStyle=col; pbHeartPath(c,0,0,s); c.fill(); c.fillStyle='rgba(255,255,255,.55)'; c.beginPath(); c.ellipse(-s*0.42,-s*0.38,s*0.16,s*0.09,-0.7,0,7); c.fill(); c.restore(); }
+function pbStar(c,x,y,r,col,rot){ c.save(); c.translate(x,y); c.rotate(rot||0); c.fillStyle=col; c.beginPath(); for (let i=0;i<10;i++){ const a=-Math.PI/2+i*Math.PI/5, rr_=i%2?r*0.48:r; c.lineTo(Math.cos(a)*rr_,Math.sin(a)*rr_); } c.closePath(); c.fill(); c.restore(); }
+function pbSparkle(c,x,y,r,col){ c.save(); c.translate(x,y); c.fillStyle=col; c.beginPath(); c.moveTo(0,-r); c.quadraticCurveTo(0,0,r,0); c.quadraticCurveTo(0,0,0,r); c.quadraticCurveTo(0,0,-r,0); c.quadraticCurveTo(0,0,0,-r); c.fill(); c.restore(); }
+function pbFlower(c,x,y,r,col,mid){ c.save(); c.translate(x,y); c.fillStyle=col; for (let i=0;i<6;i++){ c.rotate(Math.PI/3); c.beginPath(); c.ellipse(r*0.62,0,r*0.5,r*0.34,0,0,7); c.fill(); } c.fillStyle=mid||'#fff6c9'; c.beginPath(); c.arc(0,0,r*0.3,0,7); c.fill(); c.restore(); }
+function pbTape(c,x,y,w,h,ang,col){ c.save(); c.translate(x,y); c.rotate(ang); c.globalAlpha=0.78; c.fillStyle=col; c.fillRect(-w/2,-h/2,w,h); c.globalAlpha=0.35; c.fillStyle='#fff'; for (let i=-w/2;i<w/2;i+=h*0.9){ c.beginPath(); c.moveTo(i,-h/2); c.lineTo(i+h*0.45,-h/2); c.lineTo(i+h*0.45-h*0.0,h/2); c.lineTo(i-h*0.0,h/2); c.fill(); } c.restore(); }
+function pbWavy(c,x,y,w,col,lw){ c.save(); c.strokeStyle=col; c.lineWidth=lw||6; c.lineCap='round'; c.beginPath(); for (let i=0;i<=w;i+=4){ const yy=y+Math.sin(i/14)*5; i?c.lineTo(x+i,yy):c.moveTo(x,yy); } c.stroke(); c.restore(); }
+function pbDots(c,W,H,col){ c.save(); c.fillStyle=col; for (let y=30;y<H;y+=54) for (let x=((y/54)%2?30:57);x<W;x+=54){ c.beginPath(); c.arc(x,y,3.2,0,7); c.fill(); } c.restore(); }
+function pbPolaroid(c,cx,cy,w,ang,a,caption,pal,focus){
+  const pad=w*0.06, ph=w-2*pad, h=pad+ph+w*0.22; c.save(); c.translate(cx,cy); c.rotate(ang);
+  c.shadowColor='rgba(60,30,50,.28)'; c.shadowBlur=w*0.05; c.shadowOffsetY=w*0.025; c.fillStyle='#fffdf8'; c.fillRect(-w/2,-h/2,w,h); c.shadowColor='transparent';
+  drawCoverFit(c,a.im,-w/2+pad,-h/2+pad,ph,ph,focus==null?0.05:focus);
+  c.strokeStyle='rgba(0,0,0,.06)'; c.lineWidth=2; c.strokeRect(-w/2+pad,-h/2+pad,ph,ph);
+  if (caption) { c.fillStyle=pal.ink; c.textAlign='center'; c.textBaseline='middle'; const fs=w*0.075; c.font=`italic 600 ${fs}px ${HAND}`; c.fillText(fitText(c,caption,w-2*pad),0,h/2-w*0.11); }
+  c.restore(); return h;
+}
+function pbWrap(c,text,maxW,maxLines){ const ws=String(text).split(/\s+/), lines=[]; let line=''; for (const w of ws){ if (c.measureText(line?line+' '+w:w).width>maxW && line){ lines.push(line); line=w; } else line=line?line+' '+w:w; } lines.push(line); return lines.slice(0,maxLines||2); }
+function pbBadge(c,x,y,r,label,pal){ c.save(); c.translate(x,y); c.rotate(-0.12); c.fillStyle=pal.acc; c.beginPath(); for (let i=0;i<16;i++){ const a=i*Math.PI/8, rr_=i%2?r*0.88:r; c.lineTo(Math.cos(a)*rr_,Math.sin(a)*rr_); } c.closePath(); c.fill(); c.fillStyle='#fff'; c.textAlign='center'; c.textBaseline='middle'; c.font=`800 ${r*0.9}px ${HAND}`; c.fillText(label,0,r*0.04); c.restore(); }
+function pbSubtitle(p){ return String(p.sub||'').replace(/^JKT48\s*·\s*/,''); }
+/* sampul: judul besar + tiga polaroid miring. Menyesuaikan lebar/tinggi kanvas (portrait untuk foto, lebar untuk kolase). */
+function photobookCover(c,W,H,o){
+  const pal=PB[0], n=o.picks.length, u=Math.min(W,H), land=W>H*1.1;
+  c.fillStyle=pal.bg; c.fillRect(0,0,W,H); pbDots(c,W,H,'rgba(255,255,255,.7)');
+  const noun = KIND[o.kind] ? nounL(o.kind) : 'favorites';
+  const tx = land ? W*0.07 : W/2, ty = land ? H*0.22 : H*0.12;
+  c.textAlign = land ? 'left' : 'center'; c.textBaseline='alphabetic';
+  c.fillStyle=pal.acc; c.font=`800 ${u*0.065}px ${HAND}`; c.fillText('photobook',tx,ty);
+  c.fillStyle=pal.ink; c.font=`800 ${u*0.15}px ${HAND}`; c.fillText(posterHead(n||MAX),tx,ty+u*0.16);
+  c.fillStyle=pal.acc; c.font=`800 ${u*0.12}px ${HAND}`; c.fillText(noun,tx,ty+u*0.30);
+  pbWavy(c, land?tx:W/2-u*0.2, ty+u*0.33, u*0.4, pal.acc, u*0.008);
+  c.fillStyle=pal.ink; c.font=`600 ${u*0.034}px ${HAND}`; c.fillText('JKT48'+(o.name?'  ·  by '+o.name:''), tx, ty+u*0.40);
+  const top=o.picks.slice(0,3), ws=u*(land?0.34:0.46), base = land ? [W*0.62,H*0.5] : [W/2,H*0.7];
+  const spots = land ? [[-ws*0.62,ws*0.18,-0.12],[ws*0.62,ws*0.1,0.1],[0,-ws*0.05,-0.02]] : [[-ws*0.62,ws*0.12,-0.13],[ws*0.62,ws*0.06,0.11],[0,-ws*0.02,-0.02]];
+  top.map((p,i)=>i).reverse().forEach(i=>{ const [dx,dy,ang]=spots[i]; pbPolaroid(c,base[0]+dx,base[1]+dy,ws*(i===0?1.05:0.86),ang,o.assets[i],o.picks[i].title,PB[i%PB.length],0.05); });
+  pbHeart(c,W*0.9,H*0.1,u*0.05,pal.acc,0.2); pbStar(c,W*0.08,H*0.88,u*0.045,'#ffc93c',0.2); pbSparkle(c,W*0.2,H*0.06,u*0.03,'#ffffff'); pbFlower(c,W*0.92,H*0.9,u*0.06,pal.soft); pbHeart(c,W*0.05,H*0.55,u*0.03,pal.soft,-0.2);
+}
+function photobookPage(o,i){
+  const W=1080,H=1350, cv=document.createElement('canvas'); cv.width=W; cv.height=H; const c=cv.getContext('2d'); applyTheme(o);
+  if (i===0) { photobookCover(c,W,H,o); return cv; }
+  const idx=i-1, p=o.picks[idx], a=o.assets[idx], pal=PB[idx%PB.length], n=o.picks.length, rnd=rng(hashStr(String(p.title))+7);
+  c.fillStyle=pal.bg; c.fillRect(0,0,W,H); pbDots(c,W,H,'rgba(255,255,255,.7)');
+  const title=p.title, subt=pbSubtitle(p);
+  if (idx%2===0) { // A: polaroid besar di tengah
+    const h=pbPolaroid(c,W/2,590,740,-0.035,a,'',pal,0.05);
+    pbTape(c,W/2-250,590-h/2+10,200,56,-0.5,pal.soft); pbTape(c,W/2+260,590-h/2+14,200,56,0.5,pal.soft);
+    c.textAlign='center'; c.textBaseline='alphabetic'; c.fillStyle=pal.ink; c.font=`800 76px ${HAND}`; const lines=pbWrap(c,title,880,2); lines.forEach((l,k)=>c.fillText(fitText(c,l,900),W/2,1130+k*84));
+    c.fillStyle=pal.ink; c.globalAlpha=0.7; c.font=`600 34px system-ui,sans-serif`; c.fillText(fitText(c,subt,880),W/2,1130+lines.length*84+14); c.globalAlpha=1;
+    pbWavy(c,W/2-150,1130+lines.length*84+40,300,pal.acc,7);
+  } else { // B: foto berbingkai hati + kartu catatan
+    c.save(); pbHeartPath(c,W/2,500,520); c.clip(); drawCoverFit(c,a.im,W/2-480,80,960,760,0.02); c.restore();
+    c.lineWidth=30; c.strokeStyle='#fffdf8'; pbHeartPath(c,W/2,500,520); c.stroke();
+    c.lineWidth=5; c.strokeStyle=pal.acc; c.setLineDash([16,14]); pbHeartPath(c,W/2,500,486); c.stroke(); c.setLineDash([]);
+    c.save(); c.translate(W/2,1085); c.rotate(0.018); c.shadowColor='rgba(60,30,50,.22)'; c.shadowBlur=26; c.shadowOffsetY=10; c.fillStyle='#fffdf8'; rr(c,-440,-150,880,300,26); c.fill(); c.shadowColor='transparent';
+    c.strokeStyle=pal.soft; c.lineWidth=3; for (let y=-70;y<140;y+=62){ c.beginPath(); c.moveTo(-400,y); c.lineTo(400,y); c.stroke(); }
+    c.textAlign='center'; c.textBaseline='alphabetic'; c.fillStyle=pal.ink; c.font=`800 70px ${HAND}`; const lines=pbWrap(c,title,780,2); lines.forEach((l,k)=>c.fillText(fitText(c,l,800),0,-52+k*76));
+    c.fillStyle=pal.ink; c.globalAlpha=0.7; c.font=`600 32px system-ui,sans-serif`; c.fillText(fitText(c,subt,800),0,-52+lines.length*76+24); c.globalAlpha=1; c.restore();
+    pbTape(c,W/2,940,220,58,0.03,pal.soft);
+  }
+  pbBadge(c,idx%2===0?170:W-170,idx%2===0?170:150,110,'#'+(idx+1),pal);
+  // stiker pelengkap (posisi acak tapi tetap untuk judul yang sama)
+  const spots=[[W*0.9,H*0.62],[W*0.1,H*0.7],[W*0.86,H*0.92],[W*0.12,H*0.94],[W*0.93,H*0.3],[W*0.07,H*0.36]], kinds=[0,1,2,3];
+  spots.forEach(([x,y],k)=>{ const kd=Math.floor(rnd()*4), s=34+rnd()*26; if (kd===0) pbHeart(c,x,y,s,k%2?pal.acc:'#ff8fb3',(rnd()-0.5)*0.6); else if (kd===1) pbStar(c,x,y,s*0.9,'#ffc93c',(rnd()-0.5)); else if (kd===2) pbSparkle(c,x,y,s,'#ffffff'); else pbFlower(c,x,y,s*1.1,pal.soft); });
+  c.fillStyle=pal.ink; c.globalAlpha=0.55; c.font=`600 26px ${HAND}`; c.textAlign='center'; c.fillText(`${i} / ${n}`,W/2,H-34); c.globalAlpha=1;
+  return cv;
+}
 /* ---- punggung CD/DVD dan kaset ala rak koleksi asli (mengikuti referensi desain teman):
    kertas satu warna dari cover, cover kecil di atas, logo JKT / 48 bertumpuk, judul vertikal dengan jenis huruf yang
    berganti per album, nomor katalog dan jenis media di bawah, dibungkus plastik bening dengan engsel ---- */
@@ -1170,7 +1293,7 @@ function tapeSpineDraw(c,x,y,w,h,p,a,night,kind){ drawSpineCommon(c,x,y,w,h,p,a,
 function singleCanvas(o){
   const cv=document.createElement('canvas'); cv.width=1600; cv.height=900; scene(cv.getContext('2d'),1600,900,o,1); return cv;
 }
-const postCanvases = o => state.postMode==='single' ? [singleCanvas(o)] : o.picks.map((_,i)=>photoCanvas(o,i));
+const postCanvases = o => state.postMode==='single' ? [singleCanvas(o)] : o.look==='photobook' ? [photobookPage(o,0), ...o.picks.map((_,i)=>photobookPage(o,i+1))] : o.picks.map((_,i)=>photoCanvas(o,i));
 async function postFiles(){
   const o=await opts();
   const cvs = postCanvases(o), one1 = cvs.length===1;
@@ -1212,8 +1335,10 @@ async function refreshNow(){
   if (state.share==='post') {
     const single = state.postMode==='single';
     $('#copyImg').hidden = !single; $('#copySeq').hidden = single || o.picks.length<2; $('#dlZip').hidden = single || o.picks.length<2; seqIdx = 0; $('#copySeq').textContent = tr('Salin berurutan');
-    $('#postSub').textContent = !o.picks.length ? tr('Pilih favoritmu dulu.') : single ? tr('Satu gambar berisi seluruh daftar. Klik Salin gambar lalu Ctrl+V di kotak tweet.') : tr('{n} foto, satu per {one}, berurutan. Seret atau salin tiap foto, atau unduh semuanya. X menerima sampai 20 foto per post.',{n:o.picks.length,one:tr(one())});
-    $('#strip').replaceChildren(...postCanvases(o).map((cv,i)=>stripItem(cv, single?'jkt48-top10.png':`jkt48-top10-${String(i+1).padStart(2,'0')}.png`)));
+    const pcs = postCanvases(o), book = o.look==='photobook' && !single;
+    $('#postSub').textContent = !o.picks.length ? tr('Pilih favoritmu dulu.') : single ? tr('Satu gambar berisi seluruh daftar. Klik Salin gambar lalu Ctrl+V di kotak tweet.') : book ? tr('Photobook: sampul + {n} halaman, berurutan. Seret atau salin tiap halaman, atau unduh ZIP. X menerima sampai 20 foto per post.',{n:o.picks.length}) : tr('{n} foto, satu per {one}, berurutan. Seret atau salin tiap foto, atau unduh semuanya. X menerima sampai 20 foto per post.',{n:o.picks.length,one:tr(one())});
+    $('#strip').replaceChildren(...pcs.map((cv,i)=>stripItem(cv, single?'jkt48-top10.png':`jkt48-top10-${String(i+1).padStart(2,'0')}.png`)));
+    $('#copySeq').hidden = single || pcs.length<2; $('#dlZip').hidden = single || pcs.length<2;
   }
   if (state.share==='story' && !recording) scene($('#cvStory').getContext('2d'),1080,1920,o,1);
   if (state.share==='link') renderLink();
@@ -1267,10 +1392,10 @@ function renderLink(){
   $('#slots').innerHTML = Array.from({length:Math.max(MAX,arr.length)},(_,i)=>`<div>${arr[i]?`<img src="${arr[i].img}" alt="">`:''}</div>`).join('');
 }
 function renderLooks(o){
-  const host=$('#looks'), group = state.kind==='oshi' ? 'oshi' : 'musik';
+  const host=$('#looks'), group = state.kind==='oshi' ? 'oshi' : state.kind==='setlist' ? 'setlist' : 'musik';
   if (host.dataset.group !== group) { // jenis format berbeda: member tidak cocok dengan CD, vinyl, dan player
     host.dataset.group = group; host.replaceChildren();
-    (group==='oshi' ? OSHI_MENU.map(k=>[k,OSHI_LOOK_NAMES[k]]) : [['cds','CDs'],['tapes','Tapes'],['covers','Covers'],['vinyl','Vinyl'],['player','Player']]).forEach(([k,l])=>{
+    (group==='oshi' ? OSHI_MENU.map(k=>[k,OSHI_LOOK_NAMES[k]]) : group==='setlist' ? [['cds','DVD'],['tapes','Tapes'],['covers','Covers'],['vinyl','Vinyl'],['player','Player'],['photobook','Photobook']] : [['cds','CDs'],['tapes','Tapes'],['covers','Covers'],['vinyl','Vinyl'],['player','Player'],['photobook','Photobook']]).forEach(([k,l])=>{
       const b=document.createElement('button'); b.className='look'; b.dataset.look=k; b.innerHTML=`<canvas width="160" height="90"></canvas><span>${tr(l)}</span>`; host.appendChild(b);
     });
   }
@@ -1311,7 +1436,7 @@ document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t===b));
   state.kind=b.dataset.kind; state.q=''; $('#q').value=''; state.filter='all'; state.year='all'; hideSugg();
   $('#q').placeholder = tr(KIND[state.kind].ph);
-  const isOshi = state.kind==='oshi'; $('.imp').hidden = isOshi; $('#sfMsg').hidden = isOshi; syncKindUI();
+  const isOshi = state.kind==='oshi' || state.kind==='setlist'; $('.imp').hidden = isOshi; $('#sfMsg').hidden = isOshi; syncKindUI();
   renderResults(); renderList(); renderHeads();
 });
 /* ---------- tampilan web: terang / otomatis / gelap (aksen merah tetap) ---------- */
@@ -1549,8 +1674,8 @@ $('#saveList').onclick = () => {
 };
 $('#loadList').onclick = () => {
   const name = $('#savedSel').value, d = readLists()[name]; if (!d) { $('#listMsg').textContent = tr('Pilih daftar dulu.'); return; }
-  MAX = d.max || 10; state.picks = Object.assign({album:[],song:[],oshi:[]}, d.picks); if (d.look) state.look = d.look;
-  if (d.kind && KIND[d.kind]) { state.kind = d.kind; document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.kind===state.kind)); $('.imp').hidden = state.kind==='oshi'; $('#sfMsg').hidden = state.kind==='oshi'; $('#q').placeholder = tr(KIND[state.kind].ph); syncKindUI(); }
+  MAX = d.max || 10; state.picks = Object.assign({album:[],song:[],oshi:[],setlist:[]}, d.picks); if (d.look) state.look = d.look;
+  if (d.kind && KIND[d.kind]) { state.kind = d.kind; document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.kind===state.kind)); $('.imp').hidden = state.kind==='oshi'||state.kind==='setlist'; $('#sfMsg').hidden = state.kind==='oshi'||state.kind==='setlist'; $('#q').placeholder = tr(KIND[state.kind].ph); syncKindUI(); }
   $('#listName').value = name; renderHeads(); renderList(); renderResults(); $('#listMsg').textContent = tr('Dimuat: "{n}".',{n:name});
 };
 $('#delList').onclick = () => {
@@ -1726,7 +1851,7 @@ function decodeShare(){
   const m=location.hash.match(/^#d=([\w-]+)/); if (!m) return null;
   try {
     const d=JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/-/g,'+').replace(/_/g,'/')))));
-    return (/^(album|song|oshi)$/.test(d.k) && Array.isArray(d.p) && d.p.length) ? d : null;
+    return (/^(album|song|oshi|setlist)$/.test(d.k) && Array.isArray(d.p) && d.p.length) ? d : null;
   } catch(e){ return null; }
 }
 function safeLink(s){
@@ -1736,7 +1861,7 @@ function safeLink(s){
 async function showView(d){
   document.body.classList.add('view');
   const picks=d.p.slice(0,20).map(([title,sub,img,plays,ms],i)=>({id:'s'+i,title:String(title),sub:String(sub||''),img:(typeof img==='string'&&/^https:\/\//.test(img))?img:placeholder(String(title)),plays:+plays||0,ms:+ms||0}));
-  const look=['cds','tapes','covers','vinyl','player',...OSHI_LOOKS].includes(d.l)?d.l:(d.k==='oshi'?'photocard':'cds'), name=String(d.nm||'').slice(0,40);
+  const look=['cds','tapes','covers','vinyl','player','photobook',...OSHI_LOOKS].includes(d.l)?d.l:(d.k==='oshi'?'photocard':'cds'), name=String(d.nm||'').slice(0,40);
   const themeId = d.th==='custom' || THEMES[d.th] ? d.th : (d.d ? 'night' : 'classic'), theme = buildTheme(themeId, d.cu && typeof d.cu==='object' ? d.cu : {});
   const o={picks,assets:await loadAll(picks),look,num:!!d.n,theme,night:theme.dark,font:FONTS[d.f]?d.f:'sys',vinyl:VINYL_LIST.includes(d.v)?d.v:'auto',kind:d.k,name};
   document.title=`${listTitleText(picks.length,d.k)}${name?' '+tr('oleh')+' '+name:''}`;
