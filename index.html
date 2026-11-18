@@ -635,7 +635,7 @@ async function fetchStagePosters(){
       const j=await g('action=query&prop=pageimages|revisions&rvprop=content&rvslots=main&rvsection=0&piprop=thumbnail&pithumbsize=600&titles='+encodeURIComponent(list.slice(i,i+20).join('|')));
       Object.values(j.query.pages||{}).forEach(p=>{
         const w=(p.revisions&&p.revisions[0].slots.main['*'])||'', b=w.match(/'''([^']{3,80})'''/), nm=b?b[1].replace(/["“”]/g,'').trim():'';
-        if (nm && !/PAGENAME/.test(nm) && p.thumbnail) { const k=keyOf(nm); if (k && !map[k]) map[k]=p.thumbnail.source; }
+        if (nm && !/PAGENAME/.test(nm) && p.thumbnail) { const k=keyOf(nm); if (k && !map[k]) map[k]='https://wsrv.nl/?url='+encodeURIComponent(p.thumbnail.source.replace(/^https?:\/\//,''))+'&w=600'; }
       });
     }
   } catch(e){}
@@ -670,7 +670,7 @@ function mergeLists(...lists){ // urutan = prioritas (yang lebih awal menang, ka
   for (const l of lists) for (const x of l) { const k = keyOf(x.title); if (!k || seen.has(k)) continue; seen.add(k); out.push(x); }
   return out;
 }
-const DATA_KEY = 'jkt48data7';
+const DATA_KEY = 'jkt48data8';
 function cacheRead(kind){ try { const d = JSON.parse(localStorage.getItem(DATA_KEY+kind)||'null'); if (d && Date.now()-d.t < 7*864e5 && d.items.length) return d.items; } catch(e){} return null; }
 function cacheWrite(kind,items){ try { localStorage.setItem(DATA_KEY+kind, JSON.stringify({t:Date.now(),items})); } catch(e){} }
 /* satu pemuatan per jenis data, walau dipanggil berkali-kali bersamaan (ganti tab cepat, klik beruntun) */
