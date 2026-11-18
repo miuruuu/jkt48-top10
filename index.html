@@ -30,6 +30,10 @@ input[type=search],input[type=text]{width:100%;padding:11px 14px;border-radius:1
 .res{flex:0 0 auto;width:62px;cursor:pointer;border:0;background:none;padding:0;color:inherit;font:inherit}
 .res img{width:62px;height:62px;border-radius:8px;object-fit:cover;display:block;background:var(--line)}
 .res.used img{outline:3px solid var(--red);outline-offset:-3px}
+.imp{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.imp input{flex:1 1 140px;min-width:0}
+.imp select{padding:10px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+.imp .btn{padding:10px 16px}
 .res small{display:none}
 .res .ph{width:62px;height:62px;border-radius:8px;background:linear-gradient(135deg,#e4002b,#6a0016);color:#fff;font-size:9px;font-weight:700;line-height:1.15;padding:5px;overflow:hidden;text-align:left;word-break:break-word}
 .res.used .ph{outline:3px solid var(--hl);outline-offset:-3px}
@@ -101,6 +105,12 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
       <div class="card">
         <h2><b class="step">1</b>Pilih favoritmu</h2>
         <input id="q" type="search" placeholder="Cari album JKT48...">
+        <div class="imp">
+          <input id="sfUser" type="text" placeholder="Username stats.fm" autocomplete="off" spellcheck="false">
+          <select id="sfRange" aria-label="Rentang waktu"><option value="lifetime">Semua waktu</option><option value="months">6 bulan</option><option value="weeks">4 minggu</option></select>
+          <button class="btn dark" id="sfGo" type="button">Impor</button>
+        </div>
+        <div class="msg" id="sfMsg">Impor top JKT48-mu dari stats.fm (profil harus publik).</div>
         <div id="results" class="results"></div>
         <div id="msg" class="msg"></div>
       </div>
@@ -668,6 +678,37 @@ let dragI=null;
 $('#list').ondragstart=e=>{ const li=e.target.closest('li'); if(li) dragI=+li.dataset.i; };
 $('#list').ondragover=e=>e.preventDefault();
 $('#list').ondrop=e=>{ const li=e.target.closest('li'); if(!li||dragI===null) return; const arr=cur(), [m]=arr.splice(dragI,1); arr.splice(+li.dataset.i,0,m); dragI=null; renderList(); };
+/* ---------- impor dari stats.fm (API publik, tanpa login; profil harus publik) ---------- */
+const SF = 'https://api.stats.fm/api/v1', SF_JKT48 = 128408;
+async function importStatsfm(){
+  const user = $('#sfUser').value.trim().replace(/^@/,'').replace(/^.*stats\.fm\/user\//i,'').replace(/[/?#].*$/,''), msg = $('#sfMsg'), btn = $('#sfGo');
+  if (!user) { msg.textContent = 'Ketik username stats.fm dulu.'; return; }
+  btn.disabled = true; msg.textContent = 'Mengambil data...';
+  try {
+    const ur = await fetch(`${SF}/users/${encodeURIComponent(user)}`);
+    if (ur.status===404) { msg.textContent = 'Username tidak ditemukan di stats.fm.'; return; }
+    if (!ur.ok) throw new Error('stats.fm '+ur.status);
+    const u = (await ur.json()).item, kind = state.kind, what = kind==='album' ? 'albums' : 'tracks';
+    const r = await fetch(`${SF}/users/${u.id}/top/artists/${SF_JKT48}/${what}?range=${$('#sfRange').value}&limit=50`);
+    if (r.status===403) { msg.textContent = 'Profil stats.fm itu privat. Ubah jadi publik di pengaturan privasinya.'; return; }
+    if (!r.ok) throw new Error('stats.fm '+r.status);
+    const seen = new Set(), items = [];
+    for (const row of (await r.json()).items) {
+      let it;
+      if (kind==='album') { const a=row.album; it = { id:'sf:'+a.id, title:a.name, sub:'JKT48'+(a.releaseDate?' · '+String(a.releaseDate).slice(0,4):''), img:a.image }; }
+      else { const t=row.track, al=t.albums&&t.albums[0]; it = { id:'sf:'+t.id, title:t.name, sub:al?al.name:'JKT48', img:al?al.image:null }; }
+      const k = keyOf(it.title); if (!k || seen.has(k)) continue; seen.add(k);
+      if (!it.img) it.img = placeholder(it.title);
+      items.push(it); if (items.length>=MAX) break;
+    }
+    if (!items.length) { msg.textContent = `Belum ada ${kind==='album'?'album':'lagu'} JKT48 di rentang waktu itu untuk @${u.customId||u.id}.`; return; }
+    state.picks[kind] = items; renderList(); renderResults();
+    msg.textContent = `Berhasil: ${items.length} ${kind==='album'?'album':'lagu'} teratas dari @${u.customId||u.id}. Urutan masih bisa kamu ubah.`;
+  } catch(e){ msg.textContent = 'Gagal mengambil dari stats.fm. Coba lagi sebentar.'; }
+  finally { btn.disabled = false; }
+}
+$('#sfGo').onclick = importStatsfm;
+$('#sfUser').onkeydown = e => { if (e.key==='Enter') importStatsfm(); };
 $('#clear').onclick=()=>{ state.picks[state.kind]=[]; renderList(); renderResults(); };
 
 $('#looks').onclick=e=>{ const b=e.target.closest('.look'); if(!b) return; state.look=b.dataset.look; refresh(); };
