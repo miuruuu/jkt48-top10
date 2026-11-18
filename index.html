@@ -32,6 +32,7 @@ input[type=search],input[type=text]{width:100%;padding:11px 14px;border-radius:1
 .res.used img{outline:3px solid var(--red);outline-offset:-3px}
 .imp{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
 .imp input{flex:1 1 140px;min-width:0}
+.imp select#impSrc{flex:0 0 auto}
 .imp select{padding:10px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
 .imp .btn{padding:10px 16px}
 .res small{display:none}
@@ -106,11 +107,12 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
         <h2><b class="step">1</b>Pilih favoritmu</h2>
         <input id="q" type="search" placeholder="Cari album JKT48...">
         <div class="imp">
+          <select id="impSrc" aria-label="Sumber impor"><option value="statsfm">stats.fm</option><option value="lastfm">Last.fm</option></select>
           <input id="sfUser" type="text" placeholder="Username stats.fm" autocomplete="off" spellcheck="false">
           <select id="sfRange" aria-label="Rentang waktu"><option value="lifetime">Semua waktu</option><option value="months">6 bulan</option><option value="weeks">4 minggu</option></select>
           <button class="btn dark" id="sfGo" type="button">Impor</button>
         </div>
-        <div class="msg" id="sfMsg">Impor top JKT48-mu dari stats.fm (profil harus publik).</div>
+        <div class="msg" id="sfMsg">Impor top JKT48-mu dari stats.fm atau Last.fm (profil harus publik).</div>
         <div id="results" class="results"></div>
         <div id="msg" class="msg"></div>
       </div>
@@ -681,8 +683,9 @@ $('#list').ondrop=e=>{ const li=e.target.closest('li'); if(!li||dragI===null) re
 /* ---------- impor dari stats.fm (API publik, tanpa login; profil harus publik) ---------- */
 const SF = 'https://api.stats.fm/api/v1', SF_JKT48 = 128408;
 async function importStatsfm(){
-  const user = $('#sfUser').value.trim().replace(/^@/,'').replace(/^.*stats\.fm\/user\//i,'').replace(/[/?#].*$/,''), msg = $('#sfMsg'), btn = $('#sfGo');
-  if (!user) { msg.textContent = 'Ketik username stats.fm dulu.'; return; }
+  const user = $('#sfUser').value.trim().replace(/^@/,'').replace(/^.*(?:stats|last)\.fm\/(?:[a-z]{2}\/)?user\//i,'').replace(/[/?#].*$/,''), msg = $('#sfMsg'), btn = $('#sfGo');
+  if (!user) { msg.textContent = 'Ketik username dulu.'; return; }
+  if ($('#impSrc').value==='lastfm') return importLastfm(user, msg, btn);
   btn.disabled = true; msg.textContent = 'Mengambil data...';
   try {
     const ur = await fetch(`${SF}/users/${encodeURIComponent(user)}`);
@@ -707,6 +710,39 @@ async function importStatsfm(){
   } catch(e){ msg.textContent = 'Gagal mengambil dari stats.fm. Coba lagi sebentar.'; }
   finally { btn.disabled = false; }
 }
+/* Last.fm: API key ini publik (hanya baca data publik), aman ditanam di situs */
+const LFM_KEY = 'fa8a2ea583eea0eeab0c5e21c89aed24', LFM_NOART = '2a96cbd8b46e442fc41c2b86b821562f';
+async function importLastfm(user, msg, btn){
+  btn.disabled = true; msg.textContent = 'Mengambil data dari Last.fm (bisa beberapa detik)...';
+  try {
+    const kind = state.kind, period = {lifetime:'overall', months:'6month', weeks:'1month'}[$('#sfRange').value];
+    const method = kind==='album' ? 'user.gettopalbums' : 'user.gettoptracks';
+    await load(kind);
+    const covers = new Map(cache[kind].filter(x=>x.img).map(x=>[keyOf(x.title),x]));
+    const seen = new Set(), items = []; let name = user;
+    for (let page=1; page<=3 && items.length<MAX; page++) {
+      const j = await fetch(`https://ws.audioscrobbler.com/2.0/?method=${method}&user=${encodeURIComponent(user)}&period=${period}&limit=1000&page=${page}&api_key=${LFM_KEY}&format=json`).then(r=>r.json());
+      if (j.error===6) { msg.textContent = 'Username tidak ditemukan di Last.fm.'; return; }
+      if (j.error) { msg.textContent = j.error===17 ? 'Profil Last.fm itu privat. Matikan "Hide recent listening information" di pengaturan privasinya.' : 'Last.fm: '+j.message; return; }
+      const root = j.topalbums || j.toptracks, list = root.album || root.track || [];
+      name = root['@attr'].user || user;
+      for (const r of list) {
+        if (!/^JKT48$/i.test((r.artist && (r.artist.name||r.artist['#text'])) || '')) continue;
+        const k = keyOf(r.name); if (!k || seen.has(k)) continue; seen.add(k);
+        const hit = covers.get(k), lf = (r.image||[]).slice(-1)[0], lfImg = lf && lf['#text'] && !lf['#text'].includes(LFM_NOART) ? lf['#text'] : null;
+        const img = (hit && hit.img) || lfImg || placeholder(r.name);
+        items.push({ id:'lf:'+k, title:r.name, sub: hit ? hit.sub : 'JKT48', img });
+        if (items.length>=MAX) break;
+      }
+      if (page >= +(root['@attr'].totalPages||1)) break;
+    }
+    if (!items.length) { msg.textContent = `Belum ada ${kind==='album'?'album':'lagu'} JKT48 di rentang waktu itu untuk ${name}.`; return; }
+    state.picks[kind] = items; renderList(); renderResults();
+    msg.textContent = `Berhasil: ${items.length} ${kind==='album'?'album':'lagu'} teratas dari ${name}. Urutan masih bisa kamu ubah.`;
+  } catch(e){ msg.textContent = 'Gagal mengambil dari Last.fm. Coba lagi sebentar.'; }
+  finally { btn.disabled = false; }
+}
+$('#impSrc').onchange = e => { $('#sfUser').placeholder = e.target.value==='lastfm' ? 'Username Last.fm' : 'Username stats.fm'; };
 $('#sfGo').onclick = importStatsfm;
 $('#sfUser').onkeydown = e => { if (e.key==='Enter') importStatsfm(); };
 $('#clear').onclick=()=>{ state.picks[state.kind]=[]; renderList(); renderResults(); };
