@@ -7,7 +7,7 @@
   "background": { "service_worker": "background.js" },
   "content_scripts": [
     {
-      "matches": ["https://jejeethecreator.github.io/jkt48-top10/*", "http://localhost:8765/*"],
+      "matches": ["https://miuruuu.github.io/jkt48-top10/*", "http://localhost:8765/*"],
       "js": ["bridge.js"],
       "run_at": "document_start"
     },
