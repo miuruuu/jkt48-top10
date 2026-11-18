@@ -4,9 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>JKT48 Top 10</title>
+<script>try{var __u=localStorage.getItem('jkt48ui');if(__u==='light'||__u==='dark')document.documentElement.dataset.ui=__u}catch(e){}</script>
 <style>
-:root{--bg:#fff1f3;--card:#fff;--ink:#2a1218;--mute:#8a6b73;--line:#f3d3da;--red:#e4002b;--hl:#ffd60a;--soft:#fde4e8}
-@media (prefers-color-scheme:dark){:root{--bg:#141012;--card:#1f1819;--ink:#f6ecee;--mute:#a59a9c;--line:#352a2c;--soft:#2a2022}}
+:root{--bg:#fff1f3;--card:#fff;--ink:#2a1218;--mute:#8a6b73;--line:#f3d3da;--red:#e4002b;--hl:#ffd60a;--soft:#fde4e8;color-scheme:light}
+/* tampilan web: Otomatis (ikut perangkat, bawaan), Terang, atau Gelap. Aksen merah tetap sama di semuanya. */
+:root[data-ui=dark]{--bg:#141012;--card:#1f1819;--ink:#f6ecee;--mute:#a59a9c;--line:#352a2c;--soft:#2a2022;color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-ui=light]):not([data-ui=dark]){--bg:#141012;--card:#1f1819;--ink:#f6ecee;--mute:#a59a9c;--line:#352a2c;--soft:#2a2022;color-scheme:dark}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 system-ui,"Segoe UI",sans-serif}
 .wrap{max-width:1040px;margin:0 auto;padding:18px 16px 60px}
@@ -39,9 +42,27 @@ input[type=search],input[type=text]{width:100%;padding:11px 14px;border-radius:1
 .custom{display:flex;flex-wrap:wrap;gap:10px 16px;margin-top:10px;padding:10px 12px;background:var(--soft);border-radius:12px;font-size:12px}
 .custom label{display:flex;align-items:center;gap:6px}
 .custom input[type=color]{width:34px;height:26px;padding:0;border:1px solid var(--line);border-radius:6px;background:none;cursor:pointer}
-.lang{position:absolute;top:14px;right:14px;display:flex;background:rgba(255,255,255,.18);border-radius:99px;padding:3px;z-index:2}
-.lang button{border:0;background:none;color:#fff;padding:5px 12px;border-radius:99px;cursor:pointer;font:inherit;font-size:12px;font-weight:700;opacity:.85}
-.lang button.on{background:#fff;color:#b80022;opacity:1}
+.herotools{position:absolute;top:14px;right:14px;display:flex;gap:8px;z-index:2;flex-wrap:wrap;justify-content:flex-end}
+.lang,.uimode{display:flex;background:rgba(255,255,255,.18);border-radius:99px;padding:3px}
+.lang button,.uimode button{border:0;background:none;color:#fff;padding:5px 12px;border-radius:99px;cursor:pointer;font:inherit;font-size:12px;font-weight:700;opacity:.85}
+.lang button.on,.uimode button.on{background:#fff;color:#b80022;opacity:1}
+.uimode button{padding:5px 10px;font-size:14px;line-height:1}
+@media(max-width:600px){.hero{padding-top:62px}}
+/* kotak saran pencarian */
+.sbox{position:relative}
+.sugg{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 34px rgba(0,0,0,.25);max-height:380px;overflow:auto;z-index:30;padding:6px}
+.sugg .hd{font-size:12px;color:var(--mute);padding:6px 8px;display:flex;justify-content:space-between;align-items:center}
+.sugg .hd button{border:0;background:none;color:var(--mute);cursor:pointer;font:inherit;font-size:12px;text-decoration:underline}
+.sugg .row{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:10px;cursor:pointer}
+.sugg .row.act,.sugg .row:hover{background:var(--soft)}
+.sugg .row img,.sugg .row .th{width:40px;height:40px;border-radius:8px;object-fit:cover;flex:0 0 auto;background:linear-gradient(135deg,#e4002b,#6a0016);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:700}
+.sugg .row .ic{width:40px;height:40px;display:grid;place-items:center;flex:0 0 auto;color:var(--mute);font-size:18px}
+.sugg .row .t{min-width:0;flex:1}
+.sugg .row .t b,.sugg .row .t span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sugg .row .t span{font-size:12px;color:var(--mute)}
+.sugg .row mark{background:rgba(228,0,43,.18);color:inherit;border-radius:3px;padding:0 1px}
+.sugg .row .ok{color:#168a4a;font-weight:800;font-size:15px}
+.sugg .row.manual .t b{color:var(--red)}
 .hint{margin-left:auto;font-size:12px;color:var(--mute);align-self:center}
 .hint.ok{color:#168a4a;font-weight:700}
 .guide{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--soft);font-size:13px;line-height:1.5}
@@ -141,7 +162,10 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
 <div class="wrap">
   <header class="hero">
     <div class="eyebrow" data-k="eyebrow">jkt48 · web iseng</div>
-    <div class="lang"><button type="button" data-l="id">ID</button><button type="button" data-l="en">EN</button><button type="button" data-l="ja">日本語</button></div>
+    <div class="herotools">
+      <div class="uimode" id="uimode"><button type="button" data-u="light" title="Terang">☀</button><button type="button" data-u="auto" title="Otomatis (ikut perangkat)">◐</button><button type="button" data-u="dark" title="Gelap">☾</button></div>
+      <div class="lang"><button type="button" data-l="id">ID</button><button type="button" data-l="en">EN</button><button type="button" data-l="ja">日本語</button></div>
+    </div>
     <h1 id="h1">Susun Top 10 JKT48-mu</h1>
     <p data-k="hero">web iseng buat nyusun top 10 album, lagu, atau oshi jkt48 lu. pilih, atur tampilannya, terus pamerin ke x atau mana aja. nggak resmi, nggak serius, nggak ada duit yang berpindah tangan.</p>
   </header>
@@ -154,7 +178,10 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
     <div>
       <div class="card">
         <h2><b class="step">1</b>Pilih favoritmu</h2>
-        <input id="q" type="search" placeholder="Cari album JKT48...">
+        <div class="sbox">
+          <input id="q" type="search" placeholder="Cari album JKT48..." autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="sugg">
+          <div id="sugg" class="sugg" role="listbox" hidden></div>
+        </div>
         <div class="imp">
           <select id="impSrc" aria-label="Sumber impor"><option value="statsfm">stats.fm</option><option value="lastfm">Last.fm</option></select>
           <input id="sfUser" type="text" placeholder="Username stats.fm" autocomplete="off" spellcheck="false">
@@ -293,6 +320,7 @@ const EN = {
  'Gaya tampilan':'Display style','Tema poster':'Poster theme','tanpa':'none','Latar':'Background','Latar 2':'Background 2','Teks':'Text','Aksen':'Accent','Font poster':'Poster font','Bagikan':'Share',
  'Foto terpisah':'Separate photos','1 gambar':'1 image','Unduh foto':'Download photos','Salin gambar':'Copy image','Post ke X':'Post to X','Bagikan lewat…':'Share via…','Unduh gambar':'Download image','Buat video':'Make video',
  'Salin link':'Copy link','Semua':'All','Cuma #1':'Just #1','♪ Suara':'♪ Sound','Unduh video':'Download video','Buat top-mu sendiri':'Make your own top list',
+ 'Terang':'Light','Otomatis (ikut perangkat)':'Auto (follow device)','Gelap':'Dark','Pencarian terakhir':'Recent searches','Hapus riwayat':'Clear history','Hasil untuk "{q}"':'Results for "{q}"','{n} cocok':'{n} matches','Tidak ada yang cocok.':'No matches.','Tambah "{q}" manual':'Add "{q}" manually','Kalau tidak ada di daftar':'If it is not in the list',
  '+ tambah semua':'+ add all','Tambah semua yang tampil (sampai penuh)':'Add everything shown (until full)','Ditambah {n} item.':'Added {n} item(s).','Tambah manual dengan foto sendiri':'Add manually with your own photo','Foto sendiri hanya tersimpan di browser ini dan tidak ikut link share.':'Your own photo is only kept in this browser and is not included in the share link.','Gagal membuka foto itu.':'Could not open that photo.',
  'Otomatis':'Auto','Hitam':'Black','Warna':'Color','Gaya piringan (Vinyl dan Spin)':'Record style (Vinyl and Spin)','Klasik':'Classic','Malam':'Night','Laut':'Sea','Senja':'Sunset','Kustom':'Custom','Bawaan':'Default','Bulat':'Rounded','Tegas':'Bold',
  'Singel':'Singles','Rilis resmi':'Official releases','Setlist teater':'Theater setlists','Semua tahun':'All years','Tahun rilis':'Release year',
@@ -352,6 +380,7 @@ const JA = {
  'Gaya tampilan':'表示スタイル','Tema poster':'ポスターテーマ','tanpa':'なし','Latar':'背景','Latar 2':'背景2','Teks':'文字','Aksen':'アクセント','Font poster':'ポスターのフォント','Bagikan':'シェア',
  'Foto terpisah':'写真を分ける','1 gambar':'1枚にまとめる','Unduh foto':'写真をダウンロード','Salin gambar':'画像をコピー','Post ke X':'Xに投稿','Bagikan lewat…':'他の方法で共有…','Unduh gambar':'画像をダウンロード','Buat video':'動画を作る',
  'Salin link':'リンクをコピー','Semua':'すべて','Cuma #1':'1位のみ','♪ Suara':'♪ 音','Unduh video':'動画をダウンロード','Buat top-mu sendiri':'自分のランキングを作る',
+ 'Terang':'ライト','Otomatis (ikut perangkat)':'自動(端末に合わせる)','Gelap':'ダーク','Pencarian terakhir':'最近の検索','Hapus riwayat':'履歴を消去','Hasil untuk "{q}"':'「{q}」の結果','{n} cocok':'{n}件ヒット','Tidak ada yang cocok.':'一致するものがありません。','Tambah "{q}" manual':'「{q}」を手動で追加','Kalau tidak ada di daftar':'リストにない場合',
  '+ tambah semua':'+ すべて追加','Tambah semua yang tampil (sampai penuh)':'表示中のものをすべて追加(上限まで)','Ditambah {n} item.':'{n}件追加しました。','Tambah manual dengan foto sendiri':'自分の写真で手動追加','Foto sendiri hanya tersimpan di browser ini dan tidak ikut link share.':'自分の写真はこのブラウザにだけ保存され、共有リンクには含まれません。','Gagal membuka foto itu.':'その写真を開けませんでした。',
  'Otomatis':'自動','Hitam':'ブラック','Warna':'カラー','Gaya piringan (Vinyl dan Spin)':'レコードのスタイル(VinylとSpin)','Album':'アルバム','Sakura':'サクラ','Mint':'ミント','Royal':'ロイヤル','Mono':'モノ','Klasik':'クラシック','Malam':'ナイト','Laut':'海','Senja':'夕焼け','Kustom':'カスタム','Bawaan':'標準','Bulat':'丸ゴシック','Tegas':'太字',
  'Singel':'シングル','Rilis resmi':'公式リリース','Setlist teater':'劇場セットリスト','Semua tahun':'全年','Tahun rilis':'リリース年',
@@ -597,16 +626,20 @@ async function loadInner(kind){
   $('#msg').textContent = out.length ? '' : tr('Gagal memuat data. Buka lewat server (http), bukan file.');
 }
 let renderTok = 0, lastItems = [];
+/* filter jenis/tahun yang sedang dipilih (dipakai daftar kotak dan dropdown saran) */
+function passFilter(x){
+  const f = state.filter, yr = state.year;
+  const okF = f==='all' || (state.kind==='album' ? x.type===f : state.kind==='song' ? x.src===f : x.team===f);
+  const okY = state.kind!=='album' || yr==='all' || (x.sub||'').includes(yr);
+  return okF && okY;
+}
 async function renderResults(){
   const myTok = ++renderTok, kindAtStart = state.kind;
   await load(kindAtStart);
   if (myTok !== renderTok || kindAtStart !== state.kind) return; // sudah ada render yang lebih baru
   const q = state.q.toLowerCase(), used = new Set(cur().map(p=>String(p.id)));
   renderFilters();
-  const f = state.filter, yr = state.year;
-  const okF = x => f==='all' || (state.kind==='album' ? x.type===f : state.kind==='song' ? x.src===f : x.team===f);
-  const okY = x => state.kind!=='album' || yr==='all' || (x.sub||'').includes(yr);
-  const items = cache[state.kind].filter(x => okF(x) && okY(x) && (!q || x.title.toLowerCase().includes(q) || x.sub.toLowerCase().includes(q)));
+  const items = cache[state.kind].filter(x => passFilter(x) && (!q || x.title.toLowerCase().includes(q) || x.sub.toLowerCase().includes(q)));
   lastItems = items;
   const manual = state.q.trim() ? `<button class="res" data-manual="1" title="${tr('Tambah manual')}"><div style="width:62px;height:62px;border-radius:8px;border:2px dashed var(--red);display:grid;place-items:center;color:var(--red);font-size:26px;font-weight:700">+</div></button>` : '';
   const photoTile = state.q.trim() ? `<button class="res" data-photo="1" title="${tr('Tambah manual dengan foto sendiri')}"><div style="width:62px;height:62px;border-radius:8px;border:2px dashed var(--red);display:grid;place-items:center;color:var(--red);font-size:22px">📷</div></button>` : '';
@@ -1132,12 +1165,77 @@ const ext = m => m.includes('mp4')?'mp4':'webm';
 /* ---------- events ---------- */
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t===b));
-  state.kind=b.dataset.kind; state.q=''; $('#q').value=''; state.filter='all'; state.year='all';
+  state.kind=b.dataset.kind; state.q=''; $('#q').value=''; state.filter='all'; state.year='all'; hideSugg();
   $('#q').placeholder = tr(KIND[state.kind].ph);
   const isOshi = state.kind==='oshi'; $('.imp').hidden = isOshi; $('#sfMsg').hidden = isOshi;
   renderResults(); renderList(); renderHeads();
 });
-$('#q').oninput = e => { state.q=e.target.value; renderResults(); };
+/* ---------- tampilan web: terang / otomatis / gelap (aksen merah tetap) ---------- */
+const UI_KEY = 'jkt48ui'; let uiPref = 'auto';
+try { const s = localStorage.getItem(UI_KEY); if (s==='light'||s==='dark') uiPref = s; } catch(e){}
+function applyUI(u){
+  if (u==='light'||u==='dark') document.documentElement.dataset.ui = u; else delete document.documentElement.dataset.ui;
+  document.querySelectorAll('#uimode button').forEach(b=>b.classList.toggle('on', b.dataset.u===((u==='light'||u==='dark')?u:'auto')));
+}
+$('#uimode').onclick = e => { const b=e.target.closest('button'); if(!b) return; uiPref=b.dataset.u; try { if (uiPref==='auto') localStorage.removeItem(UI_KEY); else localStorage.setItem(UI_KEY,uiPref); } catch(_){} applyUI(uiPref); };
+applyUI(uiPref);
+
+/* ---------- dropdown saran: ketik langsung muncul nama + cover (tidak perlu menebak dari kotak kecil); kosong = pencarian terakhir ---------- */
+const RECENT_KEY = 'jkt48recent';
+const readRecent = () => { try { return JSON.parse(localStorage.getItem(RECENT_KEY)||'[]') || []; } catch(e){ return []; } };
+const writeRecent = a => { try { localStorage.setItem(RECENT_KEY, JSON.stringify(a.slice(0,6))); } catch(e){} };
+function addRecent(t){ t=String(t||'').trim(); if (!t) return; writeRecent([t, ...readRecent().filter(x=>x.toLowerCase()!==t.toLowerCase())]); }
+let suggRows = [], suggIdx = -1, suggTok = 0;
+const hl = (text,q) => { const i = q ? text.toLowerCase().indexOf(q.toLowerCase()) : -1; return i<0 ? esc(text) : esc(text.slice(0,i))+'<mark>'+esc(text.slice(i,i+q.length))+'</mark>'+esc(text.slice(i+q.length)); };
+function hideSugg(){ $('#sugg').hidden = true; $('#q').setAttribute('aria-expanded','false'); suggIdx = -1; }
+function paintSugg(scroll){ [...$('#sugg').querySelectorAll('.row')].forEach(r=>{ const on = +r.dataset.i===suggIdx; r.classList.toggle('act',on); if (on && scroll) r.scrollIntoView({block:'nearest'}); }); }
+async function renderSugg(){
+  const my = ++suggTok, kind = state.kind, q = state.q.trim(), box = $('#sugg');
+  if (!cache[kind].length) await load(kind);
+  if (my!==suggTok || kind!==state.kind) return;
+  const used = new Set(cur().map(p=>String(p.id))); let rows = [], html = '';
+  if (!q) {
+    const rec = readRecent(); if (!rec.length) { hideSugg(); return; }
+    rows = rec.map(t=>({type:'recent', text:t}));
+    html = `<div class="hd"><span>${tr('Pencarian terakhir')}</span><button type="button" data-clear="1">${tr('Hapus riwayat')}</button></div>` +
+      rows.map((r,i)=>`<div class="row" role="option" data-i="${i}"><span class="ic">🕘</span><div class="t"><b>${esc(r.text)}</b></div></div>`).join('');
+  } else {
+    const ql = q.toLowerCase();
+    const all = cache[kind].filter(passFilter).map(x=>{ const t=x.title.toLowerCase(); return { x, s: t.startsWith(ql)?0 : t.includes(ql)?1 : (x.sub||'').toLowerCase().includes(ql)?2 : 9 }; })
+      .filter(o=>o.s<9).sort((a,b)=>a.s-b.s || a.x.title.length-b.x.title.length);
+    const top = all.slice(0,8); rows = top.map(o=>({type:'item', x:o.x}));
+    html = top.length ? `<div class="hd"><span>${tr('Hasil untuk "{q}"',{q:esc(q)})}</span><span>${tr('{n} cocok',{n:all.length})}</span></div>`
+                      : `<div class="hd"><span>${tr('Tidak ada yang cocok.')}</span></div>`;
+    html += top.map((o,i)=>{ const x=o.x, ini=esc(x.title.trim().slice(0,2)), thumb = x.img ? `<img src="${esc(x.img)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'th',textContent:'${ini.replace(/'/g,'')}'}))">` : `<span class="th">${ini}</span>`;
+      return `<div class="row" role="option" data-i="${i}">${thumb}<div class="t"><b>${hl(x.title,q)}</b><span>${esc(x.sub||'')}</span></div>${used.has(String(x.id))?'<span class="ok">✓</span>':''}</div>`; }).join('');
+    rows.push({type:'manual', text:q});
+    html += `<div class="row manual" role="option" data-i="${rows.length-1}"><span class="ic">＋</span><div class="t"><b>${tr('Tambah "{q}" manual',{q:esc(q)})}</b><span>${tr('Kalau tidak ada di daftar')}</span></div></div>`;
+  }
+  box.innerHTML = html; suggRows = rows; suggIdx = (q && rows.length && rows[0].type==='item') ? 0 : -1;
+  box.hidden = false; $('#q').setAttribute('aria-expanded','true'); paintSugg(false);
+}
+function activateSugg(i){
+  const r = suggRows[i]; if (!r) return;
+  if (r.type==='recent') { state.q=r.text; $('#q').value=r.text; renderResults(); renderSugg(); return; }
+  if (r.type==='manual') { addRecent(r.text); addManual(r.text); return; }
+  const ok = togglePick(r.x.id); if (ok) addRecent(r.x.title); renderSugg();
+}
+$('#q').oninput = e => { state.q=e.target.value; renderResults(); renderSugg(); };
+$('#q').onfocus = () => renderSugg();
+$('#q').onkeydown = e => {
+  if (e.key==='Escape') { hideSugg(); return; }
+  if (e.key==='ArrowDown' || e.key==='ArrowUp') {
+    e.preventDefault(); if ($('#sugg').hidden) { renderSugg(); return; }
+    const n = suggRows.length; if (!n) return; suggIdx = e.key==='ArrowDown' ? (suggIdx+1)%n : (suggIdx-1+n)%n; paintSugg(true); return;
+  }
+  if (e.key==='Enter' && !$('#sugg').hidden) { e.preventDefault(); if (suggIdx>=0) activateSugg(suggIdx); else if (suggRows.length && suggRows[0].type==='item') activateSugg(0); }
+};
+$('#sugg').onmousedown = e => e.preventDefault(); // klik di dropdown tidak mencabut fokus dari kolom cari
+$('#sugg').onclick = e => {
+  if (e.target.closest('[data-clear]')) { writeRecent([]); hideSugg(); return; }
+  const row = e.target.closest('.row'); if (row) activateSugg(+row.dataset.i);
+};
+document.addEventListener('mousedown', e => { if (!e.target.closest('.sbox')) hideSugg(); });
 $('#filters').onclick = e => {
   const b=e.target.closest('.chip'); if(!b) return;
   if (b.dataset.addall) { // tambah semua yang sedang tampil (hasil filter/pencarian) sampai daftar penuh
@@ -1178,19 +1276,26 @@ $('#modes').onclick = e => {
 $('#results').onclick = e => {
   const b=e.target.closest('.res'); if(!b) return;
   if (b.dataset.photo) { pendingTitle = state.q.trim(); if (pendingTitle) photoIn.click(); return; }
-  if (b.dataset.manual) { // lagu/album yang tidak ada di iTunes (mis. lagu setlist teater)
-    const arr=cur(), t=state.q.trim(); if (arr.length>=MAX){ $('#msg').textContent=tr('Maksimal {n}.',{n:MAX}); return; }
-    arr.push({id:'c'+Date.now(), title:t, sub:'JKT48', img:placeholder(t), custom:true});
-    state.q=''; $('#q').value=''; renderList(); renderResults(); return;
-  }
-  const arr=cur(), id=b.dataset.id, ix=arr.findIndex(p=>String(p.id)===id);
+  if (b.dataset.manual) { addManual(state.q.trim()); return; }
+  togglePick(b.dataset.id);
+};
+/* lagu/album yang tidak ada di iTunes (mis. lagu setlist teater): tambah manual */
+function addManual(t){
+  const arr=cur(); if (!t) return; if (arr.length>=MAX){ $('#msg').textContent=tr('Maksimal {n}.',{n:MAX}); return; }
+  arr.push({id:'c'+Date.now(), title:t, sub:'JKT48', img:placeholder(t), custom:true});
+  state.q=''; $('#q').value=''; hideSugg(); renderList(); renderResults();
+}
+/* pilih atau batalkan satu item berdasarkan id (dari kotak cover maupun dropdown saran) */
+function togglePick(id){
+  const arr=cur(), sid=String(id), ix=arr.findIndex(p=>String(p.id)===sid);
   if (ix>=0) arr.splice(ix,1);
   else {
-    if (arr.length>=MAX){ $('#msg').textContent=tr('Maksimal {n}.',{n:MAX}); return; }
-    const it={...cache[state.kind].find(x=>String(x.id)===id)}; if (!it.img) it.img=placeholder(it.title); arr.push(it);
+    if (arr.length>=MAX){ $('#msg').textContent=tr('Maksimal {n}.',{n:MAX}); return false; }
+    const src=cache[state.kind].find(x=>String(x.id)===sid); if (!src) return false;
+    const it={...src}; if (!it.img) it.img=placeholder(it.title); arr.push(it);
   }
-  renderList(); renderResults();
-};
+  renderList(); renderResults(); return true;
+}
 $('#list').onclick = e => {
   const arr=cur(), t=e.target;
   if (t.dataset.rm!==undefined) arr.splice(+t.dataset.rm,1);
