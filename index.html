@@ -46,6 +46,8 @@ input[type=search],input[type=text]{width:100%;padding:11px 14px;border-radius:1
 .hint.ok{color:#168a4a;font-weight:700}
 .guide{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--soft);font-size:13px;line-height:1.5}
 .guide b{color:var(--red)}
+.insp{margin-top:22px;text-align:left}
+.insp a{color:var(--red);font-weight:600}
 .note{margin-top:12px;padding:10px 14px;border-radius:14px;border:1px dashed var(--line);font-size:12.5px;line-height:1.5;color:var(--mute)}
 details.ext{margin-top:14px;font-size:13px;border-top:1px solid var(--line);padding-top:10px}
 details.ext summary{cursor:pointer;font-weight:600}
@@ -212,7 +214,7 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
           <div class="btns"><button class="btn" id="dlPost">Unduh foto</button><button class="btn" id="copyImg" hidden>Salin gambar</button><button class="btn dark" id="toX">Post ke X</button><button class="btn" id="shareSheet">Bagikan lewat…</button></div>
           <div class="sub" id="postSub">Gambar diunduh dulu, lalu lampirkan di tweet.</div>
           <div class="guide" id="guide" hidden></div>
-          <div class="note" data-k="shareNote">info: share ke x emang agak makan waktu. x nggak ngizinin web mana pun nempelin foto ke tweet, jadi lu harus salin atau seret fotonya sendiri. ini web iseng, bukan perusahaan, ya gini adanya.</div>
+          <div class="note" data-k="shareNote">info: share ke x emang agak makan waktu. x nggak ngizinin web mana pun nempelin foto ke tweet (kecuali lewat api yang nggak gratis dan nggak murah), jadi lu harus salin atau seret fotonya sendiri. ini web iseng, bukan pt, bukan jagoan, ya gini adanya, maapin.</div>
           <details class="ext">
             <summary data-k="tipSum">Tip: pasang X sebagai aplikasi, lalu foto masuk lewat tombol Bagikan</summary>
             <ol data-k="tipOl">
@@ -266,6 +268,7 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
     <div class="btns"><button class="btn" id="vDl" type="button">Unduh gambar</button><button class="btn dark" id="vMake" type="button">Buat top-mu sendiri</button></div>
     <div class="sub" data-k="viewFoot">dibikin pakai jkt48 top 10 · web iseng, bukan resmi.</div>
   </div>
+  <div class="sub insp" data-k="insp">terinspirasi dari <a href="https://taylor.fyi/top/" target="_blank" rel="noopener">taylor.fyi/top</a> bikinan <a href="https://x.com/taylor_" target="_blank" rel="noopener">@taylor_</a> di x. gw cuma fans yang iseng minjem idenya buat jkt48, nggak ada hubungan resmi sama dia.</div>
   <details class="ext disc" id="disclaimer" style="margin-top:28px">
     <summary data-k="discSum">disclaimer · web iseng, nggak resmi, jangan dibawa serius-serius amat</summary>
     <p data-k="disc1"><b>web iseng.</b> ini proyek iseng buatan fans, bukan resmi. gw nggak punya hubungan apa-apa sama jkt48, jkt48 operation team, idn, x, apple, spotify, stats.fm, last.fm, maupun musicbrainz. semua nama dan merek punya yang punya masing-masing. gw cuma numpang lewat.</p>
@@ -321,9 +324,10 @@ const EN = {
  'Membuat video...':'Making video...','Video diunduh. Tambahkan lagu saat kamu posting.':'Video downloaded. Add a song when you post.','Link disalin.':'Link copied.','Merekam...':'Recording...','Video diunduh (tanpa suara). Tambahkan lagu saat kamu posting.':'Video downloaded (no sound). Add a song when you post.'
 };
 const EN_HTML = {
+ insp:'inspired by <a href="https://taylor.fyi/top/" target="_blank" rel="noopener">taylor.fyi/top</a> by <a href="https://x.com/taylor_" target="_blank" rel="noopener">@taylor_</a> on x. i am just a fan who borrowed the idea for jkt48, no official connection.',
  hero:'a just-for-fun site to build your jkt48 top 10 albums, songs or oshi. pick, style it, flex it on x or wherever. unofficial, not serious, no money changes hands.',
  eyebrow:'jkt48 · just for fun',
- shareNote:'heads up: sharing to x takes a few extra steps. x does not let any website attach photos to a tweet for you, so you have to copy or drag them yourself. it is a for-fun site, not a company, so this is what you get.',
+ shareNote:'heads up: sharing to x takes a few extra steps. x does not let any website attach photos to a tweet for you (unless you go through its api, which is neither free nor cheap), so you have to copy or drag the photos yourself. it is a for-fun site, not a company, not a hero, this is what you get, sorry.',
  tipSum:'Tip: install X as an app, then send photos with the Share button',
  tipOl:'<li>Open <b>x.com</b> in Chrome or Edge and install it as an app (install icon in the address bar, or menu ⋮ → <b>Save and share → Install page as app</b>).</li><li>Come back to this site and click <b>Share via…</b>. The Windows share menu should list <b>X</b>.</li><li>Pick X: the tweet box opens with the photos already attached, nothing saved to disk.</li>',
  tipP:'X registers itself as a share target for images (you can see it in its manifest), but this depends on your browser and operating system, and how many photos X accepts is up to X. If X is not listed, use the other methods above.',
@@ -378,9 +382,10 @@ const JA = {
  'Membuat video...':'動画を作成中...','Video diunduh. Tambahkan lagu saat kamu posting.':'動画をダウンロードしました。投稿時に曲を追加してください。','Link disalin.':'リンクをコピーしました。','Merekam...':'録画中...','Video diunduh (tanpa suara). Tambahkan lagu saat kamu posting.':'動画をダウンロードしました(音なし)。投稿時に曲を追加してください。'
 };
 const JA_HTML = {
+ insp:'<a href="https://taylor.fyi/top/" target="_blank" rel="noopener">taylor.fyi/top</a>(<a href="https://x.com/taylor_" target="_blank" rel="noopener">@taylor_</a> さん作)に着想を得ました。アイデアを借りてJKT48向けに作ったファンで、公式な関係はありません。',
  hero:'JKT48のアルバム・楽曲・推しのトップ10を作るだけの趣味サイトです。選んで、整えて、Xなどで自慢してください。非公式、ガチじゃない、お金も動きません。',
  eyebrow:'JKT48 · 趣味サイト',
- shareNote:'ご注意: Xへのシェアは少し手間がかかります。Xは外部サイトがツイートに写真を自動添付することを許していないため、写真はご自身でコピーかドラッグしてください。企業ではなく趣味で作ったサイトなので、そこはご容赦を。',
+ shareNote:'ご注意: Xへのシェアは少し手間がかかります。Xは外部サイトがツイートに写真を自動添付することを許しておらず(API経由なら可能ですが、無料でも安くもありません)、写真はご自身でコピーかドラッグしてください。企業でもヒーローでもない趣味サイトなので、これが精一杯です。ごめんなさい。',
  tipSum:'ヒント: Xをアプリとしてインストールすると、共有ボタンから写真を送れます',
  tipOl:'<li>ChromeまたはEdgeで <b>x.com</b> を開き、アプリとしてインストールします(アドレスバーのインストールアイコン、またはメニュー ⋮ → <b>保存して共有 → ページをアプリとしてインストール</b>)。</li><li>このサイトに戻って <b>他の方法で共有…</b> をクリック。Windowsの共有メニューに <b>X</b> が表示されるはずです。</li><li>Xを選ぶと、写真が添付された状態でツイート欄が開きます。ファイルは保存されません。</li>',
  tipP:'Xは画像の共有先として自身を登録しています(マニフェストで確認できます)が、これはお使いのブラウザやOSに依存し、受け付ける枚数もX次第です。Xが表示されない場合は、上の他の方法をお使いください。',
@@ -675,6 +680,14 @@ function cover(c,a,x,y,s,r){
   if (a.im) c.drawImage(a.im,x,y,s,s); else { c.fillStyle=a.col; c.fillRect(x,y,s,s); }
   c.restore();
 }
+/* watermark: alamat situs ada di semua hasil ekspor (foto, gambar tunggal, poster story, video spin, halaman hasil) */
+function siteLabel(){ const s=SITE(); return s ? s.replace(/^https?:\/\//,'').replace(/\/$/,'') : 'jkt48-top10'; }
+function markH(c,x,y,size,color,align){ c.save(); c.font=`600 ${size}px system-ui,sans-serif`; c.fillStyle=color; c.textAlign=align||'right'; c.textBaseline='alphabetic'; c.fillText(siteLabel(),x,y); c.restore(); }
+function markPill(c,W,H,size,pad){ // di atas gambar: pil gelap transparan supaya terbaca di latar apa pun
+  c.save(); c.font=`600 ${size}px system-ui,sans-serif`; const t=siteLabel(), w=c.measureText(t).width+size*1.2, h=size*1.9, x=W-pad-w, y=H-pad-h;
+  c.fillStyle='rgba(0,0,0,.5)'; rr(c,x,y,w,h,h/2); c.fill(); c.fillStyle='rgba(255,255,255,.92)'; c.textAlign='left'; c.textBaseline='middle'; c.fillText(t,x+size*0.6,y+h/2+size*0.05); c.restore();
+}
+function markV(c,x,yBottom,size,color){ c.save(); c.translate(x,yBottom); c.rotate(-Math.PI/2); c.font=`600 ${size}px system-ui,sans-serif`; c.fillStyle=color; c.textAlign='left'; c.textBaseline='middle'; c.fillText(siteLabel(),0,0); c.restore(); }
 function badge(c,x,y,r,n){
   c.save(); c.fillStyle = RED; c.beginPath(); c.arc(x,y,r,0,7); c.fill();
   c.fillStyle = '#fff'; c.font = `800 ${r*1.1}px system-ui,sans-serif`; c.textAlign='center'; c.textBaseline='middle';
@@ -807,6 +820,7 @@ function scene(c,W,H,o,t){
   }
   c.fillStyle=mu; c.font='600 '+(tall?30:24)+'px system-ui,sans-serif'; c.textAlign='left'; c.textBaseline='alphabetic';
   c.fillText(o.name? 'by '+o.name : 'JKT48 Top 10', 60, H-(tall?60:34));
+  markH(c, W-60, H-(tall?60:34), tall?30:24, mu, 'right');
 }
 
 function statsLine(picks){
@@ -833,7 +847,8 @@ function drawSpin(c,a,pick,idx,n,time,o){
   c.fillStyle=ink; c.font='800 58px system-ui,sans-serif'; c.fillText(fitText(c,pick.title,W-140),cx,cy+R+170);
   c.fillStyle=mu; c.font='500 36px system-ui,sans-serif'; c.fillText(fitText(c,pick.sub,W-140),cx,cy+R+222);
   if (pick.plays) { c.fillStyle=RED; c.font='700 32px system-ui,sans-serif'; c.fillText(tr('{n}× diputar',{n:pick.plays.toLocaleString(LOC())}),cx,cy+R+272); }
-  c.fillStyle=mu; c.font='600 26px system-ui,sans-serif'; c.fillText('JKT48 Top '+n,cx,H-36);
+  c.fillStyle=mu; c.font='600 26px system-ui,sans-serif'; c.fillText('JKT48 Top '+n,cx,H-72);
+  markH(c, cx, H-34, 26, mu, 'center');
 }
 
 /* ---------- render pipeline ---------- */
@@ -883,6 +898,12 @@ function photoCanvas(o,i){
     c.fillStyle='#fff'; [[-1],[1]].forEach(([d])=>{ c.beginPath(); c.moveTo(mx+d*130,cy-36); c.lineTo(mx+d*130,cy+36); c.lineTo(mx+d*190,cy); c.closePath(); c.fill(); });
     if (o.num) badge(c,110,110,56,i+1);
   }
+  // watermark alamat situs di setiap foto ekspor
+  if (look==='cds') markV(c, W*0.065, H-95, 15, 'rgba(40,40,50,.6)');
+  else if (look==='tapes') markV(c, W*0.07, H-110, 17, 'rgba(255,255,255,.6)');
+  else if (look==='covers') markPill(c, W, H, 22, 24);
+  else if (look==='vinyl') markH(c, W-40, H-36, 24, o.theme.mu, 'right');
+  else markH(c, W/2, H-58, 26, 'rgba(255,255,255,.65)', 'center');
   return cv;
 }
 function lum(col){ const m=col.match(/\d+/g); return m?(0.299*m[0]+0.587*m[1]+0.114*m[2])/255:0.5; }
