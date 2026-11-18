@@ -133,7 +133,7 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
             <textarea id="caption" rows="2" maxlength="280" placeholder="Tambahkan kata-kata untuk postinganmu" style="width:100%;border:0;background:none;color:var(--ink);font:inherit;font-size:14px;resize:none;outline:none;padding:0;margin-bottom:8px"></textarea>
             <div id="strip" class="strip" tabindex="0" aria-label="Fotomu, berurutan"></div>
           </div></div>
-          <div class="btns"><button class="btn" id="dlPost">Unduh foto</button><button class="btn dark" id="toX">Post ke X</button></div>
+          <div class="btns"><button class="btn" id="dlPost">Unduh foto</button><button class="btn dark" id="toX">Post ke X</button><button class="btn" id="shareSheet">Bagikan lewat…</button></div>
           <div class="sub" id="postSub">Gambar diunduh dulu, lalu lampirkan di tweet.</div>
         </div>
         <div id="p-story" hidden>
@@ -684,18 +684,24 @@ $('#nm').oninput=()=>refresh();
 $('#caption').oninput=e=>{ e.target.dataset.dirty='1'; };
 
 $('#dlPost').onclick=async()=>{ await downloadAll(await postFiles()); };
-$('#toX').onclick=async()=>{
-  const text=$('#caption').value.trim(), url='';
-  const open=()=>window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text),'_blank','noopener');
-  // HP: share sheet bawaan (gambar ikut terlampir, tanpa login ke app ini)
+const isMobile = () => (navigator.userAgentData && navigator.userAgentData.mobile) || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+const openX = () => window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent($('#caption').value.trim()),'_blank','noopener');
+// Bagikan lewat menu share bawaan perangkat (foto ikut terlampir)
+async function shareSheet(){
+  const text=$('#caption').value.trim();
   try {
     const files=(await postFiles()).map(f=>new File([f.blob],f.name,{type:'image/png'}));
-    if (navigator.canShare && navigator.canShare({files})) { await navigator.share({files,text}); return; }
-    // Desktop: buka compose X (pakai login X-mu sendiri), foto diunduh untuk dilampirkan
-    open();
-    await downloadAll(files.map(f=>({blob:f,name:f.name})));
-  } catch(e){}
+    if (navigator.canShare && navigator.canShare({files})) { await navigator.share({files,text}); return true; }
+  } catch(e){ if (e && e.name==='AbortError') return true; }
+  return false;
+}
+$('#toX').onclick=async()=>{
+  if (isMobile()) { if (await shareSheet()) return; }
+  // Komputer: buka halaman tulis tweet X (pakai login X-mu sendiri), lalu foto diunduh untuk dilampirkan
+  openX();
+  await downloadAll(await postFiles());
 };
+$('#shareSheet').onclick=async()=>{ if (!(await shareSheet())) $('#postSub').textContent='Perangkat ini tidak mendukung menu share dengan foto. Pakai "Unduh foto".'; };
 $('#dlStoryImg').onclick=()=>dlCanvas($('#cvStory'),'jkt48-top10-story.png');
 $('#mkStory').onclick=async()=>{
   const btn=$('#mkStory'), msg=$('#storyMsg'); btn.disabled=true; msg.textContent='Membuat video...';
