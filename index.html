@@ -4,6 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>JKT48 Top 10</title>
+<meta name="description" content="web iseng buat nyusun top 10 album, lagu, oshi, atau setlist JKT48 lu. Fan-made, unofficial, just for fun.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="JKT48 Top 10">
+<meta property="og:title" content="Build your JKT48 Top 10">
+<meta property="og:description" content="albums, songs, oshi and setlists. A just-for-fun fan site, unofficial, no money changes hands.">
+<meta property="og:url" content="https://top.miuru.fun/">
+<meta property="og:image" content="https://top.miuru.fun/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Build your JKT48 Top 10">
+<meta name="twitter:description" content="albums, songs, oshi and setlists. Just for fun, unofficial.">
+<meta name="twitter:image" content="https://top.miuru.fun/og.png">
 <script>try{var __u=localStorage.getItem('jkt48ui');if(__u==='light'||__u==='dark')document.documentElement.dataset.ui=__u}catch(e){}</script>
 <style>
 :root{--bg:#fff1f3;--card:#fff;--ink:#2a1218;--mute:#8a6b73;--line:#f3d3da;--red:#e4002b;--hl:#ffd60a;--soft:#fde4e8;color-scheme:light}
@@ -311,6 +324,7 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
     <p data-k="disc4"><b>privasi.</b> web ini nggak punya server, jadi gw nggak nyimpen apa-apa soal lu. daftar, nama daftar, dan pengaturan cuma ada di browser lu. pas nyari atau impor, browser lu ngobrol langsung sama layanan terkait (itunes, musicbrainz, wikipedia, stats.fm, last.fm, dan wsrv.nl buat foto member) yang punya kebijakan privasi masing-masing. link share isinya daftar lu di dalam alamatnya, jadi siapa pun yang pegang link bisa liat. jangan taruh data pribadi di nama atau link, ya.</p>
     <p data-k="disc5"><b>soal share ke x.</b> iya, emang agak makan waktu, maaf. x nggak ngizinin web mana pun nempelin foto ke tweet, dan api-nya berbayar, sementara ini web iseng, bukan perusahaan. jadi lu salin atau seret fotonya sendiri (atau pakai ekstensi opsional). web ini nggak pernah ngepost atas nama lu dan nggak minta login ke akun mana pun. ekstensi chrome-nya juga nggak resmi, pakai atas risiko sendiri.</p>
     <p data-k="disc6"><b>tanpa jaminan.</b> dikasih apa adanya, bisa rusak kapan aja kalau layanan pihak ketiga berubah. kalau rusak gw bakal sedih tapi nggak ngegas. nemu bug? kabarin aja.</p>
+    <p data-k="disc7"><b>soal terjemahannya.</b> versi inggris dan jepang dibuat sepenuhnya sama ai (claude code), belum dicek penutur asli. kalau ada yang keliru, kaku, atau kedengeran aneh, maaf ya. kabarin lewat repo github-nya, nanti gw benerin.</p>
   </details>
 </div>
 <script>
@@ -381,7 +395,8 @@ const EN_HTML = {
  disc3:'<b>the data can be wrong.</b> the album and song lists are merged from itunes, musicbrainz and wikipedia, and the member list is a snapshot of jkt48.com/member from 19 november 2026. there may be gaps, typos, or stale stuff (new members, team changes, etc). song previews come from itunes, not from here.',
  disc4:'<b>privacy.</b> this site has no server, so i store nothing about you. your lists, list names and settings only live in this browser. when you search or import, your browser talks directly to the services involved (itunes, musicbrainz, wikipedia, stats.fm, last.fm, and wsrv.nl for member photos), and they have their own privacy policies. a share link carries your list inside its address, so anyone holding the link can see it. do not put personal info in the name or link, okay?',
  disc5:'<b>about sharing to x.</b> yes, it takes a few extra steps, sorry. x does not let a website attach photos to a tweet for you, and its api costs money, while this is a for-fun site, not a company. so you copy or drag the photos yourself (or use the optional extension). this site never posts for you and never asks you to log in anywhere. the chrome extension is unofficial too, use it at your own risk.',
- disc6:'<b>no warranty.</b> served as is, and it can break any time a third-party service changes. if it breaks i will be sad but not angry. found a bug? just tell me.'
+ disc6:'<b>no warranty.</b> served as is, and it can break any time a third-party service changes. if it breaks i will be sad but not angry. found a bug? just tell me.',
+ disc7:'<b>about the translations.</b> the english and japanese versions are written entirely by ai (claude code) and have not been checked by a native speaker. sorry if anything is wrong, stiff or sounds odd. tell me through the github repo and i will fix it.'
 };
 const JA = {
  'Pilih favoritmu':'お気に入りを選ぶ','Impor':'インポート','Semua waktu':'全期間','6 bulan':'6か月','4 minggu':'4週間','Hapus semua':'すべて削除','Jumlah:':'件数:',
@@ -445,7 +460,8 @@ const JA_HTML = {
  disc3:'<b>データは間違っているかも。</b>アルバムと楽曲のリストは iTunes・MusicBrainz・Wikipedia を合わせたもの、メンバー一覧は 2026年11月19日時点の jkt48.com/member のスナップショットです。抜け、誤字、古い情報(新メンバーやチーム異動など)があるかもしれません。楽曲プレビューは iTunes のものです。',
  disc4:'<b>プライバシー。</b>このサイトにはサーバーがないので、あなたの情報は何も保存しません。リスト、リスト名、設定はこのブラウザの中にだけ残ります。検索やインポートのときは、ブラウザが関連サービス(iTunes、MusicBrainz、Wikipedia、stats.fm、Last.fm、メンバー写真用の wsrv.nl)と直接やり取りし、各サービスに独自のプライバシーポリシーがあります。共有リンクにはリストの中身がアドレスに入っているので、リンクを持っている人は誰でも見られます。名前やリンクに個人情報は入れないでくださいね。',
  disc5:'<b>Xへのシェアについて。</b>はい、ちょっと手間がかかります。ごめんなさい。Xは外部サイトがツイートに写真を自動で添付することを許しておらず、APIは有料で、このサイトは会社ではなく趣味です。そのため写真はご自身でコピーかドラッグしてください(任意の拡張機能も使えます)。このサイトが代わりに投稿することはなく、ログインを求めることもありません。Chrome拡張機能も非公式なので、自己責任でどうぞ。',
- disc6:'<b>無保証。</b>現状のまま提供します。第三者サービスが変わればいつでも壊れます。壊れたら悲しくなりますが、怒りはしません。バグを見つけたら教えてください。'
+ disc6:'<b>無保証。</b>現状のまま提供します。第三者サービスが変わればいつでも壊れます。壊れたら悲しくなりますが、怒りはしません。バグを見つけたら教えてください。',
+ disc7:'<b>翻訳について。</b>英語版と日本語版はすべてAI(Claude Code)が作ったもので、ネイティブの方による確認はしていません。間違いや不自然な表現があったらごめんなさい。GitHubリポジトリから教えてもらえれば直します。'
 };
 const LOC = () => LANG==='en' ? 'en-US' : LANG==='ja' ? 'ja-JP' : 'id-ID';
 const NOUN_JA = { albums:'アルバム', songs:'楽曲', oshi:'推し', setlists:'劇場公演' };
