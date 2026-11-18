@@ -1300,7 +1300,8 @@ function record(canvas,ms,frame){
   return new Promise((res,rej)=>{
     if (!window.MediaRecorder) return rej(new Error('Browser tidak mendukung perekaman video.'));
     if (recording) return rej(new Error('Masih merekam.'));
-    const mime=['video/webm;codecs=vp9','video/webm','video/mp4'].find(m=>MediaRecorder.isTypeSupported(m));
+    // MP4 lebih dulu: X hanya menerima MP4/MOV, WebM akan ditolak saat diunggah
+    const mime=['video/mp4;codecs=avc1.42E01E','video/mp4','video/webm;codecs=vp9','video/webm'].find(m=>MediaRecorder.isTypeSupported(m));
     recording = true; // selama merekam, render lain tidak boleh menggambar di kanvas yang sama
     try {
       const rec=new MediaRecorder(canvas.captureStream(30),{mimeType:mime,videoBitsPerSecond:8e6}), chunks=[];
