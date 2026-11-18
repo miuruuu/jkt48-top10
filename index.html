@@ -240,7 +240,7 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
             <textarea id="caption" rows="2" maxlength="280" placeholder="Tambahkan kata-kata untuk postinganmu" style="width:100%;border:0;background:none;color:var(--ink);font:inherit;font-size:14px;resize:none;outline:none;padding:0;margin-bottom:8px"></textarea>
             <div id="strip" class="strip" tabindex="0" aria-label="Fotomu, berurutan"></div>
           </div></div>
-          <div class="btns"><button class="btn" id="dlPost">Unduh foto</button><button class="btn" id="copyImg" hidden>Salin gambar</button><button class="btn dark" id="toX">Post ke X</button><button class="btn" id="shareSheet">Bagikan lewat…</button></div>
+          <div class="btns"><button class="btn" id="dlPost">Unduh foto</button><button class="btn" id="copyImg" hidden>Salin gambar</button><button class="btn" id="copySeq" hidden>Salin berurutan</button><button class="btn" id="dlZip" hidden>Unduh ZIP</button><button class="btn dark" id="toX">Post ke X</button><button class="btn" id="shareSheet">Bagikan lewat…</button></div>
           <div class="sub" id="postSub">Gambar diunduh dulu, lalu lampirkan di tweet.</div>
           <div class="guide" id="guide" hidden></div>
           <div class="note" data-k="shareNote">info: share ke x emang agak makan waktu. x nggak ngizinin web mana pun nempelin foto ke tweet (kecuali lewat api yang nggak gratis dan nggak murah), jadi lu harus salin atau seret fotonya sendiri. ini web iseng, bukan pt, bukan jagoan, ya gini adanya, maapin.</div>
@@ -320,6 +320,7 @@ const EN = {
  'Gaya tampilan':'Display style','Tema poster':'Poster theme','tanpa':'none','Latar':'Background','Latar 2':'Background 2','Teks':'Text','Aksen':'Accent','Font poster':'Poster font','Bagikan':'Share',
  'Foto terpisah':'Separate photos','1 gambar':'1 image','Unduh foto':'Download photos','Salin gambar':'Copy image','Post ke X':'Post to X','Bagikan lewat…':'Share via…','Unduh gambar':'Download image','Buat video':'Make video',
  'Salin link':'Copy link','Semua':'All','Cuma #1':'Just #1','♪ Suara':'♪ Sound','Unduh video':'Download video','Buat top-mu sendiri':'Make your own top list',
+ 'Salin berurutan':'Copy one by one','Unduh ZIP':'Download ZIP','Salin berikutnya ({a}/{b})':'Copy next ({a}/{b})','Foto {a}/{b} tersalin. Tempel dengan Ctrl+V di tweet, lalu klik lagi untuk foto berikutnya.':'Photo {a}/{b} copied. Paste with Ctrl+V in the tweet, then click again for the next one.','Foto terakhir ({a}/{b}) tersalin. Tempel dengan Ctrl+V. Klik lagi untuk mengulang dari awal.':'Last photo ({a}/{b}) copied. Paste with Ctrl+V. Click again to start over.','ZIP diunduh: semua foto dalam satu file.':'ZIP downloaded: all photos in one file.',
  'Foto':'Photo','Terang':'Light','Otomatis (ikut perangkat)':'Auto (follow device)','Gelap':'Dark','Pencarian terakhir':'Recent searches','Hapus riwayat':'Clear history','Hasil untuk "{q}"':'Results for "{q}"','{n} cocok':'{n} matches','Tidak ada yang cocok.':'No matches.','Tambah "{q}" manual':'Add "{q}" manually','Kalau tidak ada di daftar':'If it is not in the list',
  '+ tambah semua':'+ add all','Tambah semua yang tampil (sampai penuh)':'Add everything shown (until full)','Ditambah {n} item.':'Added {n} item(s).','Tambah manual dengan foto sendiri':'Add manually with your own photo','Foto sendiri hanya tersimpan di browser ini dan tidak ikut link share.':'Your own photo is only kept in this browser and is not included in the share link.','Gagal membuka foto itu.':'Could not open that photo.',
  'Otomatis':'Auto','Hitam':'Black','Warna':'Color','Gaya piringan (Vinyl dan Spin)':'Record style (Vinyl and Spin)','Klasik':'Classic','Malam':'Night','Laut':'Sea','Senja':'Sunset','Kustom':'Custom','Bawaan':'Default','Bulat':'Rounded','Tegas':'Bold',
@@ -380,6 +381,7 @@ const JA = {
  'Gaya tampilan':'表示スタイル','Tema poster':'ポスターテーマ','tanpa':'なし','Latar':'背景','Latar 2':'背景2','Teks':'文字','Aksen':'アクセント','Font poster':'ポスターのフォント','Bagikan':'シェア',
  'Foto terpisah':'写真を分ける','1 gambar':'1枚にまとめる','Unduh foto':'写真をダウンロード','Salin gambar':'画像をコピー','Post ke X':'Xに投稿','Bagikan lewat…':'他の方法で共有…','Unduh gambar':'画像をダウンロード','Buat video':'動画を作る',
  'Salin link':'リンクをコピー','Semua':'すべて','Cuma #1':'1位のみ','♪ Suara':'♪ 音','Unduh video':'動画をダウンロード','Buat top-mu sendiri':'自分のランキングを作る',
+ 'Salin berurutan':'1枚ずつコピー','Unduh ZIP':'ZIPをダウンロード','Salin berikutnya ({a}/{b})':'次をコピー({a}/{b})','Foto {a}/{b} tersalin. Tempel dengan Ctrl+V di tweet, lalu klik lagi untuk foto berikutnya.':'{a}/{b}枚目をコピーしました。ツイートに Ctrl+V で貼り付け、もう一度クリックして次へ。','Foto terakhir ({a}/{b}) tersalin. Tempel dengan Ctrl+V. Klik lagi untuk mengulang dari awal.':'最後の写真({a}/{b})をコピーしました。Ctrl+V で貼り付け。もう一度クリックで最初から。','ZIP diunduh: semua foto dalam satu file.':'ZIPをダウンロードしました。すべての写真が1つのファイルに入っています。',
  'Foto':'フォト','Terang':'ライト','Otomatis (ikut perangkat)':'自動(端末に合わせる)','Gelap':'ダーク','Pencarian terakhir':'最近の検索','Hapus riwayat':'履歴を消去','Hasil untuk "{q}"':'「{q}」の結果','{n} cocok':'{n}件ヒット','Tidak ada yang cocok.':'一致するものがありません。','Tambah "{q}" manual':'「{q}」を手動で追加','Kalau tidak ada di daftar':'リストにない場合',
  '+ tambah semua':'+ すべて追加','Tambah semua yang tampil (sampai penuh)':'表示中のものをすべて追加(上限まで)','Ditambah {n} item.':'{n}件追加しました。','Tambah manual dengan foto sendiri':'自分の写真で手動追加','Foto sendiri hanya tersimpan di browser ini dan tidak ikut link share.':'自分の写真はこのブラウザにだけ保存され、共有リンクには含まれません。','Gagal membuka foto itu.':'その写真を開けませんでした。',
  'Otomatis':'自動','Hitam':'ブラック','Warna':'カラー','Gaya piringan (Vinyl dan Spin)':'レコードのスタイル(VinylとSpin)','Album':'アルバム','Sakura':'サクラ','Mint':'ミント','Royal':'ロイヤル','Mono':'モノ','Klasik':'クラシック','Malam':'ナイト','Laut':'海','Senja':'夕焼け','Kustom':'カスタム','Bawaan':'標準','Bulat':'丸ゴシック','Tegas':'太字',
@@ -729,14 +731,6 @@ function cover(c,a,x,y,s,r){
   if (a.im) c.drawImage(a.im,x,y,s,s); else { c.fillStyle=a.col; c.fillRect(x,y,s,s); }
   c.restore();
 }
-/* watermark: alamat situs ada di semua hasil ekspor (foto, gambar tunggal, poster story, video spin, halaman hasil) */
-function siteLabel(){ const s=SITE(); return s ? s.replace(/^https?:\/\//,'').replace(/\/$/,'') : 'jkt48-top10'; }
-function markH(c,x,y,size,color,align){ c.save(); c.font=`600 ${size}px system-ui,sans-serif`; c.fillStyle=color; c.textAlign=align||'right'; c.textBaseline='alphabetic'; c.fillText(siteLabel(),x,y); c.restore(); }
-function markPill(c,W,H,size,pad){ // di atas gambar: pil gelap transparan supaya terbaca di latar apa pun
-  c.save(); c.font=`600 ${size}px system-ui,sans-serif`; const t=siteLabel(), w=c.measureText(t).width+size*1.2, h=size*1.9, x=W-pad-w, y=H-pad-h;
-  c.fillStyle='rgba(0,0,0,.5)'; rr(c,x,y,w,h,h/2); c.fill(); c.fillStyle='rgba(255,255,255,.92)'; c.textAlign='left'; c.textBaseline='middle'; c.fillText(t,x+size*0.6,y+h/2+size*0.05); c.restore();
-}
-function markV(c,x,yBottom,size,color){ c.save(); c.translate(x,yBottom); c.rotate(-Math.PI/2); c.font=`600 ${size}px system-ui,sans-serif`; c.fillStyle=color; c.textAlign='left'; c.textBaseline='middle'; c.fillText(siteLabel(),0,0); c.restore(); }
 function badge(c,x,y,r,n){
   c.save(); c.fillStyle = RED; c.beginPath(); c.arc(x,y,r,0,7); c.fill();
   c.fillStyle = '#fff'; c.font = `800 ${r*1.1}px system-ui,sans-serif`; c.textAlign='center'; c.textBaseline='middle';
@@ -751,8 +745,8 @@ function vtext(c,txt,cx,cy,len,size,color,weight){
 function spine(c,x,y,w,h,p,a,look,i,o){
   const night=o.night;
   c.save();
-  if (look==='cds') { c.restore(); cdSpineDraw(c,x,y,w,h,p,a,night); c.save(); }
-  else if (look==='tapes') { c.restore(); tapeSpineDraw(c,x,y,w,h,p,a,night); c.save(); }
+  if (look==='cds') { c.restore(); cdSpineDraw(c,x,y,w,h,p,a,night,o.kind); c.save(); }
+  else if (look==='tapes') { c.restore(); tapeSpineDraw(c,x,y,w,h,p,a,night,o.kind); c.save(); }
   else if (look==='tapes_lama') {
     const body = shade(a.col, night?0.55:0.8);
     c.shadowColor='rgba(0,0,0,.25)'; c.shadowBlur=14; c.shadowOffsetY=6;
@@ -892,9 +886,7 @@ function scene(c,W,H,o,t){
       for (let i=1;i<n;i++) anim(i,()=>spine(c,sx+(i-1)*(sw+sg),sy,sw,H-sy-130,picks[i],assets[i],look==='player'?'cds':'tapes',i,o));
     }
   }
-  c.fillStyle=mu; c.font='600 '+(tall?30:24)+'px system-ui,sans-serif'; c.textAlign='left'; c.textBaseline='alphabetic';
-  c.fillText(o.name? 'by '+o.name : 'JKT48 Top 10', 60, H-(tall?60:34));
-  markH(c, W-60, H-(tall?60:34), tall?30:24, mu, 'right');
+  if (o.name) { c.fillStyle=mu; c.font='600 '+(tall?30:24)+'px system-ui,sans-serif'; c.textAlign='left'; c.textBaseline='alphabetic'; c.fillText('by '+o.name, 60, H-(tall?60:34)); }
 }
 
 function statsLine(picks){
@@ -919,8 +911,6 @@ function drawSpin(c,a,pick,idx,n,time,o){
   c.fillStyle=ink; c.font='800 58px system-ui,sans-serif'; c.fillText(fitText(c,pick.title,W-140),cx,cy+R+170);
   c.fillStyle=mu; c.font='500 36px system-ui,sans-serif'; c.fillText(fitText(c,pick.sub,W-140),cx,cy+R+222);
   if (pick.plays) { c.fillStyle=RED; c.font='700 32px system-ui,sans-serif'; c.fillText(tr('{n}× diputar',{n:pick.plays.toLocaleString(LOC())}),cx,cy+R+272); }
-  c.fillStyle=mu; c.font='600 26px system-ui,sans-serif'; c.fillText('JKT48 Top '+n,cx,H-72);
-  markH(c, cx, H-34, 26, mu, 'center');
 }
 
 /* 16:9: seluruh daftar berputar sekaligus (atau cover #1 dan piringannya berdampingan) */
@@ -945,8 +935,6 @@ function drawSpinWide(c,o,time){
       c.fillStyle=th.ink; c.font=`700 ${Math.max(14,R*0.17)}px system-ui,sans-serif`; c.fillText(fitText(c,p.title,cw-24),cx,cy+R+R*0.52);
     });
   }
-  c.textAlign='left'; c.fillStyle=th.mu; c.font='600 26px system-ui,sans-serif'; c.fillText('JKT48 Top '+n,60,H-34);
-  markH(c, W-60, H-34, 26, th.mu, 'right');
 }
 function spinFrame(c,o,t){
   if (state.spinFmt==='wide') { drawSpinWide(c,o,t); return; }
@@ -965,10 +953,10 @@ function photoCanvas(o,i){
   const dim = {cds:[200,2660], tapes:[330,2130], covers:[1200,1200], vinyl:[1380,1200], player:[1080,1920], photocard:[1080,1560], polaroid:[1080,1340], idcard:[1000,1620], photo:[1200,1200]}[look];
   cv.width=dim[0]; cv.height=dim[1]; const c=cv.getContext('2d'), W=dim[0], H=dim[1];
   if (look==='cds') {
-    cdSpineDraw(c,0,0,W,H,p,a,n);
+    cdSpineDraw(c,0,0,W,H,p,a,n,o.kind);
     if (o.num) badge(c,W/2,H-W*0.95,W*0.2,i+1);
   } else if (look==='tapes') {
-    tapeSpineDraw(c,0,0,W,H,p,a,n);
+    tapeSpineDraw(c,0,0,W,H,p,a,n,o.kind);
     if (o.num) badge(c,W/2,H-W*0.46,W*0.15,i+1);
   } else if (OSHI_LOOKS.includes(look)) {
     fillBg(c,W,H,o.theme); const ratio=OSHI_RATIO[look], pad=W*(look==='photo'?0.03:0.1); let cw=W-2*pad, ch=cw/ratio; if (ch>H-2*pad) { ch=H-2*pad; cw=ch*ratio; }
@@ -1000,19 +988,13 @@ function photoCanvas(o,i){
     c.fillStyle='#fff'; [[-1],[1]].forEach(([d])=>{ c.beginPath(); c.moveTo(mx+d*130,cy-36); c.lineTo(mx+d*130,cy+36); c.lineTo(mx+d*190,cy); c.closePath(); c.fill(); });
     if (o.num) badge(c,110,110,56,i+1);
   }
-  // watermark alamat situs di setiap foto ekspor
-  if (look==='cds') markV(c, W*0.065, H-95, 15, 'rgba(40,40,50,.6)');
-  else if (look==='tapes') markV(c, W*0.045, H-100, 17, 'rgba(40,40,50,.6)');
-  else if (look==='covers') { /* khusus Covers: tanpa watermark, supaya cover tampil bersih */ }
-  else if (look==='vinyl') markH(c, W-40, H-36, 24, o.theme.mu, 'right');
-  else if (OSHI_LOOKS.includes(look)) markH(c, W/2, H-(look==='photo'?14:34), 24, o.theme.mu, 'center');
-  else markH(c, W/2, H-58, 26, 'rgba(255,255,255,.65)', 'center');
   return cv;
 }
 function lum(col){ const m=col.match(/\d+/g); return m?(0.299*m[0]+0.587*m[1]+0.114*m[2])/255:0.5; }
 /* ---------- format khusus Oshi: Photocard, Polaroid, ID Card, Foto (CD/Vinyl/Player tidak cocok untuk orang) ---------- */
 const OSHI_LOOKS = ['photocard','polaroid','idcard','photo'];
-const OSHI_LOOK_NAMES = { photocard:'Photocard', polaroid:'Polaroid', idcard:'ID Card', photo:'Foto' };
+const OSHI_LOOK_NAMES = { photocard:'Photocard', polaroid:'Polaroid', idcard:'ID Card', photo:'Foto', cds:'CDs', tapes:'Tapes' };
+const OSHI_MENU = ['photocard','polaroid','idcard','photo','cds','tapes']; // CD dan kaset tetap ada: tren foto tipis berjajar di X
 const TEAM_COLOR = { L:'#e4002b', D:'#2a6fdb', P:'#f5a300', T:'#6b7280' }; // warna dekorasi buatan kita, bukan warna resmi
 const oshiNo = p => { const i = MEMBERS.findIndex(m=>'m:'+m[1]===String(p.id)); return i<0 ? 0 : i+1; };
 function teamOf(p){ const m = MEMBERS.find(m=>'m:'+m[1]===String(p.id)); return m ? m[2] : (p.team||'T'); }
@@ -1120,62 +1102,70 @@ function spineText(c,x,yTop,yBottom,artist,title,T,o){ // artis (kecil) lalu jud
   setF(); while (fs > o.minTitle && c.measureText(title).width > maxLen) { fs -= 2*u; setF(); }
   c.fillStyle = T.ink; c.fillText(fitText(c,title,maxLen), aw + o.gap, 0); c.restore();
 }
-function cdSpineDraw(c,x,y,w,h,p,a,night){
-  const u = w/200, hinge = 62*u, side = 24*u, T = paperTone(a); c.save(); c.translate(x,y);
-  // bingkai plastik jewel case: badan bening keabuan dengan rel kiri dan kanan
-  rr(c,0,0,w,h,10*u); let g = c.createLinearGradient(0,0,w,0);
-  g.addColorStop(0,'#9ea3ad'); g.addColorStop(0.05,'#f4f6f9'); g.addColorStop(0.5,'#dfe3ea'); g.addColorStop(0.95,'#f4f6f9'); g.addColorStop(1,'#979ca6'); c.fillStyle = g; c.fill();
-  // engsel atas dan bawah: tutup bening dengan dua tonjolan bulat dan lekukan di tengah
-  [0,h-hinge].forEach((yy,k)=>{
-    const gg = c.createLinearGradient(0,yy,0,yy+hinge); gg.addColorStop(0,k?'rgba(255,255,255,.2)':'rgba(255,255,255,.9)'); gg.addColorStop(1,k?'rgba(255,255,255,.9)':'rgba(255,255,255,.2)');
-    c.fillStyle = gg; c.fillRect(side*0.4, yy+3*u, w-side*0.8, hinge-6*u);
-    c.fillStyle = 'rgba(60,66,80,.24)'; for (const cx of [w*0.27, w*0.73]) { c.beginPath(); c.arc(cx, yy+hinge/2, 9*u, 0, 7); c.fill(); }
-    c.fillStyle = 'rgba(60,66,80,.3)'; rr(c, w*0.4, yy+hinge/2-4*u, w*0.2, 8*u, 4*u); c.fill();
-  });
-  const px = side, py = hinge, pw = w-side*2, ph = h-hinge*2;
-  c.save(); c.beginPath(); c.rect(px,py,pw,ph); c.clip();
-  c.fillStyle = T.bg; c.fillRect(px,py,pw,ph);
-  const artH = 2*pw, labelH = 66*u, artY = py+ph-labelH-artH;
-  coverStrip(c,a,px,artY,pw,artH);
-  c.fillStyle = T.rule; c.fillRect(px, artY-3*u, pw, 2*u);
-  spineText(c, px+pw/2, py+26*u, artY-14*u, 'JKT48', p.title, T,
-    { u, artSize: Math.min(pw*0.2, 30*u), artFont: 'system-ui,sans-serif', artW: 800, track: 4*u, upper: true, gap: 34*u,
-      titleSize: Math.min(pw*0.6, 72*u), minTitle: 24*u, titleFont: 'system-ui,sans-serif', titleW: 800 });
-  // label kecil di bawah
-  c.strokeStyle = T.rule; c.lineWidth = 2*u; rr(c, px+pw*0.14, py+ph-labelH+14*u, pw*0.72, labelH-28*u, 4*u); c.stroke();
-  c.fillStyle = T.ink; c.font = `800 ${20*u}px system-ui,sans-serif`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('JKT48', px+pw/2, py+ph-labelH/2);
-  plasticGloss(c,px,py,pw,ph,u);
-  c.restore();
-  c.strokeStyle = 'rgba(0,0,0,.22)'; c.lineWidth = Math.max(1,1.5*u); rr(c,0,0,w,h,10*u); c.stroke();
+/* ---- punggung CD/DVD dan kaset ala rak koleksi asli (mengikuti referensi desain teman):
+   kertas satu warna dari cover, cover kecil di atas, logo JKT / 48 bertumpuk, judul vertikal dengan jenis huruf yang
+   berganti per album, nomor katalog dan jenis media di bawah, dibungkus plastik bening dengan engsel ---- */
+const TITLE_FONTS = [
+  { f:'Impact,"Arial Narrow Bold","Arial Narrow",sans-serif', w:400, up:true,  it:'' },
+  { f:'Georgia,"Times New Roman",serif',                      w:800, up:true,  it:'' },
+  { f:'"Segoe Script","Brush Script MT","Lucida Handwriting",cursive', w:600, up:false, it:'italic' },
+  { f:'"Arial Black","Helvetica Neue",Arial,sans-serif',      w:900, up:true,  it:'' },
+  { f:'"Trebuchet MS","Segoe UI",sans-serif',                 w:800, up:true,  it:'italic' },
+  { f:'"Courier New",monospace',                              w:800, up:true,  it:'' }
+];
+const mediaLabel = (kind,tape) => tape ? 'TAPE' : ({album:'CD', song:'CD', oshi:'MEMBER', setlist:'DVD'}[kind] || 'CD');
+function catalogNo(p,kind){ // nomor hiasan (bukan nomor katalog resmi)
+  if (kind==='oshi') return 'JKT-'+String(oshiNo(p) || (hashStr(String(p.title))%900)+1).padStart(3,'0');
+  return 'JKT-'+String(1000 + hashStr(String(p.title))%9000);
+}
+function spineTitle(c,cx,y0,y1,title,maxCross,u,T,F){
+  const text = F.up ? title.toUpperCase() : title, len = y1-y0;
+  const fit = (t,size) => { c.font = `${F.it} ${F.w} ${size}px ${F.f}`; return c.measureText(t).width; };
+  let size = maxCross, lines = [text];
+  while (size > 30*u && fit(text,size) > len) size -= 2*u;
+  if (fit(text,size) > len && text.includes(' ')) { // terlalu panjang: pecah jadi dua kolom, kolom pertama di kanan
+    const ws = text.split(' '); let best = null;
+    for (let i=1;i<ws.length;i++){ const a=ws.slice(0,i).join(' '), b=ws.slice(i).join(' '), m=Math.max(fit(a,24*u),fit(b,24*u)); if (!best || m<best.m) best={a,b,m}; }
+    if (best) { lines=[best.a,best.b]; size = maxCross/2.15; while (size > 16*u && Math.max(fit(lines[0],size),fit(lines[1],size)) > len) size -= 2*u; }
+  }
+  c.save(); c.translate(cx,y0); c.rotate(Math.PI/2); c.textBaseline='middle'; c.textAlign='left'; c.fillStyle=T.ink; c.font=`${F.it} ${F.w} ${size}px ${F.f}`;
+  if (lines.length===1) c.fillText(fitText(c,lines[0],len),0,0);
+  else { c.fillText(fitText(c,lines[0],len),0,-size*0.62); c.fillText(fitText(c,lines[1],len),0,size*0.62); }
   c.restore();
 }
-function tapeSpineDraw(c,x,y,w,h,p,a,night){
-  const u = w/330, side = 30*u, cap = 66*u, T = paperTone(a); c.save(); c.translate(x,y);
-  // casing kaset bening: bingkai tebal bersudut membulat, tutup atas dan bawah lebih tebal
-  rr(c,0,0,w,h,28*u); let g = c.createLinearGradient(0,0,w,0);
-  g.addColorStop(0,'#a3a9b4'); g.addColorStop(0.05,'#f6f8fb'); g.addColorStop(0.5,'#e2e6ed'); g.addColorStop(0.95,'#f6f8fb'); g.addColorStop(1,'#9ca2ad'); c.fillStyle = g; c.fill();
-  [0,h-cap].forEach((yy,k)=>{
-    const gg = c.createLinearGradient(0,yy,0,yy+cap); gg.addColorStop(0,k?'rgba(255,255,255,.15)':'rgba(255,255,255,.9)'); gg.addColorStop(1,k?'rgba(255,255,255,.9)':'rgba(255,255,255,.15)');
-    c.fillStyle = gg; c.fillRect(side*0.5, yy+4*u, w-side, cap-8*u);
-    c.fillStyle = 'rgba(60,66,80,.26)'; rr(c, w*0.34, yy+cap/2-5*u, w*0.32, 10*u, 5*u); c.fill();
-    c.fillStyle = 'rgba(60,66,80,.2)'; for (const cx of [w*0.2, w*0.8]) { c.beginPath(); c.arc(cx, yy+cap/2, 8*u, 0, 7); c.fill(); }
+function drawSpineCommon(c,x,y,w,h,p,a,kind,cfg){
+  const u = w/cfg.base, side = cfg.side*u, cap = cfg.cap*u, T = paperTone(a), F = TITLE_FONTS[hashStr(String(p.title))%TITLE_FONTS.length];
+  c.save(); c.translate(x,y);
+  // plastik bening: badan keabuan dengan rel kiri-kanan yang berkilau
+  rr(c,0,0,w,h,cfg.radius*u); let g = c.createLinearGradient(0,0,w,0);
+  g.addColorStop(0,'#9ea3ad'); g.addColorStop(0.05,'#f4f6f9'); g.addColorStop(0.5,'#dfe3ea'); g.addColorStop(0.95,'#f4f6f9'); g.addColorStop(1,'#979ca6'); c.fillStyle = g; c.fill();
+  [0,h-cap].forEach((yy,k)=>{ // tutup atas/bawah dengan tonjolan bulat dan lekukan di tengah
+    const gg = c.createLinearGradient(0,yy,0,yy+cap); gg.addColorStop(0,k?'rgba(255,255,255,.18)':'rgba(255,255,255,.9)'); gg.addColorStop(1,k?'rgba(255,255,255,.9)':'rgba(255,255,255,.18)');
+    c.fillStyle = gg; c.fillRect(side*0.45, yy+3*u, w-side*0.9, cap-6*u);
+    c.fillStyle = 'rgba(60,66,80,.24)'; for (const cx of [w*0.27, w*0.73]) { c.beginPath(); c.arc(cx, yy+cap/2, 8.5*u, 0, 7); c.fill(); }
+    c.fillStyle = 'rgba(60,66,80,.3)'; rr(c, w*0.4, yy+cap/2-4*u, w*0.2, 8*u, 4*u); c.fill();
   });
   const px = side, py = cap, pw = w-side*2, ph = h-cap*2;
   c.save(); c.beginPath(); c.rect(px,py,pw,ph); c.clip();
   c.fillStyle = T.bg; c.fillRect(px,py,pw,ph);
-  const artH = Math.round(pw*1.35), artY = py+ph-artH;
-  coverStrip(c,a,px,artY,pw,artH);
-  c.fillStyle = RED; c.fillRect(px, artY-6*u, pw, 6*u); // garis merah khas situs ini
-  // artis besar bergaya serif, judul serif miring lebih kecil
-  const aSize = Math.min(pw*0.7, 190*u);
-  spineText(c, px+pw/2, py+30*u, artY-22*u, 'JKT48', p.title, T,
-    { u, artSize: aSize, artFont: 'Georgia,"Times New Roman",serif', artW: 800, track: 0, upper: false, gap: 44*u,
-      titleSize: Math.min(pw*0.3, 82*u), minTitle: 30*u, titleFont: 'Georgia,"Times New Roman",serif', titleW: 500, titleStyle: 'italic' });
+  drawCoverFit(c, a.im, px, py, pw, pw, 0);                         // cover kecil di atas
+  const my = py + pw + cfg.markGap*u;                               // logo JKT / 48 bertumpuk
+  c.fillStyle = T.mu; c.textAlign = 'center'; c.textBaseline = 'alphabetic'; c.font = `300 ${pw*0.4}px "Arial Narrow","Segoe UI",system-ui,sans-serif`;
+  c.fillText('JKT', px+pw/2, my + pw*0.34); c.fillText('48', px+pw/2, my + pw*0.78);
+  const titleTop = my + pw*0.78 + cfg.titleGap*u, infoH = cfg.infoH*u, infoTop = py + ph - infoH;
+  spineTitle(c, px+pw/2, titleTop, infoTop - cfg.titleGap*u, p.title, pw*cfg.titleCross, u, T, F);
+  c.fillStyle = T.mu; c.textAlign = 'center'; c.textBaseline = 'middle';                 // nomor katalog dan jenis media
+  c.font = `700 ${pw*0.115}px system-ui,sans-serif`; c.fillText(catalogNo(p,kind), px+pw/2, infoTop + infoH*0.38);
+  c.font = `800 ${pw*0.135}px system-ui,sans-serif`; c.fillText(mediaLabel(kind,cfg.tape), px+pw/2, infoTop + infoH*0.7);
   plasticGloss(c,px,py,pw,ph,u);
   c.restore();
-  c.strokeStyle = 'rgba(0,0,0,.24)'; c.lineWidth = Math.max(1,1.6*u); rr(c,0,0,w,h,28*u); c.stroke();
+  c.strokeStyle = 'rgba(0,0,0,.22)'; c.lineWidth = Math.max(1,1.5*u); rr(c,0,0,w,h,cfg.radius*u); c.stroke();
   c.restore();
 }
+const CD_CFG = { base:200, side:24, cap:62, radius:10, markGap:16, titleGap:22, infoH:96, titleCross:0.62, tape:false };
+const TAPE_CFG = { base:330, side:30, cap:66, radius:28, markGap:24, titleGap:30, infoH:150, titleCross:0.5, tape:true };
+function cdSpineDraw(c,x,y,w,h,p,a,night,kind){ drawSpineCommon(c,x,y,w,h,p,a,kind,CD_CFG); }
+function tapeSpineDraw(c,x,y,w,h,p,a,night,kind){ drawSpineCommon(c,x,y,w,h,p,a,kind,TAPE_CFG); }
 /* mode "1 gambar": seluruh daftar dalam satu foto (bisa disalin ke clipboard lalu Ctrl+V di tweet) */
 function singleCanvas(o){
   const cv=document.createElement('canvas'); cv.width=1600; cv.height=900; scene(cv.getContext('2d'),1600,900,o,1); return cv;
@@ -1221,7 +1211,7 @@ async function refreshNow(){
   renderLooks(o);
   if (state.share==='post') {
     const single = state.postMode==='single';
-    $('#copyImg').hidden = !single;
+    $('#copyImg').hidden = !single; $('#copySeq').hidden = single || o.picks.length<2; $('#dlZip').hidden = single || o.picks.length<2; seqIdx = 0; $('#copySeq').textContent = tr('Salin berurutan');
     $('#postSub').textContent = !o.picks.length ? tr('Pilih favoritmu dulu.') : single ? tr('Satu gambar berisi seluruh daftar. Klik Salin gambar lalu Ctrl+V di kotak tweet.') : tr('{n} foto, satu per {one}, berurutan. Seret atau salin tiap foto, atau unduh semuanya. X menerima sampai 20 foto per post.',{n:o.picks.length,one:tr(one())});
     $('#strip').replaceChildren(...postCanvases(o).map((cv,i)=>stripItem(cv, single?'jkt48-top10.png':`jkt48-top10-${String(i+1).padStart(2,'0')}.png`)));
   }
@@ -1280,7 +1270,7 @@ function renderLooks(o){
   const host=$('#looks'), group = state.kind==='oshi' ? 'oshi' : 'musik';
   if (host.dataset.group !== group) { // jenis format berbeda: member tidak cocok dengan CD, vinyl, dan player
     host.dataset.group = group; host.replaceChildren();
-    (group==='oshi' ? OSHI_LOOKS.map(k=>[k,OSHI_LOOK_NAMES[k]]) : [['cds','CDs'],['tapes','Tapes'],['covers','Covers'],['vinyl','Vinyl'],['player','Player']]).forEach(([k,l])=>{
+    (group==='oshi' ? OSHI_MENU.map(k=>[k,OSHI_LOOK_NAMES[k]]) : [['cds','CDs'],['tapes','Tapes'],['covers','Covers'],['vinyl','Vinyl'],['player','Player']]).forEach(([k,l])=>{
       const b=document.createElement('button'); b.className='look'; b.dataset.look=k; b.innerHTML=`<canvas width="160" height="90"></canvas><span>${tr(l)}</span>`; host.appendChild(b);
     });
   }
@@ -1425,7 +1415,7 @@ $('#filters').onchange = e => { if (e.target.id==='yearSel') { state.year=e.targ
 /* format dan tab Spin menyesuaikan jenis daftar: Oshi memakai Photocard/Polaroid/ID Card/Foto, tanpa Spin */
 function syncKindUI(){
   const oshi = state.kind==='oshi';
-  if (oshi && !OSHI_LOOKS.includes(state.look)) state.look = 'photocard';
+  if (oshi && !OSHI_MENU.includes(state.look)) state.look = 'photocard';
   else if (!oshi && OSHI_LOOKS.includes(state.look)) state.look = 'cds';
   document.querySelector('[data-s=spin]').hidden = oshi;
   if (oshi && state.share==='spin') document.querySelector('[data-s=post]').click();
@@ -1629,6 +1619,34 @@ async function sendToExt(files){
 }
 function showGuide(html){ const g=$('#guide'); g.innerHTML=html; g.hidden=false; }
 $('#postMode').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; state.postMode=b.dataset.m; document.querySelectorAll('#postMode button').forEach(t=>t.classList.toggle('on',t===b)); $('#guide').hidden=true; refresh(); };
+/* "salin semua": clipboard browser hanya bisa menampung satu gambar, jadi tombol ini menyalin foto satu per satu berurutan
+   (klik, Ctrl+V di tweet, klik lagi). Untuk semuanya sekaligus: Unduh ZIP atau mode "1 gambar". */
+let seqIdx = 0;
+$('#copySeq').onclick = async () => {
+  const cvs = [...document.querySelectorAll('#strip canvas')]; if (!cvs.length) return;
+  if (seqIdx >= cvs.length) seqIdx = 0;
+  const cv = cvs[seqIdx]; const ok = cv._blob ? await copyBlob(cv._blob) : false, n = seqIdx+1;
+  cvs.forEach((c,i)=>{ c.style.outline = i===seqIdx ? '3px solid #e4002b' : ''; c.style.outlineOffset = '2px'; });
+  if (!ok) { $('#postSub').textContent = tr('Browser ini menolak menyalin gambar. Seret fotonya atau pakai Unduh foto.'); return; }
+  seqIdx = (seqIdx+1) % cvs.length;
+  $('#postSub').textContent = n===cvs.length ? tr('Foto terakhir ({a}/{b}) tersalin. Tempel dengan Ctrl+V. Klik lagi untuk mengulang dari awal.',{a:n,b:cvs.length}) : tr('Foto {a}/{b} tersalin. Tempel dengan Ctrl+V di tweet, lalu klik lagi untuk foto berikutnya.',{a:n,b:cvs.length});
+  $('#copySeq').textContent = tr('Salin berikutnya ({a}/{b})',{a:seqIdx+1,b:cvs.length});
+};
+/* ZIP sederhana tanpa pustaka (isi PNG sudah terkompresi, jadi cukup disimpan apa adanya) */
+function crc32(buf){ if (!crc32.t) { crc32.t = new Uint32Array(256); for (let n=0;n<256;n++){ let c=n; for (let k=0;k<8;k++) c = c&1 ? 0xEDB88320^(c>>>1) : c>>>1; crc32.t[n]=c>>>0; } } let crc=0xFFFFFFFF; for (let i=0;i<buf.length;i++) crc = crc32.t[(crc^buf[i])&255]^(crc>>>8); return (crc^0xFFFFFFFF)>>>0; }
+async function makeZip(files){
+  const enc = new TextEncoder(), parts = [], central = []; let offset = 0;
+  for (const f of files) {
+    const data = new Uint8Array(await f.blob.arrayBuffer()), name = enc.encode(f.name), crc = crc32(data);
+    const lh = new DataView(new ArrayBuffer(30)); lh.setUint32(0,0x04034b50,true); lh.setUint16(4,20,true); lh.setUint16(6,0x0800,true); lh.setUint16(10,0,true); lh.setUint16(12,0x21,true); lh.setUint32(14,crc,true); lh.setUint32(18,data.length,true); lh.setUint32(22,data.length,true); lh.setUint16(26,name.length,true);
+    parts.push(lh.buffer,name,data);
+    const ch = new DataView(new ArrayBuffer(46)); ch.setUint32(0,0x02014b50,true); ch.setUint16(4,20,true); ch.setUint16(6,20,true); ch.setUint16(8,0x0800,true); ch.setUint16(14,0x21,true); ch.setUint32(16,crc,true); ch.setUint32(20,data.length,true); ch.setUint32(24,data.length,true); ch.setUint16(28,name.length,true); ch.setUint32(42,offset,true);
+    central.push(ch.buffer,name); offset += 30+name.length+data.length;
+  }
+  const csize = central.reduce((s,b)=>s+b.byteLength,0), end = new DataView(new ArrayBuffer(22)); end.setUint32(0,0x06054b50,true); end.setUint16(8,files.length,true); end.setUint16(10,files.length,true); end.setUint32(12,csize,true); end.setUint32(16,offset,true);
+  return new Blob([...parts,...central,end.buffer],{type:'application/zip'});
+}
+$('#dlZip').onclick = async () => { const files = await postFiles(); if (!files.length) return; dl(await makeZip(files),'jkt48-top10.zip'); $('#postSub').textContent = tr('ZIP diunduh: semua foto dalam satu file.'); };
 $('#copyImg').onclick=async()=>{
   const files=await postFiles(); const ok=await copyBlob(files[0].blob);
   $('#postSub').textContent = ok ? tr('Gambar tersalin. Tekan Ctrl+V di kotak tweet.') : tr('Browser ini menolak menyalin gambar. Pakai Unduh foto.');
@@ -1687,7 +1705,7 @@ $('#mkSpin').onclick=async()=>{
 
 /* tombol yang bekerja lama (unduh, salin, share, rekam) hanya boleh jalan satu per satu: klik ganda tidak membuka dua tab atau mengunduh dua kali */
 let busyAction = false;
-for (const id of ['dlPost','copyImg','toX','shareSheet','mkStory','mkSpin','dlStoryImg']) {
+for (const id of ['dlPost','dlZip','copyImg','toX','shareSheet','mkStory','mkSpin','dlStoryImg']) {
   const el = $('#'+id), h = el.onclick;
   el.onclick = async e => { if (busyAction) return; busyAction = true; el.disabled = true; try { await h.call(el,e); } finally { busyAction = false; el.disabled = false; } };
 }
