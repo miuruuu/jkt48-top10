@@ -30,6 +30,18 @@ input[type=search],input[type=text]{width:100%;padding:11px 14px;border-radius:1
 .res{flex:0 0 auto;width:62px;cursor:pointer;border:0;background:none;padding:0;color:inherit;font:inherit}
 .res img{width:62px;height:62px;border-radius:8px;object-fit:cover;display:block;background:var(--line)}
 .res.used img{outline:3px solid var(--red);outline-offset:-3px}
+.themehead{margin-top:14px;font-size:13px;font-weight:700;color:var(--mute)}
+.themes{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.tsw{width:64px;border:2px solid transparent;border-radius:12px;background:none;padding:4px;cursor:pointer;color:var(--ink);font:inherit;font-size:11px;text-align:center}
+.tsw i{display:block;height:34px;border-radius:8px;border:1px solid var(--line);position:relative;margin-bottom:3px}
+.tsw i::after{content:"";position:absolute;right:6px;bottom:6px;width:12px;height:12px;border-radius:50%;background:var(--a,#e4002b)}
+.tsw.on{border-color:var(--red)}
+.custom{display:flex;flex-wrap:wrap;gap:10px 16px;margin-top:10px;padding:10px 12px;background:var(--soft);border-radius:12px;font-size:12px}
+.custom label{display:flex;align-items:center;gap:6px}
+.custom input[type=color]{width:34px;height:26px;padding:0;border:1px solid var(--line);border-radius:6px;background:none;cursor:pointer}
+.lang{position:absolute;top:14px;right:14px;display:flex;background:rgba(255,255,255,.18);border-radius:99px;padding:3px;z-index:2}
+.lang button{border:0;background:none;color:#fff;padding:5px 12px;border-radius:99px;cursor:pointer;font:inherit;font-size:12px;font-weight:700;opacity:.85}
+.lang button.on{background:#fff;color:#b80022;opacity:1}
 .hint{margin-left:auto;font-size:12px;color:var(--mute);align-self:center}
 .hint.ok{color:#168a4a;font-weight:700}
 .guide{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--soft);font-size:13px;line-height:1.5}
@@ -126,8 +138,9 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
 <div class="wrap">
   <header class="hero">
     <div class="eyebrow">JKT48 · FAN MADE</div>
+    <div class="lang"><button type="button" data-l="id">ID</button><button type="button" data-l="en">EN</button></div>
     <h1 id="h1">Susun Top 10 JKT48-mu</h1>
-    <p>Pilih album, lagu, atau oshi favoritmu, atur tampilannya, lalu bagikan ke X, story, atau lewat link.</p>
+    <p data-k="hero">Pilih album, lagu, atau oshi favoritmu, atur tampilannya, lalu bagikan ke X, story, atau lewat link.</p>
   </header>
   <div class="tabs">
     <button class="tab on" data-kind="album">Albums</button>
@@ -167,9 +180,18 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
         <div class="fmthead">
           <h2><b class="step">2</b>Gaya tampilan</h2>
           <label class="sw" id="swNum"><i></i>Numbers</label>
-          <label class="sw" id="swNight"><i></i>Night</label>
         </div>
         <div class="looks" id="looks"></div>
+        <div class="themehead">Tema poster</div>
+        <div class="themes" id="themes"></div>
+        <div class="custom" id="customBox" hidden>
+          <label>Latar <input type="color" id="cBg"></label>
+          <label>Latar 2 <input type="color" id="cBg2"><button class="chip" type="button" id="cBg2Off">tanpa</button></label>
+          <label>Teks <input type="color" id="cInk"></label>
+          <label>Aksen <input type="color" id="cAcc"></label>
+        </div>
+        <div class="themehead" style="margin-top:12px">Font poster</div>
+        <div class="chips" id="fonts" style="margin-top:6px"></div>
       </div>
       <div class="card">
         <h2><b class="step">3</b>Bagikan</h2>
@@ -190,22 +212,22 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
           <div class="sub" id="postSub">Gambar diunduh dulu, lalu lampirkan di tweet.</div>
           <div class="guide" id="guide" hidden></div>
           <details class="ext">
-            <summary>Tip: pasang X sebagai aplikasi, lalu foto masuk lewat tombol Bagikan</summary>
-            <ol>
+            <summary data-k="tipSum">Tip: pasang X sebagai aplikasi, lalu foto masuk lewat tombol Bagikan</summary>
+            <ol data-k="tipOl">
               <li>Buka <b>x.com</b> di Chrome atau Edge, lalu pasang sebagai aplikasi (ikon pasang di kolom alamat, atau menu ⋮ → <b>Simpan dan bagikan → Instal halaman sebagai aplikasi</b>).</li>
               <li>Kembali ke situs ini, klik <b>Bagikan lewat…</b>. Di menu share Windows akan ada pilihan <b>X</b>.</li>
               <li>Pilih X: kotak tweet terbuka dengan fotonya sudah terlampir, tanpa file tersimpan.</li>
             </ol>
-            <p>X mendaftarkan dirinya sebagai tujuan share untuk gambar (bisa kamu lihat di manifest-nya), tapi ini bergantung pada browser dan sistem operasimu, dan berapa foto yang diterima ditentukan X. Kalau X tidak muncul di daftar, pakai cara lain di atas.</p>
+            <p data-k="tipP">X mendaftarkan dirinya sebagai tujuan share untuk gambar (bisa kamu lihat di manifest-nya), tapi ini bergantung pada browser dan sistem operasimu, dan berapa foto yang diterima ditentukan X. Kalau X tidak muncul di daftar, pakai cara lain di atas.</p>
           </details>
           <details class="ext">
-            <summary>Ekstensi Chrome (opsional): tempel semua foto ke tweet otomatis</summary>
-            <ol>
+            <summary data-k="extSum">Ekstensi Chrome (opsional): tempel semua foto ke tweet otomatis</summary>
+            <ol data-k="extOl">
               <li><a href="jkt48-top-extension.zip" download>Unduh ekstensi (.zip)</a> lalu ekstrak ke satu folder.</li>
               <li>Buka <code>chrome://extensions</code>, nyalakan <b>Developer mode</b>, klik <b>Load unpacked</b>, pilih folder tadi.</li>
               <li>Muat ulang situs ini. Tulisan "Ekstensi aktif" akan muncul di atas. Klik <b>Post ke X</b> dan foto akan menempel sendiri di kotak tweet.</li>
             </ol>
-            <p><b>Disclaimer:</b> ekstensi ini buatan penggemar, tidak resmi, dan tidak berafiliasi dengan X atau JKT48. Ia hanya berjalan di situs ini dan x.com, hanya menyimpan fotomu sementara di browser, dan tidak mengirim apa pun ke server. Karena X bisa mengubah tampilannya kapan saja, ekstensi bisa berhenti bekerja. Pakai atas risikomu sendiri dan baca kodenya dulu kalau ragu.</p>
+            <p data-k="extP"><b>Disclaimer:</b> ekstensi ini buatan penggemar, tidak resmi, dan tidak berafiliasi dengan X atau JKT48. Ia hanya berjalan di situs ini dan x.com, hanya menyimpan fotomu sementara di browser, dan tidak mengirim apa pun ke server. Karena X bisa mengubah tampilannya kapan saja, ekstensi bisa berhenti bekerja. Pakai atas risikomu sendiri dan baca kodenya dulu kalau ragu.</p>
           </details>
         </div>
         <div id="p-story" hidden>
@@ -240,26 +262,144 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
     <div class="card"><canvas id="cvView" width="1600" height="900" style="width:100%;height:auto;border-radius:14px;display:block"></canvas></div>
     <div class="card"><ol id="vList" style="max-height:none"></ol></div>
     <div class="btns"><button class="btn" id="vDl" type="button">Unduh gambar</button><button class="btn dark" id="vMake" type="button">Buat top-mu sendiri</button></div>
-    <div class="sub">Dibuat dengan JKT48 Top 10 · situs fan, bukan resmi.</div>
+    <div class="sub" data-k="viewFoot">Dibuat dengan JKT48 Top 10 · situs fan, bukan resmi.</div>
   </div>
   <details class="ext disc" id="disclaimer" style="margin-top:28px">
-    <summary>Disclaimer · situs fan tidak resmi, tidak berafiliasi dengan JKT48 atau X</summary>
-    <p><b>Situs fan, tidak resmi.</b> JKT48 Top 10 dibuat oleh penggemar dan tidak berafiliasi dengan, didukung, atau disponsori oleh JKT48, JKT48 Operation Team, IDN, X (Twitter), Apple, Spotify, stats.fm, Last.fm, maupun MusicBrainz. Semua nama dan merek milik pemiliknya masing-masing.</p>
-    <p><b>Hak cipta.</b> Cover album berasal dari iTunes dan Cover Art Archive, foto member dari jkt48.com. Seluruhnya milik pemegang haknya (© JKT48 Operation Team / PT Indonesia Musik Nusantara dan pihak terkait) dan hanya ditampilkan untuk membuat daftar favorit pribadi. Kalau kamu pemilik hak dan ingin sesuatu dihapus, hubungi pembuat situs lewat repo GitHub-nya.</p>
-    <p><b>Akurasi data.</b> Daftar album dan lagu digabung dari iTunes, MusicBrainz, dan Wikipedia, dan daftar member adalah snapshot dari jkt48.com/member per 19 November 2026. Bisa ada kekurangan, salah ketik, atau data yang sudah berubah (misalnya member baru atau pindah tim). Cuplikan lagu dari iTunes, bukan dari situs ini.</p>
-    <p><b>Privasi.</b> Situs ini tidak punya server dan tidak menyimpan datamu. Daftar, nama daftar, dan pengaturanmu hanya tersimpan di browser ini. Saat kamu mencari atau mengimpor, browser-mu menghubungi langsung layanan terkait (iTunes, MusicBrainz, Wikipedia, stats.fm, Last.fm, dan wsrv.nl untuk foto member), yang punya kebijakan privasi sendiri. Link share memuat isi daftarmu di dalam alamatnya, jadi siapa pun yang punya link bisa melihatnya; jangan menaruh data pribadi di nama atau link.</p>
-    <p><b>Berbagi ke X.</b> Situs ini tidak memposting atas namamu dan tidak meminta login ke akun mana pun. Tombol Post ke X hanya membuka halaman tulis tweet; fotonya kamu lampirkan sendiri. Ekstensi Chrome opsional juga tidak resmi dan dipakai atas risikomu sendiri.</p>
-    <p><b>Tanpa jaminan.</b> Situs dan ekstensinya diberikan apa adanya tanpa jaminan apa pun, dan bisa berhenti bekerja sewaktu-waktu jika layanan pihak ketiga berubah.</p>
+    <summary data-k="discSum">Disclaimer · situs fan tidak resmi, tidak berafiliasi dengan JKT48 atau X</summary>
+    <p data-k="disc1"><b>Situs fan, tidak resmi.</b> JKT48 Top 10 dibuat oleh penggemar dan tidak berafiliasi dengan, didukung, atau disponsori oleh JKT48, JKT48 Operation Team, IDN, X (Twitter), Apple, Spotify, stats.fm, Last.fm, maupun MusicBrainz. Semua nama dan merek milik pemiliknya masing-masing.</p>
+    <p data-k="disc2"><b>Hak cipta.</b> Cover album berasal dari iTunes dan Cover Art Archive, foto member dari jkt48.com. Seluruhnya milik pemegang haknya (© JKT48 Operation Team / PT Indonesia Musik Nusantara dan pihak terkait) dan hanya ditampilkan untuk membuat daftar favorit pribadi. Kalau kamu pemilik hak dan ingin sesuatu dihapus, hubungi pembuat situs lewat repo GitHub-nya.</p>
+    <p data-k="disc3"><b>Akurasi data.</b> Daftar album dan lagu digabung dari iTunes, MusicBrainz, dan Wikipedia, dan daftar member adalah snapshot dari jkt48.com/member per 19 November 2026. Bisa ada kekurangan, salah ketik, atau data yang sudah berubah (misalnya member baru atau pindah tim). Cuplikan lagu dari iTunes, bukan dari situs ini.</p>
+    <p data-k="disc4"><b>Privasi.</b> Situs ini tidak punya server dan tidak menyimpan datamu. Daftar, nama daftar, dan pengaturanmu hanya tersimpan di browser ini. Saat kamu mencari atau mengimpor, browser-mu menghubungi langsung layanan terkait (iTunes, MusicBrainz, Wikipedia, stats.fm, Last.fm, dan wsrv.nl untuk foto member), yang punya kebijakan privasi sendiri. Link share memuat isi daftarmu di dalam alamatnya, jadi siapa pun yang punya link bisa melihatnya; jangan menaruh data pribadi di nama atau link.</p>
+    <p data-k="disc5"><b>Berbagi ke X.</b> Situs ini tidak memposting atas namamu dan tidak meminta login ke akun mana pun. Tombol Post ke X hanya membuka halaman tulis tweet; fotonya kamu lampirkan sendiri. Ekstensi Chrome opsional juga tidak resmi dan dipakai atas risikomu sendiri.</p>
+    <p data-k="disc6"><b>Tanpa jaminan.</b> Situs dan ekstensinya diberikan apa adanya tanpa jaminan apa pun, dan bisa berhenti bekerja sewaktu-waktu jika layanan pihak ketiga berubah.</p>
   </details>
 </div>
 <script>
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const state = { postMode:'multi', kind:'album', look:'cds', num:false, night:false, share:'post', spin:'all', spinFmt:'sq', audio:true, q:'', filter:'all', year:'all', picks:{album:[],song:[],oshi:[]} };
+/* ---------- bahasa: Indonesia (bawaan teks) / English ---------- */
+let LANG = 'id';
+try { const l = localStorage.getItem('jkt48lang'); LANG = l==='en'||l==='id' ? l : ((navigator.language||'id').toLowerCase().startsWith('id') ? 'id' : 'en'); } catch(e){}
+const EN = {
+ 'Pilih favoritmu':'Pick your favorites','Impor':'Import','Semua waktu':'All time','6 bulan':'6 months','4 minggu':'4 weeks','Hapus semua':'Clear all','Jumlah:':'Count:',
+ 'Belum ada pilihan. Klik cover di atas.':'Nothing picked yet. Click a cover above.','· drag untuk urutkan':'· drag to reorder','Simpan daftar':'Save list','Muat':'Load','Hapus':'Delete','Daftar tersimpan…':'Saved lists…',
+ 'Gaya tampilan':'Display style','Tema poster':'Poster theme','tanpa':'none','Latar':'Background','Latar 2':'Background 2','Teks':'Text','Aksen':'Accent','Font poster':'Poster font','Bagikan':'Share',
+ 'Foto terpisah':'Separate photos','1 gambar':'1 image','Unduh foto':'Download photos','Salin gambar':'Copy image','Post ke X':'Post to X','Bagikan lewat…':'Share via…','Unduh gambar':'Download image','Buat video':'Make video',
+ 'Salin link':'Copy link','Semua':'All','Cuma #1':'Just #1','♪ Suara':'♪ Sound','Unduh video':'Download video','Buat top-mu sendiri':'Make your own top list',
+ 'Klasik':'Classic','Malam':'Night','Laut':'Sea','Senja':'Sunset','Kustom':'Custom','Bawaan':'Default','Bulat':'Rounded','Tegas':'Bold',
+ 'Singel':'Singles','Rilis resmi':'Official releases','Setlist teater':'Theater setlists','Semua tahun':'All years','Tahun rilis':'Release year',
+ 'Cari album JKT48...':'Search JKT48 albums...','Cari lagu JKT48...':'Search JKT48 songs...','Cari member JKT48...':'Search JKT48 members...','Nama daftar (mis. Top 2026)':'List name (e.g. Top 2026)',
+ 'Tambahkan kata-kata untuk postinganmu':'Add words to your post','Namamu (opsional)':'Your name (optional)','Link-mu, mis. x.com/kamu':'Your link, e.g. x.com/you',
+ 'Sumber impor':'Import source','Rentang waktu':'Time range','Daftar tersimpan':'Saved lists','Fotomu, berurutan':'Your photos, in order','Putar cuplikan lagu 30 detik':'Play a 30-second preview',
+ 'Naik':'Move up','Tambah manual':'Add manually','Salin gambar ini':'Copy this image','Seret ke kotak tweet, atau klik tombol salin':'Drag into the tweet box, or click the copy button',
+ 'Impor top JKT48-mu dari stats.fm atau Last.fm (profil harus publik).':'Import your JKT48 top from stats.fm or Last.fm (profile must be public).',
+ 'Untuk Instagram atau TikTok story. Tambahkan lagu saat kamu posting.':'For Instagram or TikTok stories. Add a song when you post.','Gambar diunduh dulu, lalu lampirkan di tweet.':'Download the images first, then attach them to your tweet.',
+ 'Username Last.fm':'Last.fm username','Username stats.fm':'stats.fm username',
+ 'lagu':'song','album':'album','member':'member','oleh':'by','putaran':'plays','jam didengarkan':'hours listened','{n}× diputar':'{n}× played','Pilih favoritmu dulu':'Pick your favorites first',
+ 'Memuat lagu... {a}/{b}':'Loading songs... {a}/{b}','Memuat daftar dari iTunes dan MusicBrainz...':'Loading lists from iTunes and MusicBrainz...','Gagal memuat data. Buka lewat server (http), bukan file.':'Failed to load data. Open via a server (http), not as a file.',
+ 'Tidak ketemu. Klik + untuk menambah manual.':'No results. Click + to add it manually.','Menampilkan 300 dari {n}. Ketik untuk mencari.':'Showing 300 of {n}. Type to search.',
+ 'Tersalin: {name}. Tekan Ctrl+V di kotak tweet.':'Copied: {name}. Press Ctrl+V in the tweet box.','Browser ini menolak menyalin gambar. Seret fotonya atau pakai Unduh foto.':'This browser refused to copy the image. Drag the photo or use Download photos.',
+ 'Pilih favoritmu dulu.':'Pick your favorites first.','Satu gambar berisi seluruh daftar. Klik Salin gambar lalu Ctrl+V di kotak tweet.':'One image with the whole list. Click Copy image, then press Ctrl+V in the tweet box.',
+ '{n} foto, satu per {one}, berurutan. Seret atau salin tiap foto, atau unduh semuanya. X menerima sampai 20 foto per post.':'{n} photos, one per {one}, in order. Drag or copy each photo, or download them all. X accepts up to 20 photos per post.',
+ 'Gagal membuat gambar.':'Could not create the image.','Susun Top {n} JKT48-mu':'Build your JKT48 Top {n}','Top {n}-mu':'Your Top {n}','Maksimal {n}.':'Maximum {n}.',
+ 'Ketik username dulu.':'Type a username first.','Mengambil data...':'Fetching data...','Username tidak ditemukan di stats.fm.':'Username not found on stats.fm.',
+ 'Profil stats.fm itu privat. Ubah jadi publik di pengaturan privasinya.':'That stats.fm profile is private. Make it public in its privacy settings.',
+ 'Belum ada {kind} JKT48 di rentang waktu itu untuk {who}.':'No JKT48 {kind} in that time range for {who}.','Berhasil: {n} {kind} teratas dari {who}. Urutan masih bisa kamu ubah.':'Done: top {n} {kind} from {who}. You can still reorder them.',
+ 'Gagal mengambil dari stats.fm. Coba lagi sebentar.':'Could not fetch from stats.fm. Try again in a moment.','Mengambil data dari Last.fm (bisa beberapa detik)...':'Fetching from Last.fm (may take a few seconds)...',
+ 'Username tidak ditemukan di Last.fm.':'Username not found on Last.fm.','Profil Last.fm itu privat. Matikan "Hide recent listening information" di pengaturan privasinya.':'That Last.fm profile is private. Turn off "Hide recent listening information" in its privacy settings.',
+ 'Gagal mengambil dari Last.fm. Coba lagi sebentar.':'Could not fetch from Last.fm. Try again in a moment.','Beri nama daftar dulu.':'Give the list a name first.','Daftarmu masih kosong.':'Your list is still empty.',
+ 'Penyimpanan browser penuh. Hapus daftar lama dulu.':'Browser storage is full. Delete an old list first.','Tersimpan: "{n}".':'Saved: "{n}".','Pilih daftar dulu.':'Choose a list first.','Dimuat: "{n}".':'Loaded: "{n}".','Dihapus: "{n}".':'Deleted: "{n}".',
+ '✓ Ekstensi aktif':'✓ Extension active',
+ '<b>Ekstensi aktif.</b> Tab X terbuka dan fotomu akan menempel sendiri di kotak tweet dalam beberapa detik. Kalau tidak muncul, pakai langkah manual: tombol <b>Unduh foto</b>.':'<b>Extension active.</b> The X tab is open and your photos will attach themselves to the tweet box in a few seconds. If they do not appear, use the manual way: the <b>Download photos</b> button.',
+ '<b>Gambar sudah disalin.</b> Di tab X yang terbuka, klik kotak tweet lalu tekan <b>Ctrl+V</b>.':'<b>Image copied.</b> In the X tab that just opened, click the tweet box and press <b>Ctrl+V</b>.',
+ 'Tab X terbuka, tapi browser menolak menyalin gambar. Pakai <b>Unduh foto</b> lalu seret ke tweet.':'The X tab is open, but the browser refused to copy the image. Use <b>Download photos</b> and drag them into the tweet.',
+ '<b>Langkah berikutnya:</b> foto sudah diunduh. 1) Buka folder <b>Unduhan</b>. 2) Pilih semua foto <b>jkt48-top10-…</b> (Ctrl+A). 3) Seret ke kotak tweet di tab X. <br>Atau tanpa folder: di pratinjau klik tombol <b>⧉</b> di tiap foto lalu <b>Ctrl+V</b> di kotak tweet, atau seret fotonya langsung.':'<b>Next steps:</b> the photos were downloaded. 1) Open your <b>Downloads</b> folder. 2) Select all <b>jkt48-top10-…</b> photos (Ctrl+A). 3) Drag them into the tweet box in the X tab. <br>Or skip the folder: click the <b>⧉</b> button on each photo in the preview, then <b>Ctrl+V</b> in the tweet box, or drag the photo directly.',
+ 'Gambar tersalin. Tekan Ctrl+V di kotak tweet.':'Image copied. Press Ctrl+V in the tweet box.','Browser ini menolak menyalin gambar. Pakai Unduh foto.':'This browser refused to copy the image. Use Download photos.',
+ 'Perangkat ini tidak mendukung menu share dengan foto. Pakai "Unduh foto".':'This device does not support the share menu with photos. Use "Download photos".',
+ 'Membuat video...':'Making video...','Video diunduh. Tambahkan lagu saat kamu posting.':'Video downloaded. Add a song when you post.','Link disalin.':'Link copied.','Merekam...':'Recording...','Video diunduh (tanpa suara). Tambahkan lagu saat kamu posting.':'Video downloaded (no sound). Add a song when you post.'
+};
+const EN_HTML = {
+ hero:'Pick your favorite albums, songs or oshi, style them, then share to X, stories or via a link.',
+ tipSum:'Tip: install X as an app, then send photos with the Share button',
+ tipOl:'<li>Open <b>x.com</b> in Chrome or Edge and install it as an app (install icon in the address bar, or menu ⋮ → <b>Save and share → Install page as app</b>).</li><li>Come back to this site and click <b>Share via…</b>. The Windows share menu should list <b>X</b>.</li><li>Pick X: the tweet box opens with the photos already attached, nothing saved to disk.</li>',
+ tipP:'X registers itself as a share target for images (you can see it in its manifest), but this depends on your browser and operating system, and how many photos X accepts is up to X. If X is not listed, use the other methods above.',
+ extSum:'Chrome extension (optional): attach all photos to the tweet automatically',
+ extOl:'<li><a href="jkt48-top-extension.zip" download>Download the extension (.zip)</a> and extract it to a folder.</li><li>Open <code>chrome://extensions</code>, turn on <b>Developer mode</b>, click <b>Load unpacked</b>, and pick that folder.</li><li>Reload this site. "Extension active" appears at the top. Click <b>Post to X</b> and the photos attach themselves to the tweet box.</li>',
+ extP:'<b>Disclaimer:</b> this extension is made by a fan, unofficial, and not affiliated with X or JKT48. It only runs on this site and x.com, only keeps your photos temporarily in the browser, and sends nothing to any server. X can change its page at any time, which may break the extension. Use at your own risk and read the code first if in doubt.',
+ viewFoot:'Made with JKT48 Top 10 · a fan site, not official.',
+ discSum:'Disclaimer · unofficial fan site, not affiliated with JKT48 or X',
+ disc1:'<b>Unofficial fan site.</b> JKT48 Top 10 is made by a fan and is not affiliated with, endorsed by, or sponsored by JKT48, JKT48 Operation Team, IDN, X (Twitter), Apple, Spotify, stats.fm, Last.fm, or MusicBrainz. All names and brands belong to their respective owners.',
+ disc2:'<b>Copyright.</b> Album covers come from iTunes and the Cover Art Archive, member photos from jkt48.com. All of it belongs to the rights holders (© JKT48 Operation Team / PT Indonesia Musik Nusantara and related parties) and is only shown to build a personal favorites list. If you are a rights holder and want something removed, contact the site maker through its GitHub repo.',
+ disc3:'<b>Data accuracy.</b> The album and song lists are merged from iTunes, MusicBrainz and Wikipedia, and the member list is a snapshot of jkt48.com/member as of 19 November 2026. There may be gaps, typos or outdated data (for example new members or team changes). Song previews come from iTunes, not from this site.',
+ disc4:'<b>Privacy.</b> This site has no server and does not store your data. Your lists, list names and settings are only saved in this browser. When you search or import, your browser contacts the relevant services directly (iTunes, MusicBrainz, Wikipedia, stats.fm, Last.fm, and wsrv.nl for member photos), which have their own privacy policies. A share link contains your list in its address, so anyone with the link can see it; do not put personal data in the name or link.',
+ disc5:'<b>Sharing to X.</b> This site does not post on your behalf and never asks you to log in to any account. The Post to X button only opens the tweet composer; you attach the photos yourself. The optional Chrome extension is also unofficial and used at your own risk.',
+ disc6:'<b>No warranty.</b> The site and extension are provided as is without any warranty, and may stop working at any time if third-party services change.'
+};
+const tr = (s, v) => { let r = (LANG==='en' && EN[s]) || s; if (v) for (const k in v) r = r.split('{'+k+'}').join(v[k]); return r; };
+/* terjemahkan teks statis di dalam sebuah elemen (teks, atribut, dan blok data-k) */
+function applyLangTree(root){
+  if (!root) return;
+  const en = LANG==='en';
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const nodes = []; for (let n; (n=w.nextNode());) nodes.push(n);
+  for (const n of nodes) {
+    const p = n.parentElement; if (!p || /^(SCRIPT|STYLE|TEXTAREA)$/.test(p.tagName) || p.closest('[data-k]')) continue;
+    if (n._o===undefined) n._o = n.nodeValue; const key = n._o.trim();
+    n.nodeValue = en && EN[key] ? n._o.replace(key, EN[key]) : n._o;
+  }
+  const els = [...root.querySelectorAll('[placeholder],[title],[aria-label],[data-k]'), ...(root.matches&&root.matches('[data-k]')?[root]:[])];
+  for (const el of els) {
+    for (const a of ['placeholder','title','aria-label']) if (el.hasAttribute(a)) {
+      const k='_o_'+a; if (el[k]===undefined) el[k]=el.getAttribute(a); const v=el[k]; el.setAttribute(a, en && EN[v] ? EN[v] : v);
+    }
+    if (el.dataset.k) { if (el._oh===undefined) el._oh=el.innerHTML; el.innerHTML = en && EN_HTML[el.dataset.k] ? EN_HTML[el.dataset.k] : el._oh; }
+  }
+}
+function setLang(l){
+  LANG = l; try { localStorage.setItem('jkt48lang', l); } catch(e){}
+  document.documentElement.lang = l;
+  document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.l===l));
+  if (document.body.classList.contains('view')) { location.reload(); return; }
+  applyLangTree(document.body);
+  renderHeads(); renderThemeUI(); renderResults(); renderList(); renderSaved($('#savedSel').value); $('#sfUser').placeholder = tr($('#impSrc').value==='lastfm' ? 'Username Last.fm' : 'Username stats.fm'); $('#q').placeholder = tr(KIND[state.kind].ph);
+}
+const state = { theme:'classic', custom:{bg:'#fff1f3',ink:'#2a1218',acc:'#e4002b',bg2:''}, font:'sys', postMode:'multi', kind:'album', look:'cds', num:false, night:false, share:'post', spin:'all', spinFmt:'sq', audio:true, q:'', filter:'all', year:'all', picks:{album:[],song:[],oshi:[]} };
 const cache = {album:[],song:[],oshi:[]};
-let MAX = 10; const RED = '#e4002b';
+let MAX = 10; let RED = '#e4002b'; let THEME_FONT = 'system-ui,sans-serif';
+
+/* ---------- tema poster: preset + kustom + font ---------- */
+const THEMES = {
+  classic:{n:'Klasik', bg:'#f6f3ee', ink:'#17110f', acc:'#e4002b'},
+  night:{n:'Malam', bg:'#101013', ink:'#f6ecee', acc:'#e4002b'},
+  sakura:{n:'Sakura', bg:'#fff0f4', ink:'#3a1020', acc:'#e0457b'},
+  ocean:{n:'Laut', bg:'#eaf4ff', ink:'#0d2238', acc:'#1677ff'},
+  sunset:{n:'Senja', bg:'#ffe3c2', bg2:'#ffb3c1', ink:'#3a1420', acc:'#c2185b'},
+  mint:{n:'Mint', bg:'#e8f8f0', ink:'#0f2a1d', acc:'#12a05c'},
+  royal:{n:'Royal', bg:'#1b1033', bg2:'#3d1a6b', ink:'#f5eaff', acc:'#ffcf3f'},
+  mono:{n:'Mono', bg:'#ffffff', ink:'#000000', acc:'#000000'}
+};
+const FONTS = { sys:['Bawaan','system-ui,sans-serif'], serif:['Serif','Georgia,"Times New Roman",serif'], round:['Bulat','"Trebuchet MS","Segoe UI",sans-serif'], bold:['Tegas','"Arial Black",Impact,sans-serif'], mono:['Mono','Consolas,"Courier New",monospace'] };
+const hexRgb = h => { h=h.replace('#',''); const n=parseInt(h,16); return [(n>>16)&255,(n>>8)&255,n&255]; };
+const lumHex = h => { const [r,g,b]=hexRgb(h); return (0.299*r+0.587*g+0.114*b)/255; };
+const mixHex = (a,b,t) => { const A=hexRgb(a),B=hexRgb(b); return '#'+A.map((v,i)=>Math.round(v*(1-t)+B[i]*t).toString(16).padStart(2,'0')).join(''); };
+const validHex = h => /^#[0-9a-f]{6}$/i.test(h||'');
+function buildTheme(id, custom){
+  const base = id==='custom' ? {...THEMES.classic, ...(custom||{}), n:'Kustom'} : (THEMES[id]||THEMES.classic), t = {...base};
+  ['bg','ink','acc'].forEach(k=>{ if (!validHex(t[k])) t[k]=THEMES.classic[k]; }); if (t.bg2 && !validHex(t.bg2)) delete t.bg2;
+  t.mu = mixHex(t.ink,t.bg,.45); t.dark = lumHex(t.bg)<0.45; return t;
+}
+function applyTheme(o){ RED = o.theme.acc; THEME_FONT = (FONTS[o.font]||FONTS.sys)[1]; }
+function fillBg(c,W,H,t){
+  if (t.bg2) { const g=c.createLinearGradient(0,0,W,H); g.addColorStop(0,t.bg); g.addColorStop(1,t.bg2); c.fillStyle=g; } else c.fillStyle=t.bg;
+  c.fillRect(0,0,W,H);
+  if (t.dark) { const [r,g2,b]=hexRgb(t.acc), g=c.createRadialGradient(W/2,H*0.45,50,W/2,H*0.45,Math.max(W,H)*0.7); g.addColorStop(0,`rgba(${r},${g2},${b},.14)`); g.addColorStop(1,'rgba(0,0,0,0)'); c.fillStyle=g; c.fillRect(0,0,W,H); }
+}
+// huruf di kanvas mengikuti font tema yang dipilih
+(()=>{ const d=Object.getOwnPropertyDescriptor(CanvasRenderingContext2D.prototype,'font');
+  Object.defineProperty(CanvasRenderingContext2D.prototype,'font',{configurable:true,get(){ return d.get.call(this); },set(v){ d.set.call(this, typeof v==='string' ? v.replace('system-ui,sans-serif', THEME_FONT) : v); }}); })();
 try { const s = JSON.parse(localStorage.getItem('jkt48top')||'null'); if (s && s.album) Object.assign(state.picks, s); const m = +localStorage.getItem('jkt48max'); if ([3,5,10,20].includes(m)) MAX = m; } catch(e){}
-const save = () => { try{ localStorage.setItem('jkt48top', JSON.stringify(state.picks)); localStorage.setItem('jkt48max', MAX); }catch(e){} };
+try { const th = JSON.parse(localStorage.getItem('jkt48theme')||'null'); if (th) { if (th.id==='custom' || THEMES[th.id]) state.theme=th.id; if (th.custom) Object.assign(state.custom, th.custom); if (FONTS[th.font]) state.font=th.font; } } catch(e){}
+const save = () => { try{ localStorage.setItem('jkt48top', JSON.stringify(state.picks)); localStorage.setItem('jkt48max', MAX); localStorage.setItem('jkt48theme', JSON.stringify({id:state.theme,custom:state.custom,font:state.font})); }catch(e){} };
 const big = u => u.replace(/\d+x\d+bb/, '600x600bb');
 const cur = () => state.picks[state.kind];
 const KIND = { album:{noun:'albums', one:'album', ph:'Cari album JKT48...'}, song:{noun:'songs', one:'lagu', ph:'Cari lagu JKT48...'}, oshi:{noun:'oshi', one:'member', ph:'Cari member JKT48...'} };
@@ -322,7 +462,7 @@ async function loadMB(kind){
         const j = await mbGet(`/recording?artist=${MB_ARTIST}&limit=100&offset=${off}`);
         for (const r of j.recordings) out.push({ id:'mb:'+r.id, title:r.title, sub:'JKT48', img:null, src:'rilis' });
         if (off+100 >= j['recording-count']) break;
-        $('#msg').textContent = `Memuat lagu... ${Math.min(off+100,j['recording-count'])}/${j['recording-count']}`;
+        $('#msg').textContent = tr('Memuat lagu... {a}/{b}',{a:Math.min(off+100,j['recording-count']),b:j['recording-count']});
         await wait(1100);
       }
     }
@@ -362,7 +502,7 @@ async function load(kind){
   if (cache[kind].length) return;
   if (kind==='oshi') { cache.oshi = oshiItems(); return; }
   const hit = cacheRead(kind); if (hit) { cache[kind] = hit; return; }
-  $('#msg').textContent = 'Memuat daftar dari iTunes dan MusicBrainz...';
+  $('#msg').textContent = tr('Memuat daftar dari iTunes dan MusicBrainz...');
   let out;
   if (kind==='album') {
     const [it, mb] = [await loadITunes('album'), await loadMB('album')];
@@ -375,7 +515,7 @@ async function load(kind){
   }
   cache[kind] = out;
   if (out.length) cacheWrite(kind, out);
-  $('#msg').textContent = out.length ? '' : 'Gagal memuat data. Buka lewat server (http), bukan file.';
+  $('#msg').textContent = out.length ? '' : tr('Gagal memuat data. Buka lewat server (http), bukan file.');
 }
 async function renderResults(){
   await load(state.kind);
@@ -385,12 +525,12 @@ async function renderResults(){
   const okF = x => f==='all' || (state.kind==='album' ? x.type===f : state.kind==='song' ? x.src===f : x.team===f);
   const okY = x => state.kind!=='album' || yr==='all' || (x.sub||'').includes(yr);
   const items = cache[state.kind].filter(x => okF(x) && okY(x) && (!q || x.title.toLowerCase().includes(q) || x.sub.toLowerCase().includes(q)));
-  const manual = state.q.trim() ? `<button class="res" data-manual="1" title="Tambah manual"><div style="width:62px;height:62px;border-radius:8px;border:2px dashed var(--red);display:grid;place-items:center;color:var(--red);font-size:26px;font-weight:700">+</div></button>` : '';
+  const manual = state.q.trim() ? `<button class="res" data-manual="1" title="${tr('Tambah manual')}"><div style="width:62px;height:62px;border-radius:8px;border:2px dashed var(--red);display:grid;place-items:center;color:var(--red);font-size:26px;font-weight:700">+</div></button>` : '';
   const shown = items.slice(0,300);
   $('#results').innerHTML = manual + shown.map(x =>
     `<button class="res ${used.has(String(x.id))?'used':''}" data-id="${esc(x.id)}" title="${esc(x.title)}">` +
     (x.img ? `<img loading="lazy" src="${x.img}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'ph',textContent:this.closest('.res').title}))">` : `<div class="ph">${esc(x.title)}</div>`) + `</button>`).join('');
-  $('#msg').textContent = !items.length && cache[state.kind].length ? 'Tidak ketemu. Klik + untuk menambah manual.' : (items.length>300 ? `Menampilkan 300 dari ${items.length}. Ketik untuk mencari.` : '');
+  $('#msg').textContent = !items.length && cache[state.kind].length ? tr('Tidak ketemu. Klik + untuk menambah manual.') : (items.length>300 ? tr('Menampilkan 300 dari {n}. Ketik untuk mencari.',{n:items.length}) : '');
 }
 const FILTERS = {
   album:[['all','Semua'],['album','Album'],['single','Singel'],['ep','EP']],
@@ -398,10 +538,10 @@ const FILTERS = {
   oshi:[['all','Semua'],['L','Love'],['D','Dream'],['P','Passion'],['T','Trainee']]
 };
 function renderFilters(){
-  const host = $('#filters'); let html = FILTERS[state.kind].map(([k,l])=>`<button class="chip ${state.filter===k?'on':''}" data-f="${k}">${l}</button>`).join('');
+  const host = $('#filters'); let html = FILTERS[state.kind].map(([k,l])=>`<button class="chip ${state.filter===k?'on':''}" data-f="${k}">${tr(l)}</button>`).join('');
   if (state.kind==='album') {
     const years = [...new Set(cache.album.map(a=>(a.sub||'').match(/\d{4}/)?.[0]).filter(Boolean))].sort().reverse();
-    html += `<select id="yearSel" aria-label="Tahun rilis"><option value="all">Semua tahun</option>${years.map(y=>`<option ${state.year===y?'selected':''}>${y}</option>`).join('')}</select>`;
+    html += `<select id="yearSel" aria-label="${tr('Tahun rilis')}"><option value="all">${tr('Semua tahun')}</option>${years.map(y=>`<option ${state.year===y?'selected':''}>${y}</option>`).join('')}</select>`;
   }
   host.innerHTML = html;
 }
@@ -410,7 +550,7 @@ function renderList(){
   $('#empty').style.display = arr.length ? 'none' : 'block';
   $('#list').innerHTML = arr.map((p,i)=>`<li class="item" draggable="true" data-i="${i}">
     <span class="n">${i+1}</span><img src="${p.img}" alt="${esc(p.title)}" onerror="this.onerror=null;this.src=placeholder(this.alt)"><div class="t"><b>${esc(p.title)}</b><span>${esc(p.sub)}</span></div>
-    <button data-up="${i}" title="Naik">↑</button><button data-rm="${i}" title="Hapus">×</button></li>`).join('');
+    <button data-up="${i}" title="${tr('Naik')}">↑</button><button data-rm="${i}" title="${tr('Hapus')}">×</button></li>`).join('');
   save(); refresh();
 }
 
@@ -550,10 +690,9 @@ function featured(c,x,y,s,p,a,look,o,i){
 
 /* t: animation progress 0..1 (staggered); 1 = static */
 function scene(c,W,H,o,t){
-  const {picks,assets,look,night}=o, n=picks.length, tall=H>W;
-  const paper = night?'#101013':'#f6f3ee', ink = night?'#f6ecee':'#17110f', mu = night?'#9b9094':'#7b706b';
-  c.fillStyle=paper; c.fillRect(0,0,W,H);
-  if (night){ const g=c.createRadialGradient(W/2,H*0.45,50,W/2,H*0.45,Math.max(W,H)*0.7); g.addColorStop(0,'rgba(228,0,43,.14)'); g.addColorStop(1,'rgba(0,0,0,0)'); c.fillStyle=g; c.fillRect(0,0,W,H); }
+  const {picks,assets,look}=o, n=picks.length, tall=H>W;
+  applyTheme(o); const th=o.theme, paper=th.bg, ink=th.ink, mu=th.mu;
+  fillBg(c,W,H,th);
   const k = i => clamp(t*1.7 - i*0.09, 0, 1);
   const anim = (i,fn) => { const e=ease(k(i)); if(e<=0) return; c.save(); c.globalAlpha=e; c.translate(0,(1-e)*40); fn(); c.restore(); };
   c.textBaseline='alphabetic';
@@ -564,7 +703,7 @@ function scene(c,W,H,o,t){
     c.fillStyle=mu; c.font='600 40px system-ui,sans-serif'; c.textAlign='right'; c.fillText(kindWord,W-70,320); c.textAlign='left';
     const st = statsLine(picks); if (st) { c.fillStyle=mu; c.font='600 34px system-ui,sans-serif'; c.fillText(st,70,385); }
   }
-  if (!n){ c.fillStyle=mu; c.font='600 40px system-ui,sans-serif'; c.textAlign='center'; c.fillText('Pilih favoritmu dulu',W/2,H/2); return; }
+  if (!n){ c.fillStyle=mu; c.font='600 40px system-ui,sans-serif'; c.textAlign='center'; c.fillText(tr('Pilih favoritmu dulu'),W/2,H/2); return; }
   const feat = look==='covers'||look==='vinyl'||look==='player';
   const numPad = o.num ? 34 : 0;
   if (!feat) {
@@ -600,12 +739,12 @@ function scene(c,W,H,o,t){
 
 function statsLine(picks){
   const pl=picks.reduce((s,p)=>s+(p.plays||0),0), ms=picks.reduce((s,p)=>s+(p.ms||0),0); if (!pl) return '';
-  const h=Math.round(ms/36e5); return `${pl.toLocaleString('id-ID')} putaran`+(h?` · ${h} jam didengarkan`:'');
+  const h=Math.round(ms/36e5); return `${pl.toLocaleString(LANG==='en'?'en-US':'id-ID')} ${tr('putaran')}`+(h?` · ${h} ${tr('jam didengarkan')}`:'');
 }
 /* ---------- spin ---------- */
 function drawSpin(c,a,pick,idx,n,time,o){
-  const W=c.canvas.width, H=c.canvas.height, night=o.night, paper=night?'#101013':'#f6f3ee', ink=night?'#f6ecee':'#17110f', mu=night?'#9b9094':'#7b706b';
-  c.fillStyle=paper; c.fillRect(0,0,W,H);
+  applyTheme(o); const th=o.theme, W=c.canvas.width, H=c.canvas.height, paper=th.bg, ink=th.ink, mu=th.mu;
+  fillBg(c,W,H,th);
   const cx=W/2, cy=H*(H>W?0.34:0.39), R=W*0.325, ang=time*4, pop=ease(clamp(time%1.6/0.35,0,1));
   c.save(); c.translate(cx,cy); c.scale(0.9+0.1*pop,0.9+0.1*pop); c.globalAlpha=pop;
   c.shadowColor='rgba(0,0,0,.35)'; c.shadowBlur=40; c.shadowOffsetY=18;
@@ -621,19 +760,20 @@ function drawSpin(c,a,pick,idx,n,time,o){
   c.textAlign='center'; c.fillStyle=RED; c.font='800 44px system-ui,sans-serif'; c.fillText('#'+(idx+1),cx,cy+R+100);
   c.fillStyle=ink; c.font='800 58px system-ui,sans-serif'; c.fillText(fitText(c,pick.title,W-140),cx,cy+R+170);
   c.fillStyle=mu; c.font='500 36px system-ui,sans-serif'; c.fillText(fitText(c,pick.sub,W-140),cx,cy+R+222);
-  if (pick.plays) { c.fillStyle=RED; c.font='700 32px system-ui,sans-serif'; c.fillText(`${pick.plays.toLocaleString('id-ID')}× diputar`,cx,cy+R+272); }
+  if (pick.plays) { c.fillStyle=RED; c.font='700 32px system-ui,sans-serif'; c.fillText(tr('{n}× diputar',{n:pick.plays.toLocaleString(LANG==='en'?'en-US':'id-ID')}),cx,cy+R+272); }
   c.fillStyle=mu; c.font='600 26px system-ui,sans-serif'; c.fillText('JKT48 Top '+n,cx,H-36);
 }
 
 /* ---------- render pipeline ---------- */
 const opts = async () => {
   const picks = cur().slice(), assets = await loadAll(picks);
-  return { picks, assets, look:state.look, num:state.num, night:state.night, kind:state.kind, name:$('#nm').value.trim() };
+  const theme = buildTheme(state.theme, state.custom);
+  return { picks, assets, look:state.look, num:state.num, theme, night:theme.dark, font:state.font, kind:state.kind, name:$('#nm').value.trim() };
 };
 /* Satu foto per item, tanpa latar/padding: di X, foto-foto tipis ini berjajar rapat jadi satu rak.
    CDs 200x2660 (≈0.075), Tapes 330x2130 (≈0.155), Covers 1:1, Vinyl 1.15, Player 9:16 */
 function photoCanvas(o,i){
-  const p=o.picks[i], a=o.assets[i], n=o.night, look=o.look, cv=document.createElement('canvas');
+  applyTheme(o); const p=o.picks[i], a=o.assets[i], n=o.night, look=o.look, cv=document.createElement('canvas');
   const dim = {cds:[200,2660], tapes:[330,2130], covers:[1200,1200], vinyl:[1380,1200], player:[1080,1920]}[look];
   cv.width=dim[0]; cv.height=dim[1]; const c=cv.getContext('2d'), W=dim[0], H=dim[1];
   if (look==='cds') {
@@ -646,12 +786,12 @@ function photoCanvas(o,i){
     cover(c,a,0,0,W,0);
     if (o.num) badge(c,90,90,56,i+1);
   } else if (look==='vinyl') {
-    c.fillStyle=n?'#101013':'#f6f3ee'; c.fillRect(0,0,W,H);
+    fillBg(c,W,H,o.theme);
     const sl=960, y=120, r=480, cx=900;
     c.fillStyle='#0d0d0f'; c.beginPath(); c.arc(cx,y+sl/2,r,0,7); c.fill();
     c.strokeStyle='rgba(255,255,255,.07)'; c.lineWidth=2; for (let k=0.4;k<0.97;k+=0.035){ c.beginPath(); c.arc(cx,y+sl/2,r*k,0,7); c.stroke(); }
     c.save(); c.beginPath(); c.arc(cx,y+sl/2,r*0.34,0,7); c.clip(); if (a.im) c.drawImage(a.im,cx-r*0.34,y+sl/2-r*0.34,r*0.68,r*0.68); c.restore();
-    c.fillStyle='#f6f3ee'; c.beginPath(); c.arc(cx,y+sl/2,r*0.035,0,7); c.fill();
+    c.fillStyle=o.theme.bg; c.beginPath(); c.arc(cx,y+sl/2,r*0.035,0,7); c.fill();
     c.save(); c.shadowColor='rgba(0,0,0,.4)'; c.shadowBlur=40; c.shadowOffsetX=12; rr(c,0,y,sl,sl,6); c.fillStyle='#000'; c.fill(); c.restore();
     cover(c,a,0,y,sl,6);
     if (o.num) badge(c,60,y+60,44,i+1);
@@ -666,7 +806,7 @@ function photoCanvas(o,i){
     c.font='800 64px system-ui,sans-serif'; c.fillText(fitText(c,p.title,s),x,y+s+110);
     c.fillStyle='rgba(255,255,255,.7)'; c.font='500 44px system-ui,sans-serif'; c.fillText(fitText(c,p.sub,s),x,y+s+176);
     const by=y+s+260; c.fillStyle='rgba(255,255,255,.3)'; rr(c,x,by,s,10,5); c.fill(); c.fillStyle='#fff'; rr(c,x,by,s*0.36,10,5); c.fill(); c.beginPath(); c.arc(x+s*0.36,by+5,14,0,7); c.fill();
-    c.font='500 30px system-ui,sans-serif'; c.fillStyle='rgba(255,255,255,.7)'; c.fillText(p.plays?`${p.plays.toLocaleString('id-ID')}× diputar`:'1:12',x,by+60); if (!p.plays) { c.textAlign='right'; c.fillText('-2:48',x+s,by+60); } c.textAlign='left';
+    c.font='500 30px system-ui,sans-serif'; c.fillStyle='rgba(255,255,255,.7)'; c.fillText(p.plays?tr('{n}× diputar',{n:p.plays.toLocaleString(LANG==='en'?'en-US':'id-ID')}):'1:12',x,by+60); if (!p.plays) { c.textAlign='right'; c.fillText('-2:48',x+s,by+60); } c.textAlign='left';
     const cy=by+200, mx=W/2; c.fillStyle='#fff'; c.beginPath(); c.arc(mx,cy,70,0,7); c.fill(); c.fillStyle='#222'; c.fillRect(mx-22,cy-28,16,56); c.fillRect(mx+6,cy-28,16,56);
     c.fillStyle='#fff'; [[-1],[1]].forEach(([d])=>{ c.beginPath(); c.moveTo(mx+d*130,cy-36); c.lineTo(mx+d*130,cy+36); c.lineTo(mx+d*190,cy); c.closePath(); c.fill(); });
     if (o.num) badge(c,110,110,56,i+1);
@@ -716,15 +856,15 @@ async function copyBlob(blob){
 /* satu foto di strip: bisa diseret ke kotak tweet atau disalin dengan tombol kecil */
 function stripItem(cv,name){
   const fig=document.createElement('figure'); fig.append(cv);
-  cv.toBlob(b=>{ cv._blob=b; },'image/png'); cv.draggable=true; cv.title='Seret ke kotak tweet, atau klik tombol salin';
+  cv.toBlob(b=>{ cv._blob=b; },'image/png'); cv.draggable=true; cv.title=tr('Seret ke kotak tweet, atau klik tombol salin');
   cv.addEventListener('dragstart',e=>{
     if (!cv._blob) return; const f=new File([cv._blob],name,{type:'image/png'});
     try { e.dataTransfer.items.add(f); } catch(_){}
     try { cv._url=cv._url||URL.createObjectURL(cv._blob); e.dataTransfer.setData('DownloadURL',`image/png:${name}:${cv._url}`); } catch(_){}
     e.dataTransfer.effectAllowed='copy';
   });
-  const b=document.createElement('button'); b.type='button'; b.className='cp'; b.title='Salin gambar ini'; b.textContent='⧉';
-  b.onclick=async()=>{ if (!cv._blob) return; const ok=await copyBlob(cv._blob); b.textContent=ok?'✓':'!'; setTimeout(()=>b.textContent='⧉',1200); $('#postSub').textContent = ok ? `Tersalin: ${name}. Tekan Ctrl+V di kotak tweet.` : 'Browser ini menolak menyalin gambar. Seret fotonya atau pakai Unduh foto.'; };
+  const b=document.createElement('button'); b.type='button'; b.className='cp'; b.title=tr('Salin gambar ini'); b.textContent='⧉';
+  b.onclick=async()=>{ if (!cv._blob) return; const ok=await copyBlob(cv._blob); b.textContent=ok?'✓':'!'; setTimeout(()=>b.textContent='⧉',1200); $('#postSub').textContent = ok ? tr('Tersalin: {name}. Tekan Ctrl+V di kotak tweet.',{name}) : tr('Browser ini menolak menyalin gambar. Seret fotonya atau pakai Unduh foto.'); };
   fig.append(b); return fig;
 }
 async function downloadAll(files){ for (const f of files){ dl(f.blob,f.name); await new Promise(r=>setTimeout(r,350)); } }
@@ -736,7 +876,7 @@ async function refresh(){
   if (state.share==='post') {
     const single = state.postMode==='single';
     $('#copyImg').hidden = !single;
-    $('#postSub').textContent = !o.picks.length ? 'Pilih favoritmu dulu.' : single ? 'Satu gambar berisi seluruh daftar. Klik Salin gambar lalu Ctrl+V di kotak tweet.' : `${o.picks.length} foto, satu per ${one()}, berurutan. Seret atau salin tiap foto, atau unduh semuanya. X menerima sampai 20 foto per post.`;
+    $('#postSub').textContent = !o.picks.length ? tr('Pilih favoritmu dulu.') : single ? tr('Satu gambar berisi seluruh daftar. Klik Salin gambar lalu Ctrl+V di kotak tweet.') : tr('{n} foto, satu per {one}, berurutan. Seret atau salin tiap foto, atau unduh semuanya. X menerima sampai 20 foto per post.',{n:o.picks.length,one:tr(one())});
     $('#strip').replaceChildren(...postCanvases(o).map((cv,i)=>stripItem(cv, single?'jkt48-top10.png':`jkt48-top10-${String(i+1).padStart(2,'0')}.png`)));
   }
   if (state.share==='story') scene($('#cvStory').getContext('2d'),1080,1920,o,1);
@@ -781,7 +921,7 @@ function startSpin(o){
 }
 function renderLink(){
   const arr=cur(), nm=$('#nm').value.trim();
-  $('#linkTitle').innerHTML = `Top ${arr.length||MAX} ${noun()} JKT48 <span style="color:var(--mute);font-weight:400;font-size:13px">${nm?'oleh '+esc(nm):''}</span>`;
+  $('#linkTitle').innerHTML = `Top ${arr.length||MAX} ${noun()} JKT48 <span style="color:var(--mute);font-weight:400;font-size:13px">${nm?tr('oleh')+' '+esc(nm):''}</span>`;
   $('#slots').innerHTML = Array.from({length:Math.max(MAX,arr.length)},(_,i)=>`<div>${arr[i]?`<img src="${arr[i].img}" alt="">`:''}</div>`).join('');
 }
 function renderLooks(o){
@@ -792,7 +932,7 @@ function renderLooks(o){
   }
   host.querySelectorAll('.look').forEach(b=>{
     b.classList.toggle('on',b.dataset.look===state.look);
-    const mc=b.querySelector('canvas').getContext('2d'), sub={...o,look:b.dataset.look,num:false,night:false,picks:o.picks.slice(0,10)};
+    const mc=b.querySelector('canvas').getContext('2d'), sub={...o,look:b.dataset.look,num:false,picks:o.picks.slice(0,10)};
     mc.setTransform(1,0,0,1,0,0); mc.clearRect(0,0,160,90); mc.save(); mc.scale(0.1,0.1);
     if (sub.picks.length) scene(mc,1600,900,sub,1); else { mc.fillStyle='#8883'; mc.fillRect(0,0,1600,900); }
     mc.restore();
@@ -801,7 +941,7 @@ function renderLooks(o){
 
 /* ---------- video / download ---------- */
 function dl(blob,name){ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),4000); }
-function dlCanvas(cv,name){ cv.toBlob(b=>b?dl(b,name):alert('Gagal membuat gambar.')); }
+function dlCanvas(cv,name){ cv.toBlob(b=>b?dl(b,name):alert(tr('Gagal membuat gambar.'))); }
 function record(canvas,ms,frame){
   return new Promise((res,rej)=>{
     if (!window.MediaRecorder) return rej(new Error('Browser tidak mendukung perekaman video.'));
@@ -819,7 +959,7 @@ const ext = m => m.includes('mp4')?'mp4':'webm';
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t===b));
   state.kind=b.dataset.kind; state.q=''; $('#q').value=''; state.filter='all'; state.year='all';
-  $('#q').placeholder = KIND[state.kind].ph;
+  $('#q').placeholder = tr(KIND[state.kind].ph);
   const isOshi = state.kind==='oshi'; $('.imp').hidden = isOshi; $('#sfMsg').hidden = isOshi;
   renderResults(); renderList(); renderHeads();
 });
@@ -828,8 +968,8 @@ $('#filters').onclick = e => { const b=e.target.closest('.chip'); if(!b) return;
 $('#filters').onchange = e => { if (e.target.id==='yearSel') { state.year=e.target.value; renderResults(); } };
 /* jumlah item (Top 3 / 5 / 10 / 20) */
 function renderHeads(){
-  $('#h1').textContent = `Susun Top ${MAX} JKT48-mu`;
-  $('#listTitle').textContent = `Top ${MAX}-mu`;
+  $('#h1').textContent = tr('Susun Top {n} JKT48-mu',{n:MAX});
+  $('#listTitle').textContent = tr('Top {n}-mu',{n:MAX});
   document.querySelectorAll('#modes .chip').forEach(c=>c.classList.toggle('on',+c.dataset.n===MAX));
 }
 $('#modes').onclick = e => {
@@ -840,14 +980,14 @@ $('#modes').onclick = e => {
 $('#results').onclick = e => {
   const b=e.target.closest('.res'); if(!b) return;
   if (b.dataset.manual) { // lagu/album yang tidak ada di iTunes (mis. lagu setlist teater)
-    const arr=cur(), t=state.q.trim(); if (arr.length>=MAX){ $('#msg').textContent=`Maksimal ${MAX}.`; return; }
+    const arr=cur(), t=state.q.trim(); if (arr.length>=MAX){ $('#msg').textContent=tr('Maksimal {n}.',{n:MAX}); return; }
     arr.push({id:'c'+Date.now(), title:t, sub:'JKT48', img:placeholder(t), custom:true});
     state.q=''; $('#q').value=''; renderList(); renderResults(); return;
   }
   const arr=cur(), id=b.dataset.id, ix=arr.findIndex(p=>String(p.id)===id);
   if (ix>=0) arr.splice(ix,1);
   else {
-    if (arr.length>=MAX){ $('#msg').textContent=`Maksimal ${MAX}.`; return; }
+    if (arr.length>=MAX){ $('#msg').textContent=tr('Maksimal {n}.',{n:MAX}); return; }
     const it={...cache[state.kind].find(x=>String(x.id)===id)}; if (!it.img) it.img=placeholder(it.title); arr.push(it);
   }
   renderList(); renderResults();
@@ -867,16 +1007,16 @@ $('#list').ondrop=e=>{ const li=e.target.closest('li'); if(!li||dragI===null) re
 const SF = 'https://api.stats.fm/api/v1', SF_JKT48 = 128408;
 async function importStatsfm(){
   const user = $('#sfUser').value.trim().replace(/^@/,'').replace(/^.*(?:stats|last)\.fm\/(?:[a-z]{2}\/)?user\//i,'').replace(/[/?#].*$/,''), msg = $('#sfMsg'), btn = $('#sfGo');
-  if (!user) { msg.textContent = 'Ketik username dulu.'; return; }
+  if (!user) { msg.textContent = tr('Ketik username dulu.'); return; }
   if ($('#impSrc').value==='lastfm') return importLastfm(user, msg, btn);
-  btn.disabled = true; msg.textContent = 'Mengambil data...';
+  btn.disabled = true; msg.textContent = tr('Mengambil data...');
   try {
     const ur = await fetch(`${SF}/users/${encodeURIComponent(user)}`);
-    if (ur.status===404) { msg.textContent = 'Username tidak ditemukan di stats.fm.'; return; }
+    if (ur.status===404) { msg.textContent = tr('Username tidak ditemukan di stats.fm.'); return; }
     if (!ur.ok) throw new Error('stats.fm '+ur.status);
     const u = (await ur.json()).item, kind = state.kind, what = kind==='album' ? 'albums' : 'tracks';
     const r = await fetch(`${SF}/users/${u.id}/top/artists/${SF_JKT48}/${what}?range=${$('#sfRange').value}&limit=50`);
-    if (r.status===403) { msg.textContent = 'Profil stats.fm itu privat. Ubah jadi publik di pengaturan privasinya.'; return; }
+    if (r.status===403) { msg.textContent = tr('Profil stats.fm itu privat. Ubah jadi publik di pengaturan privasinya.'); return; }
     if (!r.ok) throw new Error('stats.fm '+r.status);
     const seen = new Set(), items = [];
     for (const row of (await r.json()).items) {
@@ -888,16 +1028,16 @@ async function importStatsfm(){
       it.plays = row.streams||0; it.ms = row.playedMs||0;
       items.push(it); if (items.length>=MAX) break;
     }
-    if (!items.length) { msg.textContent = `Belum ada ${kind==='album'?'album':'lagu'} JKT48 di rentang waktu itu untuk @${u.customId||u.id}.`; return; }
+    if (!items.length) { msg.textContent = tr('Belum ada {kind} JKT48 di rentang waktu itu untuk {who}.',{kind:tr(kind==='album'?'album':'lagu'),who:'@'+(u.customId||u.id)}); return; }
     state.picks[kind] = items; renderList(); renderResults();
-    msg.textContent = `Berhasil: ${items.length} ${kind==='album'?'album':'lagu'} teratas dari @${u.customId||u.id}. Urutan masih bisa kamu ubah.`;
-  } catch(e){ msg.textContent = 'Gagal mengambil dari stats.fm. Coba lagi sebentar.'; }
+    msg.textContent = tr('Berhasil: {n} {kind} teratas dari {who}. Urutan masih bisa kamu ubah.',{n:items.length,kind:tr(kind==='album'?'album':'lagu'),who:'@'+(u.customId||u.id)});
+  } catch(e){ msg.textContent = tr('Gagal mengambil dari stats.fm. Coba lagi sebentar.'); }
   finally { btn.disabled = false; }
 }
 /* Last.fm: API key ini publik (hanya baca data publik), aman ditanam di situs */
 const LFM_KEY = 'fa8a2ea583eea0eeab0c5e21c89aed24', LFM_NOART = '2a96cbd8b46e442fc41c2b86b821562f';
 async function importLastfm(user, msg, btn){
-  btn.disabled = true; msg.textContent = 'Mengambil data dari Last.fm (bisa beberapa detik)...';
+  btn.disabled = true; msg.textContent = tr('Mengambil data dari Last.fm (bisa beberapa detik)...');
   try {
     const kind = state.kind, period = {lifetime:'overall', months:'6month', weeks:'1month'}[$('#sfRange').value];
     const method = kind==='album' ? 'user.gettopalbums' : 'user.gettoptracks';
@@ -906,8 +1046,8 @@ async function importLastfm(user, msg, btn){
     const seen = new Set(), items = []; let name = user;
     for (let page=1; page<=3 && items.length<MAX; page++) {
       const j = await fetch(`https://ws.audioscrobbler.com/2.0/?method=${method}&user=${encodeURIComponent(user)}&period=${period}&limit=1000&page=${page}&api_key=${LFM_KEY}&format=json`).then(r=>r.json());
-      if (j.error===6) { msg.textContent = 'Username tidak ditemukan di Last.fm.'; return; }
-      if (j.error) { msg.textContent = j.error===17 ? 'Profil Last.fm itu privat. Matikan "Hide recent listening information" di pengaturan privasinya.' : 'Last.fm: '+j.message; return; }
+      if (j.error===6) { msg.textContent = tr('Username tidak ditemukan di Last.fm.'); return; }
+      if (j.error) { msg.textContent = j.error===17 ? tr('Profil Last.fm itu privat. Matikan "Hide recent listening information" di pengaturan privasinya.') : 'Last.fm: '+j.message; return; }
       const root = j.topalbums || j.toptracks, list = root.album || root.track || [];
       name = root['@attr'].user || user;
       for (const r of list) {
@@ -920,13 +1060,13 @@ async function importLastfm(user, msg, btn){
       }
       if (page >= +(root['@attr'].totalPages||1)) break;
     }
-    if (!items.length) { msg.textContent = `Belum ada ${kind==='album'?'album':'lagu'} JKT48 di rentang waktu itu untuk ${name}.`; return; }
+    if (!items.length) { msg.textContent = tr('Belum ada {kind} JKT48 di rentang waktu itu untuk {who}.',{kind:tr(kind==='album'?'album':'lagu'),who:name}); return; }
     state.picks[kind] = items; renderList(); renderResults();
-    msg.textContent = `Berhasil: ${items.length} ${kind==='album'?'album':'lagu'} teratas dari ${name}. Urutan masih bisa kamu ubah.`;
-  } catch(e){ msg.textContent = 'Gagal mengambil dari Last.fm. Coba lagi sebentar.'; }
+    msg.textContent = tr('Berhasil: {n} {kind} teratas dari {who}. Urutan masih bisa kamu ubah.',{n:items.length,kind:tr(kind==='album'?'album':'lagu'),who:name});
+  } catch(e){ msg.textContent = tr('Gagal mengambil dari Last.fm. Coba lagi sebentar.'); }
   finally { btn.disabled = false; }
 }
-$('#impSrc').onchange = e => { $('#sfUser').placeholder = e.target.value==='lastfm' ? 'Username Last.fm' : 'Username stats.fm'; };
+$('#impSrc').onchange = e => { $('#sfUser').placeholder = tr(e.target.value==='lastfm' ? 'Username Last.fm' : 'Username stats.fm'); };
 $('#sfGo').onclick = importStatsfm;
 $('#sfUser').onkeydown = e => { if (e.key==='Enter') importStatsfm(); };
 /* ---------- daftar tersimpan (di browser ini) ---------- */
@@ -935,31 +1075,45 @@ const readLists = () => { try { return JSON.parse(localStorage.getItem(LISTS_KEY
 const writeLists = o => { try { localStorage.setItem(LISTS_KEY, JSON.stringify(o)); return true; } catch(e){ return false; } };
 function renderSaved(sel){
   const names = Object.keys(readLists()).sort();
-  $('#savedSel').innerHTML = '<option value="">Daftar tersimpan…</option>' + names.map(n=>`<option ${n===sel?'selected':''}>${esc(n)}</option>`).join('');
+  $('#savedSel').innerHTML = `<option value="">${tr('Daftar tersimpan…')}</option>` + names.map(n=>`<option ${n===sel?'selected':''}>${esc(n)}</option>`).join('');
 }
 $('#saveList').onclick = () => {
   const name = $('#listName').value.trim(), msg = $('#listMsg');
-  if (!name) { msg.textContent = 'Beri nama daftar dulu.'; return; }
-  if (!Object.values(state.picks).some(a=>a.length)) { msg.textContent = 'Daftarmu masih kosong.'; return; }
+  if (!name) { msg.textContent = tr('Beri nama daftar dulu.'); return; }
+  if (!Object.values(state.picks).some(a=>a.length)) { msg.textContent = tr('Daftarmu masih kosong.'); return; }
   const all = readLists(); all[name] = { picks:JSON.parse(JSON.stringify(state.picks)), max:MAX, look:state.look, kind:state.kind };
-  if (!writeLists(all)) { msg.textContent = 'Penyimpanan browser penuh. Hapus daftar lama dulu.'; return; }
-  renderSaved(name); msg.textContent = `Tersimpan: "${name}".`;
+  if (!writeLists(all)) { msg.textContent = tr('Penyimpanan browser penuh. Hapus daftar lama dulu.'); return; }
+  renderSaved(name); msg.textContent = tr('Tersimpan: "{n}".',{n:name});
 };
 $('#loadList').onclick = () => {
-  const name = $('#savedSel').value, d = readLists()[name]; if (!d) { $('#listMsg').textContent = 'Pilih daftar dulu.'; return; }
+  const name = $('#savedSel').value, d = readLists()[name]; if (!d) { $('#listMsg').textContent = tr('Pilih daftar dulu.'); return; }
   MAX = d.max || 10; state.picks = Object.assign({album:[],song:[],oshi:[]}, d.picks); if (d.look) state.look = d.look;
-  if (d.kind && KIND[d.kind]) { state.kind = d.kind; document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.kind===state.kind)); $('.imp').hidden = state.kind==='oshi'; $('#sfMsg').hidden = state.kind==='oshi'; $('#q').placeholder = KIND[state.kind].ph; }
-  $('#listName').value = name; renderHeads(); renderList(); renderResults(); $('#listMsg').textContent = `Dimuat: "${name}".`;
+  if (d.kind && KIND[d.kind]) { state.kind = d.kind; document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.kind===state.kind)); $('.imp').hidden = state.kind==='oshi'; $('#sfMsg').hidden = state.kind==='oshi'; $('#q').placeholder = tr(KIND[state.kind].ph); }
+  $('#listName').value = name; renderHeads(); renderList(); renderResults(); $('#listMsg').textContent = tr('Dimuat: "{n}".',{n:name});
 };
 $('#delList').onclick = () => {
   const name = $('#savedSel').value, all = readLists(); if (!all[name]) return;
-  delete all[name]; writeLists(all); renderSaved(); $('#listMsg').textContent = `Dihapus: "${name}".`;
+  delete all[name]; writeLists(all); renderSaved(); $('#listMsg').textContent = tr('Dihapus: "{n}".',{n:name});
 };
 $('#clear').onclick=()=>{ state.picks[state.kind]=[]; renderList(); renderResults(); };
 
 $('#looks').onclick=e=>{ const b=e.target.closest('.look'); if(!b) return; state.look=b.dataset.look; refresh(); };
 $('#swNum').onclick=()=>{ state.num=!state.num; $('#swNum').classList.toggle('on',state.num); refresh(); };
-$('#swNight').onclick=()=>{ state.night=!state.night; $('#swNight').classList.toggle('on',state.night); refresh(); };
+/* tema poster + font */
+function renderThemeUI(){
+  $('#themes').innerHTML = [...Object.keys(THEMES),'custom'].map(id=>{
+    const t = buildTheme(id,state.custom), bg = t.bg2 ? `linear-gradient(135deg,${t.bg},${t.bg2})` : t.bg;
+    return `<button type="button" class="tsw ${state.theme===id?'on':''}" data-t="${id}"><i style="background:${bg};--a:${t.acc}"></i><span data-i18n-th="${id}">${t.n}</span></button>`;
+  }).join('');
+  $('#customBox').hidden = state.theme!=='custom';
+  const c = state.custom; $('#cBg').value=c.bg; $('#cInk').value=c.ink; $('#cAcc').value=c.acc; $('#cBg2').value=validHex(c.bg2)?c.bg2:c.bg;
+  $('#fonts').innerHTML = Object.entries(FONTS).map(([k,[n,f]])=>`<button type="button" class="chip ${state.font===k?'on':''}" data-f="${k}" style="font-family:${f.replace(/"/g,'&quot;')}">${n}</button>`).join('');
+  applyLangTree($('#themes')); applyLangTree($('#fonts'));
+}
+$('#themes').onclick=e=>{ const b=e.target.closest('.tsw'); if(!b) return; state.theme=b.dataset.t; state.night=buildTheme(state.theme,state.custom).dark; save(); renderThemeUI(); refresh(); };
+$('#fonts').onclick=e=>{ const b=e.target.closest('.chip'); if(!b) return; state.font=b.dataset.f; save(); renderThemeUI(); refresh(); };
+for (const [id,key] of [['cBg','bg'],['cInk','ink'],['cAcc','acc'],['cBg2','bg2']]) $('#'+id).oninput=e=>{ state.custom[key]=e.target.value; state.theme='custom'; save(); document.querySelectorAll('.tsw').forEach(t=>t.classList.toggle('on',t.dataset.t==='custom')); refresh(); };
+$('#cBg2Off').onclick=()=>{ state.custom.bg2=''; $('#cBg2').value=state.custom.bg; save(); refresh(); };
 $('#stabs').onclick=e=>{
   const b=e.target.closest('.stab'); if(!b) return; state.share=b.dataset.s;
   document.querySelectorAll('.stab').forEach(t=>t.classList.toggle('on',t===b));
@@ -991,7 +1145,7 @@ async function shareSheet(){
 let extReady = false, extAck = null;
 window.addEventListener('message', e => {
   if (e.source!==window || !e.data || typeof e.data!=='object') return;
-  if (e.data.jkt48==='ext-ready') { extReady = true; const s=$('#extState'); if (s){ s.textContent='✓ Ekstensi aktif'; s.className='hint ok'; } }
+  if (e.data.jkt48==='ext-ready') { extReady = true; const s=$('#extState'); if (s){ s.textContent=tr('✓ Ekstensi aktif'); s.className='hint ok'; } }
   if (e.data.jkt48==='photos-ack' && extAck) { extAck(true); extAck=null; }
 });
 window.postMessage({jkt48:'ping'}, location.origin);
@@ -1003,7 +1157,7 @@ function showGuide(html){ const g=$('#guide'); g.innerHTML=html; g.hidden=false;
 $('#postMode').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; state.postMode=b.dataset.m; document.querySelectorAll('#postMode button').forEach(t=>t.classList.toggle('on',t===b)); $('#guide').hidden=true; refresh(); };
 $('#copyImg').onclick=async()=>{
   const files=await postFiles(); const ok=await copyBlob(files[0].blob);
-  $('#postSub').textContent = ok ? 'Gambar tersalin. Tekan Ctrl+V di kotak tweet.' : 'Browser ini menolak menyalin gambar. Pakai Unduh foto.';
+  $('#postSub').textContent = ok ? tr('Gambar tersalin. Tekan Ctrl+V di kotak tweet.') : tr('Browser ini menolak menyalin gambar. Pakai Unduh foto.');
 };
 $('#toX').onclick=async()=>{
   if (isMobile()) { if (await shareSheet()) return; }
@@ -1012,47 +1166,47 @@ $('#toX').onclick=async()=>{
   // dengan ekstensi: foto dikirim dulu, lalu ekstensi menempelkannya di halaman X
   if (extReady) {
     const files = await postFiles();
-    if (await sendToExt(files)) { window.open(url,'_blank','noopener'); showGuide('<b>Ekstensi aktif.</b> Tab X terbuka dan fotomu akan menempel sendiri di kotak tweet dalam beberapa detik. Kalau tidak muncul, pakai langkah manual: tombol <b>Unduh foto</b>.'); return; }
+    if (await sendToExt(files)) { window.open(url,'_blank','noopener'); showGuide(tr('<b>Ekstensi aktif.</b> Tab X terbuka dan fotomu akan menempel sendiri di kotak tweet dalam beberapa detik. Kalau tidak muncul, pakai langkah manual: tombol <b>Unduh foto</b>.')); return; }
   }
   // tanpa ekstensi: buka tulis tweet (pakai login X-mu sendiri) lalu bantu lewat clipboard atau unduhan
   if (single) {
     const files = await postFiles(); const ok = await copyBlob(files[0].blob); window.open(url,'_blank','noopener');
-    showGuide(ok ? '<b>Gambar sudah disalin.</b> Di tab X yang terbuka, klik kotak tweet lalu tekan <b>Ctrl+V</b>.' : 'Tab X terbuka, tapi browser menolak menyalin gambar. Pakai <b>Unduh foto</b> lalu seret ke tweet.');
+    showGuide(ok ? tr('<b>Gambar sudah disalin.</b> Di tab X yang terbuka, klik kotak tweet lalu tekan <b>Ctrl+V</b>.') : tr('Tab X terbuka, tapi browser menolak menyalin gambar. Pakai <b>Unduh foto</b> lalu seret ke tweet.'));
     return;
   }
   window.open(url,'_blank','noopener');
   await downloadAll(await postFiles());
-  showGuide('<b>Langkah berikutnya:</b> foto sudah diunduh. 1) Buka folder <b>Unduhan</b>. 2) Pilih semua foto <b>jkt48-top10-…</b> (Ctrl+A). 3) Seret ke kotak tweet di tab X. <br>Atau tanpa folder: di pratinjau klik tombol <b>⧉</b> di tiap foto lalu <b>Ctrl+V</b> di kotak tweet, atau seret fotonya langsung.');
+  showGuide(tr('<b>Langkah berikutnya:</b> foto sudah diunduh. 1) Buka folder <b>Unduhan</b>. 2) Pilih semua foto <b>jkt48-top10-…</b> (Ctrl+A). 3) Seret ke kotak tweet di tab X. <br>Atau tanpa folder: di pratinjau klik tombol <b>⧉</b> di tiap foto lalu <b>Ctrl+V</b> di kotak tweet, atau seret fotonya langsung.'));
 };
-$('#shareSheet').onclick=async()=>{ if (!(await shareSheet())) $('#postSub').textContent='Perangkat ini tidak mendukung menu share dengan foto. Pakai "Unduh foto".'; };
+$('#shareSheet').onclick=async()=>{ if (!(await shareSheet())) $('#postSub').textContent=tr('Perangkat ini tidak mendukung menu share dengan foto. Pakai "Unduh foto".'); };
 $('#dlStoryImg').onclick=()=>dlCanvas($('#cvStory'),'jkt48-top10-story.png');
 $('#mkStory').onclick=async()=>{
-  const btn=$('#mkStory'), msg=$('#storyMsg'); btn.disabled=true; msg.textContent='Membuat video...';
+  const btn=$('#mkStory'), msg=$('#storyMsg'); btn.disabled=true; msg.textContent=tr('Membuat video...');
   try {
     const o=await opts(), cv=$('#cvStory'), c=cv.getContext('2d');
     const {blob,mime}=await record(cv,4500,(s,p)=>scene(c,1080,1920,o,clamp(p*1.25,0,1)));
     scene(c,1080,1920,o,1);
     const v=$('#vStory'); v.src=URL.createObjectURL(blob); v.hidden=false; cv.hidden=true;
-    dl(blob,'jkt48-top10-story.'+ext(mime)); msg.textContent='Video diunduh. Tambahkan lagu saat kamu posting.';
+    dl(blob,'jkt48-top10-story.'+ext(mime)); msg.textContent=tr('Video diunduh. Tambahkan lagu saat kamu posting.');
   } catch(e){ msg.textContent=e.message; }
   btn.disabled=false;
 };
 $('#copy').onclick=async()=>{
   // seluruh daftar dikodekan di link (judul + alamat cover), jadi tidak perlu server atau lookup
-  const data={k:state.kind,l:state.look,n:+state.num,d:+state.night,nm:$('#nm').value.trim(),lk:$('#lk').value.trim(),
+  const data={k:state.kind,l:state.look,n:+state.num,th:state.theme,cu:state.theme==='custom'?state.custom:undefined,f:state.font,nm:$('#nm').value.trim(),lk:$('#lk').value.trim(),
     p:cur().map(p=>[p.title,p.sub,p.img&&!p.img.startsWith('data:')?p.img:0,p.plays||0,p.ms||0])};
   const b64=btoa(unescape(encodeURIComponent(JSON.stringify(data)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
   const url=location.href.split('#')[0]+'#d='+b64;
-  try{ await navigator.clipboard.writeText(url); $('#linkMsg').textContent='Link disalin.'; }catch(e){ $('#linkMsg').textContent=url; }
+  try{ await navigator.clipboard.writeText(url); $('#linkMsg').textContent=tr('Link disalin.'); }catch(e){ $('#linkMsg').textContent=url; }
 };
 $('#mkSpin').onclick=async()=>{
-  const btn=$('#mkSpin'), msg=$('#spinMsg'); btn.disabled=true; msg.textContent='Merekam...';
+  const btn=$('#mkSpin'), msg=$('#spinMsg'); btn.disabled=true; msg.textContent=tr('Merekam...');
   try {
     cancelAnimationFrame(spinRAF);
     stopAudio(); sizeSpin();
     const o=await opts(), c=$('#cvSpin').getContext('2d'), n=state.spin==='all'?o.picks.length:1, ms=Math.max(3,n*1.6)*1000;
     const {blob,mime}=await record($('#cvSpin'),ms,(s)=>{ const i=Math.floor(s/1.6)%n; drawSpin(c,o.assets[i],o.picks[i],i,n,s,o); });
-    dl(blob,'jkt48-top10-spin.'+ext(mime)); msg.textContent='Video diunduh (tanpa suara). Tambahkan lagu saat kamu posting.';
+    dl(blob,'jkt48-top10-spin.'+ext(mime)); msg.textContent=tr('Video diunduh (tanpa suara). Tambahkan lagu saat kamu posting.');
   } catch(e){ msg.textContent=e.message; }
   btn.disabled=false; refresh();
 };
@@ -1060,7 +1214,10 @@ $('#mkSpin').onclick=async()=>{
 /* ---------- boot (supports shared links) ---------- */
 (async()=>{
   const shared = decodeShare();
-  renderSaved(); renderHeads(); $('#swNum').classList.toggle('on',state.num); $('#swNight').classList.toggle('on',state.night);
+  document.documentElement.lang = LANG; document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.l===LANG));
+  document.querySelector('.lang').onclick = e => { const b=e.target.closest('button'); if (b && b.dataset.l!==LANG) setLang(b.dataset.l); };
+  applyLangTree(document.body); $('#q').placeholder = tr(KIND[state.kind].ph);
+  renderSaved(); renderHeads(); renderThemeUI(); $('#swNum').classList.toggle('on',state.num);
   if (shared) { showView(shared); return; }
   renderList(); renderResults();
 })();
@@ -1081,16 +1238,17 @@ async function showView(d){
   document.body.classList.add('view');
   const picks=d.p.slice(0,20).map(([title,sub,img,plays,ms],i)=>({id:'s'+i,title:String(title),sub:String(sub||''),img:(typeof img==='string'&&/^https:\/\//.test(img))?img:placeholder(String(title)),plays:+plays||0,ms:+ms||0}));
   const look=['cds','tapes','covers','vinyl','player'].includes(d.l)?d.l:'cds', name=String(d.nm||'').slice(0,40);
-  const o={picks,assets:await loadAll(picks),look,num:!!d.n,night:!!d.d,kind:d.k,name};
-  document.title=`Top ${picks.length} ${KIND[d.k].noun} JKT48${name?' oleh '+name:''}`;
+  const themeId = d.th==='custom' || THEMES[d.th] ? d.th : (d.d ? 'night' : 'classic'), theme = buildTheme(themeId, d.cu && typeof d.cu==='object' ? d.cu : {});
+  const o={picks,assets:await loadAll(picks),look,num:!!d.n,theme,night:theme.dark,font:FONTS[d.f]?d.f:'sys',kind:d.k,name};
+  document.title=`Top ${picks.length} ${KIND[d.k].noun} JKT48${name?' '+tr('oleh')+' '+name:''}`;
   $('#vTitle').textContent=`Top ${picks.length} ${KIND[d.k].noun} JKT48`;
   const by=$('#vBy'); by.textContent=''; const parts=[];
-  if (name) parts.push(document.createTextNode('oleh '+name));
+  if (name) parts.push(document.createTextNode(tr('oleh')+' '+name));
   const href=safeLink(d.lk); if (href) { const a=document.createElement('a'); a.href=href; a.target='_blank'; a.rel='noopener nofollow ugc'; a.textContent=href.replace(/^https?:\/\//,'').replace(/\/$/,''); a.style.color='#fff'; parts.push(a); }
   const st=statsLine(picks); if (st) parts.push(document.createTextNode(st));
   parts.forEach((p,i)=>{ if (i) by.append(' · '); by.append(p); });
   scene($('#cvView').getContext('2d'),1600,900,o,1);
-  $('#vList').innerHTML=picks.map((p,i)=>`<li><span class="n">${i+1}</span><img src="${esc(p.img)}" alt=""><div><b>${esc(p.title)}</b><span>${esc(p.sub)}${p.plays?` · ${p.plays.toLocaleString('id-ID')}× diputar`:''}</span></div></li>`).join('');
+  $('#vList').innerHTML=picks.map((p,i)=>`<li><span class="n">${i+1}</span><img src="${esc(p.img)}" alt=""><div><b>${esc(p.title)}</b><span>${esc(p.sub)}${p.plays?` · ${tr('{n}× diputar',{n:p.plays.toLocaleString(LANG==='en'?'en-US':'id-ID')})}`:''}</span></div></li>`).join('');
   $('#vDl').onclick=()=>dlCanvas($('#cvView'),'jkt48-top.png');
   $('#vMake').onclick=()=>{ document.body.classList.remove('view'); document.title='JKT48 Top 10'; history.replaceState(null,'',location.pathname+location.search); renderList(); renderResults(); };
 }
