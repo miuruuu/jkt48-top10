@@ -112,7 +112,7 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
   <header class="hero">
     <div class="eyebrow">JKT48 · FAN MADE</div>
     <h1 id="h1">Susun Top 10 JKT48-mu</h1>
-    <p>Pilih album, lagu, atau oshi favoritmu, atur tampilannya, lalu bagikan ke X, Threads, story, atau lewat link.</p>
+    <p>Pilih album, lagu, atau oshi favoritmu, atur tampilannya, lalu bagikan ke X, story, atau lewat link.</p>
   </header>
   <div class="tabs">
     <button class="tab on" data-kind="album">Albums</button>
@@ -170,7 +170,7 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
             <textarea id="caption" rows="2" maxlength="280" placeholder="Tambahkan kata-kata untuk postinganmu" style="width:100%;border:0;background:none;color:var(--ink);font:inherit;font-size:14px;resize:none;outline:none;padding:0;margin-bottom:8px"></textarea>
             <div id="strip" class="strip" tabindex="0" aria-label="Fotomu, berurutan"></div>
           </div></div>
-          <div class="btns"><button class="btn" id="dlPost">Unduh foto</button><button class="btn dark" id="toX">Post ke X</button><button class="btn dark" id="toThreads">Post ke Threads</button><button class="btn" id="shareSheet">Bagikan lewat…</button></div>
+          <div class="btns"><button class="btn" id="dlPost">Unduh foto</button><button class="btn dark" id="toX">Post ke X</button><button class="btn" id="shareSheet">Bagikan lewat…</button></div>
           <div class="sub" id="postSub">Gambar diunduh dulu, lalu lampirkan di tweet.</div>
         </div>
         <div id="p-story" hidden>
@@ -923,12 +923,6 @@ $('#toX').onclick=async()=>{
   if (isMobile()) { if (await shareSheet()) return; }
   // Komputer: buka halaman tulis tweet X (pakai login X-mu sendiri), lalu foto diunduh untuk dilampirkan
   openX();
-  await downloadAll(await postFiles());
-};
-$('#toThreads').onclick=async()=>{
-  if (isMobile()) { if (await shareSheet()) return; }
-  // Komputer: buka halaman tulis Threads (pakai login Threads/Instagram-mu sendiri), lalu foto diunduh untuk dilampirkan
-  window.open('https://www.threads.com/intent/post?text='+encodeURIComponent($('#caption').value.trim()),'_blank','noopener');
   await downloadAll(await postFiles());
 };
 $('#shareSheet').onclick=async()=>{ if (!(await shareSheet())) $('#postSub').textContent='Perangkat ini tidak mendukung menu share dengan foto. Pakai "Unduh foto".'; };
