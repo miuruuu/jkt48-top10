@@ -1,4 +1,4 @@
-{
+﻿{
   "manifest_version": 3,
   "name": "JKT48 Top 10 ke X (tidak resmi)",
   "version": "1.0.0",
@@ -7,7 +7,7 @@
   "background": { "service_worker": "background.js" },
   "content_scripts": [
     {
-      "matches": ["https://miuruuu.github.io/jkt48-top10/*", "http://localhost:8765/*"],
+      "matches": ["https://top.miuru.fun/*", "http://localhost:8765/*"],
       "js": ["bridge.js"],
       "run_at": "document_start"
     },
@@ -18,3 +18,4 @@
     }
   ]
 }
+
