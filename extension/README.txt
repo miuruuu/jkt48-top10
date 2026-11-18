@@ -18,3 +18,5 @@ Disclaimer:
 - Buatan penggemar. Tidak resmi dan tidak berafiliasi dengan X atau JKT48.
 - X bisa mengubah tampilannya kapan saja sehingga ekstensi berhenti bekerja.
 - Pakai atas risikomu sendiri. Kodenya hanya 3 file kecil (background.js, bridge.js, x.js); baca dulu kalau ragu.
+
+Kontak: X @vxeds0 (https://x.com/vxeds0), tell me at there.
