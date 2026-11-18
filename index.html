@@ -18,7 +18,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 system-ui,"Seg
 .hero .eyebrow{font-size:12px;letter-spacing:.22em;font-weight:700;opacity:.85}
 .hero h1{font-size:clamp(28px,6vw,46px);margin:6px 0 6px;letter-spacing:-1px;line-height:1.05}
 .hero p{margin:0;opacity:.9;max-width:46ch}
-.tabs{display:inline-flex;gap:4px;margin:0 0 16px;padding:4px;border-radius:999px;background:var(--soft)}
+.tabs{display:inline-flex;gap:4px;margin:0 0 16px;padding:4px;border-radius:999px;background:var(--soft);max-width:100%}
 .tab{border:0;background:transparent;color:var(--ink);padding:9px 26px;border-radius:999px;cursor:pointer;font:inherit;font-weight:700}
 .tab.on{background:var(--red);color:#fff;box-shadow:0 4px 12px rgba(228,0,43,.35)}
 .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:16px;align-items:start}
@@ -47,7 +47,7 @@ input[type=search],input[type=text]{width:100%;padding:11px 14px;border-radius:1
 .lang button,.uimode button{border:0;background:none;color:#fff;padding:5px 12px;border-radius:99px;cursor:pointer;font:inherit;font-size:12px;font-weight:700;opacity:.85}
 .lang button.on,.uimode button.on{background:#fff;color:#b80022;opacity:1}
 .uimode button{padding:5px 10px;font-size:14px;line-height:1}
-@media(max-width:600px){.hero{padding-top:62px}}
+@media(max-width:600px){.hero{padding-top:62px}.tab{padding:9px 0;flex:1 1 0;min-width:0}.tabs{display:flex}}
 /* kotak saran pencarian */
 .sbox{position:relative}
 .sugg{position:fixed;left:0;top:0;width:320px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 34px rgba(0,0,0,.3);max-height:380px;overflow:auto;z-index:2000;padding:6px}
