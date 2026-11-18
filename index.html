@@ -50,7 +50,7 @@ input[type=search],input[type=text]{width:100%;padding:11px 14px;border-radius:1
 @media(max-width:600px){.hero{padding-top:62px}}
 /* kotak saran pencarian */
 .sbox{position:relative}
-.sugg{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 34px rgba(0,0,0,.25);max-height:380px;overflow:auto;z-index:30;padding:6px}
+.sugg{position:fixed;left:0;top:0;width:320px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 34px rgba(0,0,0,.3);max-height:380px;overflow:auto;z-index:2000;padding:6px}
 .sugg .hd{font-size:12px;color:var(--mute);padding:6px 8px;display:flex;justify-content:space-between;align-items:center}
 .sugg .hd button{border:0;background:none;color:var(--mute);cursor:pointer;font:inherit;font-size:12px;text-decoration:underline}
 .sugg .row{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:10px;cursor:pointer}
@@ -1258,6 +1258,12 @@ function addRecent(t){ t=String(t||'').trim(); if (!t) return; writeRecent([t, .
 let suggRows = [], suggIdx = -1, suggTok = 0;
 const hl = (text,q) => { const i = q ? text.toLowerCase().indexOf(q.toLowerCase()) : -1; return i<0 ? esc(text) : esc(text.slice(0,i))+'<mark>'+esc(text.slice(i,i+q.length))+'</mark>'+esc(text.slice(i+q.length)); };
 function hideSugg(){ $('#sugg').hidden = true; $('#q').setAttribute('aria-expanded','false'); suggIdx = -1; }
+/* dropdown dipasang "fixed" tepat di bawah kolom cari, selebar kolomnya, dan selalu di atas elemen lain (termasuk pilihan stats.fm di bawahnya) */
+function positionSugg(){
+  const s=$('#sugg'); if (s.hidden) return; const r=$('#q').getBoundingClientRect();
+  s.style.left=r.left+'px'; s.style.top=(r.bottom+6)+'px'; s.style.width=r.width+'px'; s.style.maxHeight=Math.max(160,Math.min(380,innerHeight-r.bottom-16))+'px';
+}
+window.addEventListener('scroll', positionSugg, true); window.addEventListener('resize', positionSugg);
 function paintSugg(scroll){ [...$('#sugg').querySelectorAll('.row')].forEach(r=>{ const on = +r.dataset.i===suggIdx; r.classList.toggle('act',on); if (on && scroll) r.scrollIntoView({block:'nearest'}); }); }
 async function renderSugg(){
   const my = ++suggTok, kind = state.kind, q = state.q.trim(), box = $('#sugg');
@@ -1282,7 +1288,7 @@ async function renderSugg(){
     html += `<div class="row manual" role="option" data-i="${rows.length-1}"><span class="ic">＋</span><div class="t"><b>${tr('Tambah "{q}" manual',{q:esc(q)})}</b><span>${tr('Kalau tidak ada di daftar')}</span></div></div>`;
   }
   box.innerHTML = html; suggRows = rows; suggIdx = (q && rows.length && rows[0].type==='item') ? 0 : -1;
-  box.hidden = false; $('#q').setAttribute('aria-expanded','true'); paintSugg(false);
+  box.hidden = false; $('#q').setAttribute('aria-expanded','true'); positionSugg(); paintSugg(false);
 }
 function activateSugg(i){
   const r = suggRows[i]; if (!r) return;
