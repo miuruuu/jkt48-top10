@@ -213,6 +213,10 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
           <label class="sw" id="swNum"><i></i>Numbers</label>
         </div>
         <div class="looks" id="looks"></div>
+        <div id="pbBox" hidden>
+          <div class="themehead">Warna photobook</div>
+          <div class="chips" style="margin-top:6px"><button class="chip" type="button" data-pb="team">Ikut warna tim</button><label class="chip" style="display:inline-flex;gap:6px;align-items:center;cursor:pointer">Kustom <input type="color" id="pbColor" value="#ff5c93" style="width:28px;height:22px;padding:0;border:0;background:none;cursor:pointer"></label></div>
+        </div>
         <div class="themehead">Tema poster</div>
         <div class="themes" id="themes"></div>
         <div class="custom" id="customBox" hidden>
@@ -302,7 +306,7 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
   <details class="ext disc" id="disclaimer" style="margin-top:28px">
     <summary data-k="discSum">disclaimer · web iseng, nggak resmi, jangan dibawa serius-serius amat</summary>
     <p data-k="disc1"><b>web iseng.</b> ini proyek iseng buatan fans, bukan resmi. gw nggak punya hubungan apa-apa sama jkt48, jkt48 operation team, idn, x, apple, spotify, stats.fm, last.fm, maupun musicbrainz. semua nama dan merek punya yang punya masing-masing. gw cuma numpang lewat.</p>
-    <p data-k="disc2"><b>hak cipta.</b> cover dari itunes dan cover art archive, foto member dari jkt48.com. semuanya punya yang punya (© jkt48 operation team / pt indonesia musik nusantara dan pihak terkait). gw nampilin ini cuma biar lu bisa bikin daftar favorit pribadi: nggak jualan, nggak pasang iklan, nggak nyari cuan. kalau lu pemilik hak dan minta sesuatu diturunin, kontak gw lewat repo github-nya, gw turunin tanpa drama.</p>
+    <p data-k="disc2"><b>hak cipta.</b> cover dari itunes dan cover art archive, poster setlist dari akb48 wiki (fandom), foto member dari jkt48.com. semuanya punya yang punya (© jkt48 operation team / pt indonesia musik nusantara dan pihak terkait). gw nampilin ini cuma biar lu bisa bikin daftar favorit pribadi: nggak jualan, nggak pasang iklan, nggak nyari cuan. kalau lu pemilik hak dan minta sesuatu diturunin, kontak gw lewat repo github-nya, gw turunin tanpa drama.</p>
     <p data-k="disc3"><b>datanya bisa ngaco.</b> daftar album dan lagu digabung dari itunes, musicbrainz, dan wikipedia, sedangkan daftar member itu snapshot jkt48.com/member per 19 november 2026. bisa ada yang kurang, salah ketik, atau udah basi (member baru, pindah tim, dst). cuplikan lagu dari itunes, bukan dari sini.</p>
     <p data-k="disc4"><b>privasi.</b> web ini nggak punya server, jadi gw nggak nyimpen apa-apa soal lu. daftar, nama daftar, dan pengaturan cuma ada di browser lu. pas nyari atau impor, browser lu ngobrol langsung sama layanan terkait (itunes, musicbrainz, wikipedia, stats.fm, last.fm, dan wsrv.nl buat foto member) yang punya kebijakan privasi masing-masing. link share isinya daftar lu di dalam alamatnya, jadi siapa pun yang pegang link bisa liat. jangan taruh data pribadi di nama atau link, ya.</p>
     <p data-k="disc5"><b>soal share ke x.</b> iya, emang agak makan waktu, maaf. x nggak ngizinin web mana pun nempelin foto ke tweet, dan api-nya berbayar, sementara ini web iseng, bukan perusahaan. jadi lu salin atau seret fotonya sendiri (atau pakai ekstensi opsional). web ini nggak pernah ngepost atas nama lu dan nggak minta login ke akun mana pun. ekstensi chrome-nya juga nggak resmi, pakai atas risiko sendiri.</p>
@@ -323,6 +327,7 @@ const EN = {
  'Salin link':'Copy link','Semua':'All','Cuma #1':'Just #1','♪ Suara':'♪ Sound','Unduh video':'Download video','Buat top-mu sendiri':'Make your own top list',
  'Cari setlist teater JKT48...':'Search JKT48 theater setlists...','Memuat daftar setlist teater...':'Loading theater setlists...',
  'Photobook: sampul + {n} halaman, berurutan. Seret atau salin tiap halaman, atau unduh ZIP. X menerima sampai 20 foto per post.':'Photobook: cover + {n} pages, in order. Drag or copy each page, or download the ZIP. X accepts up to 20 photos per post.',
+ 'Warna photobook':'Photobook color','Ikut warna tim':'Follow team color',
  'Salin berurutan':'Copy one by one','Unduh ZIP':'Download ZIP','Salin berikutnya ({a}/{b})':'Copy next ({a}/{b})','Foto {a}/{b} tersalin. Tempel dengan Ctrl+V di tweet, lalu klik lagi untuk foto berikutnya.':'Photo {a}/{b} copied. Paste with Ctrl+V in the tweet, then click again for the next one.','Foto terakhir ({a}/{b}) tersalin. Tempel dengan Ctrl+V. Klik lagi untuk mengulang dari awal.':'Last photo ({a}/{b}) copied. Paste with Ctrl+V. Click again to start over.','ZIP diunduh: semua foto dalam satu file.':'ZIP downloaded: all photos in one file.',
  'Foto':'Photo','Terang':'Light','Otomatis (ikut perangkat)':'Auto (follow device)','Gelap':'Dark','Pencarian terakhir':'Recent searches','Hapus riwayat':'Clear history','Hasil untuk "{q}"':'Results for "{q}"','{n} cocok':'{n} matches','Tidak ada yang cocok.':'No matches.','Tambah "{q}" manual':'Add "{q}" manually','Kalau tidak ada di daftar':'If it is not in the list',
  '+ tambah semua':'+ add all','Tambah semua yang tampil (sampai penuh)':'Add everything shown (until full)','Ditambah {n} item.':'Added {n} item(s).','Tambah manual dengan foto sendiri':'Add manually with your own photo','Foto sendiri hanya tersimpan di browser ini dan tidak ikut link share.':'Your own photo is only kept in this browser and is not included in the share link.','Gagal membuka foto itu.':'Could not open that photo.',
@@ -372,7 +377,7 @@ const EN_HTML = {
  viewFoot:'made with jkt48 top 10 · just for fun, not official.',
  discSum:'disclaimer · just for fun, unofficial, do not take it too seriously',
  disc1:'<b>just for fun.</b> this is a fan-made side project, not official. i have no connection to jkt48, jkt48 operation team, idn, x, apple, spotify, stats.fm, last.fm or musicbrainz. all names and brands belong to their owners. i am just passing through.',
- disc2:'<b>copyright.</b> covers come from itunes and the cover art archive, member photos from jkt48.com. all of it belongs to the rights holders (© jkt48 operation team / pt indonesia musik nusantara and related parties). i only show it so you can build a personal favorites list: no selling, no ads, no cash. if you own the rights and want something taken down, reach me through the github repo and i will remove it, no drama.',
+ disc2:'<b>copyright.</b> covers come from itunes and the cover art archive, setlist posters from the akb48 wiki (fandom), member photos from jkt48.com. all of it belongs to the rights holders (© jkt48 operation team / pt indonesia musik nusantara and related parties). i only show it so you can build a personal favorites list: no selling, no ads, no cash. if you own the rights and want something taken down, reach me through the github repo and i will remove it, no drama.',
  disc3:'<b>the data can be wrong.</b> the album and song lists are merged from itunes, musicbrainz and wikipedia, and the member list is a snapshot of jkt48.com/member from 19 november 2026. there may be gaps, typos, or stale stuff (new members, team changes, etc). song previews come from itunes, not from here.',
  disc4:'<b>privacy.</b> this site has no server, so i store nothing about you. your lists, list names and settings only live in this browser. when you search or import, your browser talks directly to the services involved (itunes, musicbrainz, wikipedia, stats.fm, last.fm, and wsrv.nl for member photos), and they have their own privacy policies. a share link carries your list inside its address, so anyone holding the link can see it. do not put personal info in the name or link, okay?',
  disc5:'<b>about sharing to x.</b> yes, it takes a few extra steps, sorry. x does not let a website attach photos to a tweet for you, and its api costs money, while this is a for-fun site, not a company. so you copy or drag the photos yourself (or use the optional extension). this site never posts for you and never asks you to log in anywhere. the chrome extension is unofficial too, use it at your own risk.',
@@ -386,6 +391,7 @@ const JA = {
  'Salin link':'リンクをコピー','Semua':'すべて','Cuma #1':'1位のみ','♪ Suara':'♪ 音','Unduh video':'動画をダウンロード','Buat top-mu sendiri':'自分のランキングを作る',
  'Cari setlist teater JKT48...':'JKT48の劇場公演を検索...','Memuat daftar setlist teater...':'劇場公演リストを読み込み中...',
  'Photobook: sampul + {n} halaman, berurutan. Seret atau salin tiap halaman, atau unduh ZIP. X menerima sampai 20 foto per post.':'フォトブック: 表紙+{n}ページを順番に用意しました。各ページをドラッグ/コピー、またはZIPでダウンロード。Xは1投稿につき最大20枚までです。',
+ 'Warna photobook':'フォトブックの色','Ikut warna tim':'チームカラーに合わせる',
  'Salin berurutan':'1枚ずつコピー','Unduh ZIP':'ZIPをダウンロード','Salin berikutnya ({a}/{b})':'次をコピー({a}/{b})','Foto {a}/{b} tersalin. Tempel dengan Ctrl+V di tweet, lalu klik lagi untuk foto berikutnya.':'{a}/{b}枚目をコピーしました。ツイートに Ctrl+V で貼り付け、もう一度クリックして次へ。','Foto terakhir ({a}/{b}) tersalin. Tempel dengan Ctrl+V. Klik lagi untuk mengulang dari awal.':'最後の写真({a}/{b})をコピーしました。Ctrl+V で貼り付け。もう一度クリックで最初から。','ZIP diunduh: semua foto dalam satu file.':'ZIPをダウンロードしました。すべての写真が1つのファイルに入っています。',
  'Foto':'フォト','Terang':'ライト','Otomatis (ikut perangkat)':'自動(端末に合わせる)','Gelap':'ダーク','Pencarian terakhir':'最近の検索','Hapus riwayat':'履歴を消去','Hasil untuk "{q}"':'「{q}」の結果','{n} cocok':'{n}件ヒット','Tidak ada yang cocok.':'一致するものがありません。','Tambah "{q}" manual':'「{q}」を手動で追加','Kalau tidak ada di daftar':'リストにない場合',
  '+ tambah semua':'+ すべて追加','Tambah semua yang tampil (sampai penuh)':'表示中のものをすべて追加(上限まで)','Ditambah {n} item.':'{n}件追加しました。','Tambah manual dengan foto sendiri':'自分の写真で手動追加','Foto sendiri hanya tersimpan di browser ini dan tidak ikut link share.':'自分の写真はこのブラウザにだけ保存され、共有リンクには含まれません。','Gagal membuka foto itu.':'その写真を開けませんでした。',
@@ -435,7 +441,7 @@ const JA_HTML = {
  viewFoot:'JKT48 Top 10 で作成 · 趣味のサイト(非公式)',
  discSum:'免責事項 · 趣味サイトです。非公式なので、あまり真に受けないでください',
  disc1:'<b>ただの趣味サイト。</b>ファンが遊びで作ったもので、非公式です。JKT48、JKT48 Operation Team、IDN、X、Apple、Spotify、stats.fm、Last.fm、MusicBrainz とは一切関係ありません。すべての名称・ブランドは各所有者のものです。通りすがりです。',
- disc2:'<b>著作権。</b>カバーは iTunes と Cover Art Archive、メンバー写真は jkt48.com のものです。すべて権利者(© JKT48 Operation Team / PT Indonesia Musik Nusantara および関係者)に帰属します。個人のお気に入りリストを作るためだけに表示していて、販売も広告も収益もありません。権利者の方で削除をご希望なら、GitHubリポジトリ経由でご連絡ください。揉めずに削除します。',
+ disc2:'<b>著作権。</b>カバーは iTunes と Cover Art Archive、公演ポスターは AKB48 Wiki(Fandom)、メンバー写真は jkt48.com のものです。すべて権利者(© JKT48 Operation Team / PT Indonesia Musik Nusantara および関係者)に帰属します。個人のお気に入りリストを作るためだけに表示していて、販売も広告も収益もありません。権利者の方で削除をご希望なら、GitHubリポジトリ経由でご連絡ください。揉めずに削除します。',
  disc3:'<b>データは間違っているかも。</b>アルバムと楽曲のリストは iTunes・MusicBrainz・Wikipedia を合わせたもの、メンバー一覧は 2026年11月19日時点の jkt48.com/member のスナップショットです。抜け、誤字、古い情報(新メンバーやチーム異動など)があるかもしれません。楽曲プレビューは iTunes のものです。',
  disc4:'<b>プライバシー。</b>このサイトにはサーバーがないので、あなたの情報は何も保存しません。リスト、リスト名、設定はこのブラウザの中にだけ残ります。検索やインポートのときは、ブラウザが関連サービス(iTunes、MusicBrainz、Wikipedia、stats.fm、Last.fm、メンバー写真用の wsrv.nl)と直接やり取りし、各サービスに独自のプライバシーポリシーがあります。共有リンクにはリストの中身がアドレスに入っているので、リンクを持っている人は誰でも見られます。名前やリンクに個人情報は入れないでくださいね。',
  disc5:'<b>Xへのシェアについて。</b>はい、ちょっと手間がかかります。ごめんなさい。Xは外部サイトがツイートに写真を自動で添付することを許しておらず、APIは有料で、このサイトは会社ではなく趣味です。そのため写真はご自身でコピーかドラッグしてください(任意の拡張機能も使えます)。このサイトが代わりに投稿することはなく、ログインを求めることもありません。Chrome拡張機能も非公式なので、自己責任でどうぞ。',
@@ -474,7 +480,7 @@ function setLang(l){
   applyLangTree(document.body);
   renderHeads(); renderThemeUI(); renderResults(); renderList(); renderSaved($('#savedSel').value); $('#sfUser').placeholder = tr($('#impSrc').value==='lastfm' ? 'Username Last.fm' : 'Username stats.fm'); $('#q').placeholder = tr(KIND[state.kind].ph);
 }
-const state = { vinyl:'auto', theme:'classic', custom:{bg:'#fff1f3',ink:'#2a1218',acc:'#e4002b',bg2:''}, font:'sys', postMode:'multi', kind:'album', look:'cds', num:false, night:false, share:'post', spin:'all', spinFmt:'sq', audio:true, q:'', filter:'all', year:'all', picks:{album:[],song:[],oshi:[],setlist:[]} };
+const state = { pbColor:'team', vinyl:'auto', theme:'classic', custom:{bg:'#fff1f3',ink:'#2a1218',acc:'#e4002b',bg2:''}, font:'sys', postMode:'multi', kind:'album', look:'cds', num:false, night:false, share:'post', spin:'all', spinFmt:'sq', audio:true, q:'', filter:'all', year:'all', picks:{album:[],song:[],oshi:[],setlist:[]} };
 const cache = {album:[],song:[],oshi:[],setlist:[]};
 let MAX = 10; let RED = '#e4002b'; let THEME_FONT = 'system-ui,sans-serif';
 
@@ -510,8 +516,8 @@ function fillBg(c,W,H,t){
 (()=>{ const d=Object.getOwnPropertyDescriptor(CanvasRenderingContext2D.prototype,'font');
   Object.defineProperty(CanvasRenderingContext2D.prototype,'font',{configurable:true,get(){ return d.get.call(this); },set(v){ d.set.call(this, typeof v==='string' ? v.replace('system-ui,sans-serif', THEME_FONT) : v); }}); })();
 try { const s = JSON.parse(localStorage.getItem('jkt48top')||'null'); if (s && s.album) Object.assign(state.picks, s); const m = +localStorage.getItem('jkt48max'); if ([3,5,10,20].includes(m)) MAX = m; } catch(e){}
-try { const th = JSON.parse(localStorage.getItem('jkt48theme')||'null'); if (th) { if (th.id==='custom' || THEMES[th.id]) state.theme=th.id; if (th.custom) Object.assign(state.custom, th.custom); if (FONTS[th.font]) state.font=th.font; if (VINYL_LIST.includes(th.vinyl)) state.vinyl=th.vinyl; } } catch(e){}
-const save = () => { try{ localStorage.setItem('jkt48top', JSON.stringify(state.picks)); localStorage.setItem('jkt48max', MAX); localStorage.setItem('jkt48theme', JSON.stringify({id:state.theme,custom:state.custom,font:state.font,vinyl:state.vinyl})); }catch(e){} };
+try { const th = JSON.parse(localStorage.getItem('jkt48theme')||'null'); if (th) { if (th.id==='custom' || THEMES[th.id]) state.theme=th.id; if (th.custom) Object.assign(state.custom, th.custom); if (FONTS[th.font]) state.font=th.font; if (VINYL_LIST.includes(th.vinyl)) state.vinyl=th.vinyl; if (th.pb==='team' || validHex(th.pb)) state.pbColor=th.pb; } } catch(e){}
+const save = () => { try{ localStorage.setItem('jkt48top', JSON.stringify(state.picks)); localStorage.setItem('jkt48max', MAX); localStorage.setItem('jkt48theme', JSON.stringify({id:state.theme,custom:state.custom,font:state.font,vinyl:state.vinyl,pb:state.pbColor})); }catch(e){} };
 const big = u => u.replace(/\d+x\d+bb/, '600x600bb');
 const cur = () => state.picks[state.kind];
 const KIND = { album:{noun:'albums', one:'album', ph:'Cari album JKT48...'}, song:{noun:'songs', one:'lagu', ph:'Cari lagu JKT48...'}, oshi:{noun:'oshi', one:'member', ph:'Cari member JKT48...'}, setlist:{noun:'setlists', one:'setlist', ph:'Cari setlist teater JKT48...'} };
@@ -615,8 +621,29 @@ function setlistArt(title,team,yr){
   x.fillStyle='rgba(255,255,255,.8)'; x.font='600 28px system-ui,sans-serif'; x.fillText([team,yr].filter(Boolean).join(' · ').slice(0,34),44,530);
   return c.toDataURL('image/jpeg',0.85);
 }
+/* poster setlist dari AKB48 Wiki (Fandom): kategori stage -> nama setlist (teks tebal di awal halaman) -> poster */
+async function fetchStagePosters(){
+  const base='https://akb48.fandom.com/api.php?origin=*&format=json&', g=async q=>(await fetch(base+q)).json(), map={};
+  try {
+    const titles=new Set();
+    for (const cat of ['JKT48 Stages','JKT48 Team Stages','JKT48 Trainee Stages','JKT48 Special Stages','JKT48 Waiting Stages']) {
+      const j=await g('action=query&list=categorymembers&cmtitle='+encodeURIComponent('Category:'+cat)+'&cmlimit=100&cmnamespace=0');
+      (j.query&&j.query.categorymembers||[]).forEach(m=>titles.add(m.title));
+    }
+    const list=[...titles];
+    for (let i=0;i<list.length;i+=20) {
+      const j=await g('action=query&prop=pageimages|revisions&rvprop=content&rvslots=main&rvsection=0&piprop=thumbnail&pithumbsize=600&titles='+encodeURIComponent(list.slice(i,i+20).join('|')));
+      Object.values(j.query.pages||{}).forEach(p=>{
+        const w=(p.revisions&&p.revisions[0].slots.main['*'])||'', b=w.match(/'''([^']{3,80})'''/), nm=b?b[1].replace(/["“”]/g,'').trim():'';
+        if (nm && !/PAGENAME/.test(nm) && p.thumbnail) { const k=keyOf(nm); if (k && !map[k]) map[k]=p.thumbnail.source; }
+      });
+    }
+  } catch(e){}
+  return map;
+}
+const posterFor = (map,title) => { const k=keyOf(title); if (map[k]) return map[k]; if (k.length>=6) { const hit=Object.keys(map).find(x=>x.includes(k)); if (hit) return map[hit]; } return null; };
 async function loadSetlists(){
-  const out=[];
+  const out=[]; const posters=await fetchStagePosters();
   try {
     const j = await fetch('https://id.wikipedia.org/w/api.php?action=parse&page='+encodeURIComponent('Daftar lagu yang direkam oleh JKT48')+'&prop=text&format=json&origin=*&formatversion=2').then(r=>r.json());
     const doc = new DOMParser().parseFromString(j.parse.text,'text/html');
@@ -632,7 +659,8 @@ async function loadSetlists(){
       const team = (c[1]?c[1].textContent:'').replace(/\[\d+\]/g,'').replace(/\(.*$/,'').replace(/\s+/g,' ').trim();
       const yr = ((c[2]?c[2].textContent:'').match(/\b(20\d{2})\b/)||[])[1] || '';
       const k = keyOf(main); if (!k || seen.has(k)) continue; seen.add(k);
-      out.push({ id:'sl:'+k, title:main, sub:[alt||'Setlist',team,yr].filter(Boolean).join(' · '), tm:team, yr, img:setlistArt(main,team,yr), type:'setlist' });
+      const poster=posterFor(posters,main);
+      out.push({ id:'sl:'+k, title:main, sub:[alt||'Setlist',team,yr].filter(Boolean).join(' · '), tm:team, yr, poster, img:poster||setlistArt(main,team,yr), type:'setlist' });
     }
   } catch(e){}
   return out;
@@ -642,7 +670,7 @@ function mergeLists(...lists){ // urutan = prioritas (yang lebih awal menang, ka
   for (const l of lists) for (const x of l) { const k = keyOf(x.title); if (!k || seen.has(k)) continue; seen.add(k); out.push(x); }
   return out;
 }
-const DATA_KEY = 'jkt48data6';
+const DATA_KEY = 'jkt48data7';
 function cacheRead(kind){ try { const d = JSON.parse(localStorage.getItem(DATA_KEY+kind)||'null'); if (d && Date.now()-d.t < 7*864e5 && d.items.length) return d.items; } catch(e){} return null; }
 function cacheWrite(kind,items){ try { localStorage.setItem(DATA_KEY+kind, JSON.stringify({t:Date.now(),items})); } catch(e){} }
 /* satu pemuatan per jenis data, walau dipanggil berkali-kali bersamaan (ganti tab cepat, klik beruntun) */
@@ -652,7 +680,7 @@ async function loadInner(kind){
   if (cache[kind].length) return;
   if (kind==='oshi') { cache.oshi = oshiItems(); return; }
   if (kind==='setlist') { // setlist teater dari Wikipedia Indonesia (di-cache seperti data lain)
-    const hit0 = cacheRead('setlist'); if (hit0) { cache.setlist = hit0.map(x=>({...x, img:setlistArt(x.title,x.tm,x.yr)})); return; } // poster dibuat ulang, tidak disimpan
+    const hit0 = cacheRead('setlist'); if (hit0) { cache.setlist = hit0.map(x=>({...x, img:x.poster||setlistArt(x.title,x.tm,x.yr)})); return; } // poster dibuat ulang, tidak disimpan
     $('#msg').textContent = tr('Memuat daftar setlist teater...');
     cache.setlist = await loadSetlists(); if (cache.setlist.length) cacheWrite('setlist', cache.setlist.map(({img,...r})=>r));
     $('#msg').textContent = cache.setlist.length ? '' : tr('Gagal memuat data. Buka lewat server (http), bukan file.'); return;
@@ -992,7 +1020,7 @@ function spinFrame(c,o,t){
 const opts = async () => {
   const picks = cur().slice(), assets = await loadAll(picks);
   const theme = buildTheme(state.theme, state.custom);
-  return { picks, assets, look:state.look, num:state.num, theme, night:theme.dark, font:state.font, vinyl:state.vinyl, kind:state.kind, name:$('#nm').value.trim() };
+  return { picks, assets, look:state.look, num:state.num, theme, night:theme.dark, font:state.font, vinyl:state.vinyl, pbColor:state.pbColor, kind:state.kind, name:$('#nm').value.trim() };
 };
 /* Satu foto per item, tanpa latar/padding: di X, foto-foto tipis ini berjajar rapat jadi satu rak.
    CDs 200x2660 (≈0.075), Tapes 330x2130 (≈0.155), Covers 1:1, Vinyl 1.15, Player 9:16 */
@@ -1043,7 +1071,7 @@ function lum(col){ const m=col.match(/\d+/g); return m?(0.299*m[0]+0.587*m[1]+0.
 const OSHI_LOOKS = ['photocard','polaroid','idcard','photo'];
 const OSHI_LOOK_NAMES = { photocard:'Photocard', polaroid:'Polaroid', idcard:'ID Card', photo:'Foto', cds:'CDs', tapes:'Tapes', photobook:'Photobook' };
 const OSHI_MENU = ['photocard','polaroid','idcard','photo','cds','tapes','photobook']; // CD dan kaset tetap ada: tren foto tipis berjajar di X
-const TEAM_COLOR = { L:'#e4002b', D:'#2a6fdb', P:'#f5a300', T:'#6b7280' }; // warna dekorasi buatan kita, bukan warna resmi
+const TEAM_COLOR = { L:'#e20785', D:'#00a4a5', P:'#f69220', T:'#8f8f8f' }; // warna tim menurut AKB48 Wiki: Love magenta (hati), Dream cyan (bintang), Passion amber (api), Trainee abu-abu
 const oshiNo = p => { const i = MEMBERS.findIndex(m=>'m:'+m[1]===String(p.id)); return i<0 ? 0 : i+1; };
 function teamOf(p){ const m = MEMBERS.find(m=>'m:'+m[1]===String(p.id)); return m ? m[2] : (p.team||'T'); }
 function drawCoverFit(c,im,x,y,w,h,focusY){ // object-fit: cover, fokus ke atas supaya wajah tidak terpotong
@@ -1179,49 +1207,45 @@ function pbPolaroid(c,cx,cy,w,ang,a,caption,pal,focus){
 function pbWrap(c,text,maxW,maxLines){ const ws=String(text).split(/\s+/), lines=[]; let line=''; for (const w of ws){ if (c.measureText(line?line+' '+w:w).width>maxW && line){ lines.push(line); line=w; } else line=line?line+' '+w:w; } lines.push(line); return lines.slice(0,maxLines||2); }
 function pbBadge(c,x,y,r,label,pal){ c.save(); c.translate(x,y); c.rotate(-0.12); c.fillStyle=pal.acc; c.beginPath(); for (let i=0;i<16;i++){ const a=i*Math.PI/8, rr_=i%2?r*0.88:r; c.lineTo(Math.cos(a)*rr_,Math.sin(a)*rr_); } c.closePath(); c.fill(); c.fillStyle='#fff'; c.textAlign='center'; c.textBaseline='middle'; c.font=`800 ${r*0.9}px ${HAND}`; c.fillText(label,0,r*0.04); c.restore(); }
 function pbSubtitle(p){ return String(p.sub||'').replace(/^JKT48\s*·\s*/,''); }
-/* sampul: judul besar + tiga polaroid miring. Menyesuaikan lebar/tinggi kanvas (portrait untuk foto, lebar untuk kolase). */
+/* warna photobook: bawaan mengikuti warna tim member (Love magenta, Dream cyan, Passion amber, Trainee abu-abu); bisa diganti satu warna kustom */
+function pbPalette(hex){ return { bg:mixHex(hex,'#ffffff',0.86), acc:hex, soft:mixHex(hex,'#ffffff',0.6), ink:mixHex(hex,'#000000',0.66) }; }
+function pbColorFor(o,p){ if (o && o.pbColor && o.pbColor!=='team' && validHex(o.pbColor)) return o.pbColor; return TEAM_COLOR[teamOf(p)] || '#ff5c93'; }
+function pbFlame(c,x,y,s,col){ c.save(); c.translate(x,y); c.fillStyle=col; c.beginPath(); c.moveTo(0,-s); c.bezierCurveTo(s*0.2,-s*0.55,s*0.95,-s*0.2,s*0.7,s*0.35); c.bezierCurveTo(s*0.55,s*0.85,-s*0.55,s*0.85,-s*0.7,s*0.35); c.bezierCurveTo(-s*0.85,-s*0.05,-s*0.3,-s*0.15,0,-s); c.closePath(); c.fill(); c.fillStyle='rgba(255,255,255,.55)'; c.beginPath(); c.moveTo(0,-s*0.1); c.bezierCurveTo(s*0.25,s*0.15,s*0.35,s*0.45,0,s*0.6); c.bezierCurveTo(-s*0.35,s*0.45,-s*0.25,s*0.15,0,-s*0.1); c.fill(); c.restore(); }
+function pbSymbol(c,team,x,y,s,col,rot){ // simbol tim: Love hati, Dream bintang, Passion api, lainnya kilau
+  if (team==='L') pbHeart(c,x,y,s,col,rot); else if (team==='D') pbStar(c,x,y,s,col,rot); else if (team==='P') pbFlame(c,x,y,s*0.95,col); else pbSparkle(c,x,y,s,col);
+}
+/* sampul: judul besar + tiga polaroid miring. Menyesuaikan lebar/tinggi kanvas (potret untuk foto, lebar untuk kolase). */
 function photobookCover(c,W,H,o){
-  const pal=PB[0], n=o.picks.length, u=Math.min(W,H), land=W>H*1.1;
+  const first=o.picks[0], pal=pbPalette(pbColorFor(o,first)), team=teamOf(first), n=o.picks.length, u=Math.min(W,H), land=W>H*1.1;
   c.fillStyle=pal.bg; c.fillRect(0,0,W,H); pbDots(c,W,H,'rgba(255,255,255,.7)');
-  const noun = KIND[o.kind] ? nounL(o.kind) : 'favorites';
-  const tx = land ? W*0.07 : W/2, ty = land ? H*0.22 : H*0.12;
+  const noun = nounL('oshi'), tx = land ? W*0.07 : W/2, ty = land ? H*0.22 : H*0.12;
   c.textAlign = land ? 'left' : 'center'; c.textBaseline='alphabetic';
   c.fillStyle=pal.acc; c.font=`800 ${u*0.065}px ${HAND}`; c.fillText('photobook',tx,ty);
   c.fillStyle=pal.ink; c.font=`800 ${u*0.15}px ${HAND}`; c.fillText(posterHead(n||MAX),tx,ty+u*0.16);
   c.fillStyle=pal.acc; c.font=`800 ${u*0.12}px ${HAND}`; c.fillText(noun,tx,ty+u*0.30);
   pbWavy(c, land?tx:W/2-u*0.2, ty+u*0.33, u*0.4, pal.acc, u*0.008);
-  c.fillStyle=pal.ink; c.font=`600 ${u*0.034}px ${HAND}`; c.fillText('JKT48'+(o.name?'  ·  by '+o.name:''), tx, ty+u*0.40);
-  const top=o.picks.slice(0,3), ws=u*(land?0.34:0.46), base = land ? [W*0.62,H*0.5] : [W/2,H*0.7];
+  c.fillStyle=pal.ink; c.font=`600 ${u*0.034}px ${HAND}`; c.fillText('JKT48'+(o.name?'  ·  by '+o.name:''), tx, ty+u*0.41);
+  const top=o.picks.slice(0,3), ws=u*(land?0.34:0.46), base = land ? [W*0.62,H*0.5] : [W/2,H*0.71];
   const spots = land ? [[-ws*0.62,ws*0.18,-0.12],[ws*0.62,ws*0.1,0.1],[0,-ws*0.05,-0.02]] : [[-ws*0.62,ws*0.12,-0.13],[ws*0.62,ws*0.06,0.11],[0,-ws*0.02,-0.02]];
-  top.map((p,i)=>i).reverse().forEach(i=>{ const [dx,dy,ang]=spots[i]; pbPolaroid(c,base[0]+dx,base[1]+dy,ws*(i===0?1.05:0.86),ang,o.assets[i],o.picks[i].title,PB[i%PB.length],0.05); });
-  pbHeart(c,W*0.9,H*0.1,u*0.05,pal.acc,0.2); pbStar(c,W*0.08,H*0.88,u*0.045,'#ffc93c',0.2); pbSparkle(c,W*0.2,H*0.06,u*0.03,'#ffffff'); pbFlower(c,W*0.92,H*0.9,u*0.06,pal.soft); pbHeart(c,W*0.05,H*0.55,u*0.03,pal.soft,-0.2);
+  top.map((p,i)=>i).reverse().forEach(i=>{ const [dx,dy,ang]=spots[i]; pbPolaroid(c,base[0]+dx,base[1]+dy,ws*(i===0?1.05:0.86),ang,o.assets[i],o.picks[i].title,pbPalette(pbColorFor(o,o.picks[i])),0.05); });
+  pbSymbol(c,team,W*0.9,H*0.1,u*0.055,pal.acc,0.2); pbStar(c,W*0.08,H*0.88,u*0.045,'#ffc93c',0.2); pbSparkle(c,W*0.2,H*0.06,u*0.03,'#ffffff'); pbFlower(c,W*0.92,H*0.9,u*0.06,pal.soft); pbHeart(c,W*0.05,H*0.55,u*0.03,pal.soft,-0.2);
 }
+/* halaman item: selalu polaroid besar di tengah (wajah aman), dengan lencana nomor, simbol dan nama tim, serta stiker */
 function photobookPage(o,i){
   const W=1080,H=1350, cv=document.createElement('canvas'); cv.width=W; cv.height=H; const c=cv.getContext('2d'); applyTheme(o);
   if (i===0) { photobookCover(c,W,H,o); return cv; }
-  const idx=i-1, p=o.picks[idx], a=o.assets[idx], pal=PB[idx%PB.length], n=o.picks.length, rnd=rng(hashStr(String(p.title))+7);
+  const idx=i-1, p=o.picks[idx], a=o.assets[idx], team=teamOf(p), pal=pbPalette(pbColorFor(o,p)), n=o.picks.length, rnd=rng(hashStr(String(p.title))+7), flip=idx%2?-1:1;
   c.fillStyle=pal.bg; c.fillRect(0,0,W,H); pbDots(c,W,H,'rgba(255,255,255,.7)');
-  const title=p.title, subt=pbSubtitle(p);
-  if (idx%2===0) { // A: polaroid besar di tengah
-    const h=pbPolaroid(c,W/2,590,740,-0.035,a,'',pal,0.05);
-    pbTape(c,W/2-250,590-h/2+10,200,56,-0.5,pal.soft); pbTape(c,W/2+260,590-h/2+14,200,56,0.5,pal.soft);
-    c.textAlign='center'; c.textBaseline='alphabetic'; c.fillStyle=pal.ink; c.font=`800 76px ${HAND}`; const lines=pbWrap(c,title,880,2); lines.forEach((l,k)=>c.fillText(fitText(c,l,900),W/2,1130+k*84));
-    c.fillStyle=pal.ink; c.globalAlpha=0.7; c.font=`600 34px system-ui,sans-serif`; c.fillText(fitText(c,subt,880),W/2,1130+lines.length*84+14); c.globalAlpha=1;
-    pbWavy(c,W/2-150,1130+lines.length*84+40,300,pal.acc,7);
-  } else { // B: foto berbingkai hati + kartu catatan
-    c.save(); pbHeartPath(c,W/2,500,520); c.clip(); drawCoverFit(c,a.im,W/2-480,80,960,760,0.02); c.restore();
-    c.lineWidth=30; c.strokeStyle='#fffdf8'; pbHeartPath(c,W/2,500,520); c.stroke();
-    c.lineWidth=5; c.strokeStyle=pal.acc; c.setLineDash([16,14]); pbHeartPath(c,W/2,500,486); c.stroke(); c.setLineDash([]);
-    c.save(); c.translate(W/2,1085); c.rotate(0.018); c.shadowColor='rgba(60,30,50,.22)'; c.shadowBlur=26; c.shadowOffsetY=10; c.fillStyle='#fffdf8'; rr(c,-440,-150,880,300,26); c.fill(); c.shadowColor='transparent';
-    c.strokeStyle=pal.soft; c.lineWidth=3; for (let y=-70;y<140;y+=62){ c.beginPath(); c.moveTo(-400,y); c.lineTo(400,y); c.stroke(); }
-    c.textAlign='center'; c.textBaseline='alphabetic'; c.fillStyle=pal.ink; c.font=`800 70px ${HAND}`; const lines=pbWrap(c,title,780,2); lines.forEach((l,k)=>c.fillText(fitText(c,l,800),0,-52+k*76));
-    c.fillStyle=pal.ink; c.globalAlpha=0.7; c.font=`600 32px system-ui,sans-serif`; c.fillText(fitText(c,subt,800),0,-52+lines.length*76+24); c.globalAlpha=1; c.restore();
-    pbTape(c,W/2,940,220,58,0.03,pal.soft);
-  }
-  pbBadge(c,idx%2===0?170:W-170,idx%2===0?170:150,110,'#'+(idx+1),pal);
-  // stiker pelengkap (posisi acak tapi tetap untuk judul yang sama)
-  const spots=[[W*0.9,H*0.62],[W*0.1,H*0.7],[W*0.86,H*0.92],[W*0.12,H*0.94],[W*0.93,H*0.3],[W*0.07,H*0.36]], kinds=[0,1,2,3];
-  spots.forEach(([x,y],k)=>{ const kd=Math.floor(rnd()*4), s=34+rnd()*26; if (kd===0) pbHeart(c,x,y,s,k%2?pal.acc:'#ff8fb3',(rnd()-0.5)*0.6); else if (kd===1) pbStar(c,x,y,s*0.9,'#ffc93c',(rnd()-0.5)); else if (kd===2) pbSparkle(c,x,y,s,'#ffffff'); else pbFlower(c,x,y,s*1.1,pal.soft); });
+  const h=pbPolaroid(c,W/2,590,740,-0.035*flip,a,'',pal,0.05);
+  pbTape(c,W/2-250*flip,590-h/2+10,200,56,-0.5*flip,pal.soft); pbTape(c,W/2+260*flip,590-h/2+14,200,56,0.5*flip,pal.acc);
+  c.textAlign='center'; c.textBaseline='alphabetic'; c.fillStyle=pal.ink; c.font=`800 76px ${HAND}`; const lines=pbWrap(c,p.title,880,2);
+  lines.forEach((l,k)=>c.fillText(fitText(c,l,900),W/2,1130+k*84));
+  const subt=pbSubtitle(p); c.globalAlpha=0.75; c.font=`700 34px system-ui,sans-serif`; c.fillText(fitText(c,(TEAM[team]||'JKT48'),880),W/2,1130+lines.length*84+14); c.globalAlpha=1; void subt;
+  pbWavy(c,W/2-150,1130+lines.length*84+42,300,pal.acc,7);
+  pbBadge(c,170,170,110,'#'+(idx+1),pal);
+  pbSymbol(c,team,W-160,160,64,pal.acc,0.18);                       // simbol tim di pojok
+  const spots=[[W*0.9,H*0.5],[W*0.09,H*0.62],[W*0.88,H*0.9],[W*0.1,H*0.92],[W*0.93,H*0.3],[W*0.07,H*0.36]];
+  spots.forEach(([x,y],k)=>{ const kd=Math.floor(rnd()*4), s=34+rnd()*26; if (kd===0) pbHeart(c,x,y,s,k%2?pal.acc:pal.soft,(rnd()-0.5)*0.6); else if (kd===1) pbStar(c,x,y,s*0.9,'#ffc93c',(rnd()-0.5)); else if (kd===2) pbSparkle(c,x,y,s,'#ffffff'); else pbFlower(c,x,y,s*1.1,pal.soft); });
   c.fillStyle=pal.ink; c.globalAlpha=0.55; c.font=`600 26px ${HAND}`; c.textAlign='center'; c.fillText(`${i} / ${n}`,W/2,H-34); c.globalAlpha=1;
   return cv;
 }
@@ -1259,14 +1283,18 @@ function spineTitle(c,cx,y0,y1,title,maxCross,u,T,F){
 function drawSpineCommon(c,x,y,w,h,p,a,kind,cfg){
   const u = w/cfg.base, side = cfg.side*u, cap = cfg.cap*u, T = paperTone(a), F = TITLE_FONTS[hashStr(String(p.title))%TITLE_FONTS.length];
   c.save(); c.translate(x,y);
-  // plastik bening: badan keabuan dengan rel kiri-kanan yang berkilau
+  // plastik bening ala jewel case / casing asli: badan tebal berlapis, rel kiri-kanan, tutup dengan tab engsel di atas dan bawah
   rr(c,0,0,w,h,cfg.radius*u); let g = c.createLinearGradient(0,0,w,0);
-  g.addColorStop(0,'#9ea3ad'); g.addColorStop(0.05,'#f4f6f9'); g.addColorStop(0.5,'#dfe3ea'); g.addColorStop(0.95,'#f4f6f9'); g.addColorStop(1,'#979ca6'); c.fillStyle = g; c.fill();
-  [0,h-cap].forEach((yy,k)=>{ // tutup atas/bawah dengan tonjolan bulat dan lekukan di tengah
-    const gg = c.createLinearGradient(0,yy,0,yy+cap); gg.addColorStop(0,k?'rgba(255,255,255,.18)':'rgba(255,255,255,.9)'); gg.addColorStop(1,k?'rgba(255,255,255,.9)':'rgba(255,255,255,.18)');
-    c.fillStyle = gg; c.fillRect(side*0.45, yy+3*u, w-side*0.9, cap-6*u);
-    c.fillStyle = 'rgba(60,66,80,.24)'; for (const cx of [w*0.27, w*0.73]) { c.beginPath(); c.arc(cx, yy+cap/2, 8.5*u, 0, 7); c.fill(); }
-    c.fillStyle = 'rgba(60,66,80,.3)'; rr(c, w*0.4, yy+cap/2-4*u, w*0.2, 8*u, 4*u); c.fill();
+  g.addColorStop(0,'#868b95'); g.addColorStop(0.035,'#fbfcfe'); g.addColorStop(0.09,'#cfd4dc'); g.addColorStop(0.16,'#eef1f6'); g.addColorStop(0.5,'#e3e7ee'); g.addColorStop(0.84,'#eef1f6'); g.addColorStop(0.91,'#cfd4dc'); g.addColorStop(0.965,'#fbfcfe'); g.addColorStop(1,'#868b95'); c.fillStyle = g; c.fill();
+  c.strokeStyle = 'rgba(60,66,80,.35)'; c.lineWidth = Math.max(1,1.2*u); rr(c, side*0.28, side*0.28, w-side*0.56, h-side*0.56, Math.max(2,(cfg.radius-3))*u); c.stroke();
+  c.strokeStyle = 'rgba(255,255,255,.8)'; rr(c, side*0.5, side*0.5, w-side, h-side, Math.max(2,(cfg.radius-5))*u); c.stroke();
+  [0,h-cap].forEach((yy,k)=>{
+    const gg = c.createLinearGradient(0,yy,0,yy+cap); gg.addColorStop(0,k?'rgba(255,255,255,.1)':'rgba(255,255,255,.95)'); gg.addColorStop(1,k?'rgba(255,255,255,.95)':'rgba(255,255,255,.1)');
+    c.fillStyle = gg; rr(c, side*0.55, yy+4*u, w-side*1.1, cap-8*u, 6*u); c.fill(); c.strokeStyle = 'rgba(60,66,80,.4)'; c.lineWidth = Math.max(1,1.3*u); c.stroke();
+    const tw = w*0.5, th = cap*0.46, tx = (w-tw)/2, ty = yy + (cap-th)/2;                 // tab engsel di tengah dengan celah horizontal
+    c.fillStyle = 'rgba(255,255,255,.8)'; rr(c,tx,ty,tw,th,5*u); c.fill(); c.strokeStyle = 'rgba(60,66,80,.55)'; c.lineWidth = Math.max(1,1.4*u); c.stroke();
+    c.fillStyle = 'rgba(40,46,60,.5)'; rr(c, tx+tw*0.22, ty+th/2-2.5*u, tw*0.56, 5*u, 2.5*u); c.fill();
+    c.fillStyle = 'rgba(60,66,80,.22)'; rr(c, tx-w*0.13, ty+th*0.2, w*0.1, th*0.6, 3*u); c.fill(); rr(c, tx+tw+w*0.03, ty+th*0.2, w*0.1, th*0.6, 3*u); c.fill();
   });
   const px = side, py = cap, pw = w-side*2, ph = h-cap*2;
   c.save(); c.beginPath(); c.rect(px,py,pw,ph); c.clip();
@@ -1282,6 +1310,7 @@ function drawSpineCommon(c,x,y,w,h,p,a,kind,cfg){
   c.font = `800 ${pw*0.135}px system-ui,sans-serif`; c.fillText(mediaLabel(kind,cfg.tape), px+pw/2, infoTop + infoH*0.7);
   plasticGloss(c,px,py,pw,ph,u);
   c.restore();
+  c.strokeStyle = 'rgba(15,18,26,.6)'; c.lineWidth = Math.max(1,2.2*u); c.strokeRect(px,py,pw,ph);
   c.strokeStyle = 'rgba(0,0,0,.22)'; c.lineWidth = Math.max(1,1.5*u); rr(c,0,0,w,h,cfg.radius*u); c.stroke();
   c.restore();
 }
@@ -1392,10 +1421,11 @@ function renderLink(){
   $('#slots').innerHTML = Array.from({length:Math.max(MAX,arr.length)},(_,i)=>`<div>${arr[i]?`<img src="${arr[i].img}" alt="">`:''}</div>`).join('');
 }
 function renderLooks(o){
+  renderPbUI();
   const host=$('#looks'), group = state.kind==='oshi' ? 'oshi' : state.kind==='setlist' ? 'setlist' : 'musik';
   if (host.dataset.group !== group) { // jenis format berbeda: member tidak cocok dengan CD, vinyl, dan player
     host.dataset.group = group; host.replaceChildren();
-    (group==='oshi' ? OSHI_MENU.map(k=>[k,OSHI_LOOK_NAMES[k]]) : group==='setlist' ? [['cds','DVD'],['tapes','Tapes'],['covers','Covers'],['vinyl','Vinyl'],['player','Player'],['photobook','Photobook']] : [['cds','CDs'],['tapes','Tapes'],['covers','Covers'],['vinyl','Vinyl'],['player','Player'],['photobook','Photobook']]).forEach(([k,l])=>{
+    (group==='oshi' ? OSHI_MENU.map(k=>[k,OSHI_LOOK_NAMES[k]]) : group==='setlist' ? [['cds','DVD'],['tapes','Tapes'],['covers','Covers'],['vinyl','Vinyl'],['player','Player']] : [['cds','CDs'],['tapes','Tapes'],['covers','Covers'],['vinyl','Vinyl'],['player','Player']]).forEach(([k,l])=>{
       const b=document.createElement('button'); b.className='look'; b.dataset.look=k; b.innerHTML=`<canvas width="160" height="90"></canvas><span>${tr(l)}</span>`; host.appendChild(b);
     });
   }
@@ -1541,7 +1571,7 @@ $('#filters').onchange = e => { if (e.target.id==='yearSel') { state.year=e.targ
 function syncKindUI(){
   const oshi = state.kind==='oshi';
   if (oshi && !OSHI_MENU.includes(state.look)) state.look = 'photocard';
-  else if (!oshi && OSHI_LOOKS.includes(state.look)) state.look = 'cds';
+  else if (!oshi && (OSHI_LOOKS.includes(state.look) || state.look==='photobook')) state.look = 'cds';
   document.querySelector('[data-s=spin]').hidden = oshi;
   if (oshi && state.share==='spin') document.querySelector('[data-s=post]').click();
 }
@@ -1698,6 +1728,13 @@ function renderThemeUI(){
   $('#vinyls').innerHTML = VINYL_LIST.map(k=>`<button type="button" class="chip ${state.vinyl===k?'on':''}" data-v="${k}">${VINYL_NAMES[k]}</button>`).join('');
   applyLangTree($('#themes')); applyLangTree($('#fonts')); applyLangTree($('#vinyls'));
 }
+/* warna photobook: ikut tim (bawaan) atau satu warna kustom */
+function renderPbUI(){
+  $('#pbBox').hidden = state.look!=='photobook'; const custom = state.pbColor!=='team' && validHex(state.pbColor);
+  document.querySelectorAll('#pbBox .chip[data-pb]').forEach(b=>b.classList.toggle('on',!custom)); $('#pbBox label.chip').classList.toggle('on',custom); if (custom) $('#pbColor').value = state.pbColor;
+}
+$('#pbBox').onclick = e => { const b=e.target.closest('[data-pb]'); if (!b) return; state.pbColor='team'; save(); renderPbUI(); refresh(); };
+$('#pbColor').oninput = e => { state.pbColor = e.target.value; save(); renderPbUI(); refresh(); };
 $('#vinyls').onclick=e=>{ const b=e.target.closest('.chip'); if(!b) return; state.vinyl=b.dataset.v; save(); renderThemeUI(); refresh(); };
 $('#themes').onclick=e=>{ const b=e.target.closest('.tsw'); if(!b) return; state.theme=b.dataset.t; state.night=buildTheme(state.theme,state.custom).dark; save(); renderThemeUI(); refresh(); };
 $('#fonts').onclick=e=>{ const b=e.target.closest('.chip'); if(!b) return; state.font=b.dataset.f; save(); renderThemeUI(); refresh(); };
@@ -1810,7 +1847,7 @@ $('#mkStory').onclick=async()=>{
 };
 $('#copy').onclick=async()=>{
   // seluruh daftar dikodekan di link (judul + alamat cover), jadi tidak perlu server atau lookup
-  const data={k:state.kind,l:state.look,n:+state.num,v:state.vinyl,th:state.theme,cu:state.theme==='custom'?state.custom:undefined,f:state.font,nm:$('#nm').value.trim(),lk:$('#lk').value.trim(),
+  const data={k:state.kind,l:state.look,n:+state.num,v:state.vinyl,pb:state.pbColor,th:state.theme,cu:state.theme==='custom'?state.custom:undefined,f:state.font,nm:$('#nm').value.trim(),lk:$('#lk').value.trim(),
     p:cur().map(p=>[p.title,p.sub,p.img&&!p.img.startsWith('data:')?p.img:0,p.plays||0,p.ms||0])};
   const b64=btoa(unescape(encodeURIComponent(JSON.stringify(data)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
   const url=location.href.split('#')[0]+'#d='+b64;
@@ -1861,9 +1898,9 @@ function safeLink(s){
 async function showView(d){
   document.body.classList.add('view');
   const picks=d.p.slice(0,20).map(([title,sub,img,plays,ms],i)=>({id:'s'+i,title:String(title),sub:String(sub||''),img:(typeof img==='string'&&/^https:\/\//.test(img))?img:placeholder(String(title)),plays:+plays||0,ms:+ms||0}));
-  const look=['cds','tapes','covers','vinyl','player','photobook',...OSHI_LOOKS].includes(d.l)?d.l:(d.k==='oshi'?'photocard':'cds'), name=String(d.nm||'').slice(0,40);
+  const look=(['cds','tapes','covers','vinyl','player','photobook',...OSHI_LOOKS].includes(d.l) && (d.k==='oshi' || (d.l!=='photobook' && !OSHI_LOOKS.includes(d.l)))) ? d.l : (d.k==='oshi'?'photocard':'cds'), name=String(d.nm||'').slice(0,40);
   const themeId = d.th==='custom' || THEMES[d.th] ? d.th : (d.d ? 'night' : 'classic'), theme = buildTheme(themeId, d.cu && typeof d.cu==='object' ? d.cu : {});
-  const o={picks,assets:await loadAll(picks),look,num:!!d.n,theme,night:theme.dark,font:FONTS[d.f]?d.f:'sys',vinyl:VINYL_LIST.includes(d.v)?d.v:'auto',kind:d.k,name};
+  const o={picks,assets:await loadAll(picks),look,num:!!d.n,theme,night:theme.dark,font:FONTS[d.f]?d.f:'sys',vinyl:VINYL_LIST.includes(d.v)?d.v:'auto',pbColor:(d.pb==='team'||validHex(d.pb))?d.pb:'team',kind:d.k,name};
   document.title=`${listTitleText(picks.length,d.k)}${name?' '+tr('oleh')+' '+name:''}`;
   $('#vTitle').textContent=listTitleText(picks.length,d.k);
   const by=$('#vBy'); by.textContent=''; const parts=[];
