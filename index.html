@@ -564,7 +564,10 @@ function mergeLists(...lists){ // urutan = prioritas (yang lebih awal menang, ka
 const DATA_KEY = 'jkt48data5';
 function cacheRead(kind){ try { const d = JSON.parse(localStorage.getItem(DATA_KEY+kind)||'null'); if (d && Date.now()-d.t < 7*864e5 && d.items.length) return d.items; } catch(e){} return null; }
 function cacheWrite(kind,items){ try { localStorage.setItem(DATA_KEY+kind, JSON.stringify({t:Date.now(),items})); } catch(e){} }
-async function load(kind){
+/* satu pemuatan per jenis data, walau dipanggil berkali-kali bersamaan (ganti tab cepat, klik beruntun) */
+const loading = {};
+function load(kind){ return loading[kind] || (loading[kind] = loadInner(kind).finally(()=>{ delete loading[kind]; })); }
+async function loadInner(kind){
   if (cache[kind].length) return;
   if (kind==='oshi') { cache.oshi = oshiItems(); return; }
   const hit = cacheRead(kind); if (hit) { cache[kind] = hit; return; }
@@ -583,8 +586,11 @@ async function load(kind){
   if (out.length) cacheWrite(kind, out);
   $('#msg').textContent = out.length ? '' : tr('Gagal memuat data. Buka lewat server (http), bukan file.');
 }
+let renderTok = 0;
 async function renderResults(){
-  await load(state.kind);
+  const myTok = ++renderTok, kindAtStart = state.kind;
+  await load(kindAtStart);
+  if (myTok !== renderTok || kindAtStart !== state.kind) return; // sudah ada render yang lebih baru
   const q = state.q.toLowerCase(), used = new Set(cur().map(p=>String(p.id)));
   renderFilters();
   const f = state.filter, yr = state.year;
@@ -652,7 +658,7 @@ function loadImg(src){
       } catch(e){}
       res({im:src,col});
     };
-    im.onerror = () => res({im:null,col:'#8a7f86'});
+    im.onerror = () => { delete imgCache[src]; res({im:null,col:'#8a7f86'}); }; // jangan simpan kegagalan, supaya bisa dicoba lagi
     im.src = big(src);
   });
 }
@@ -934,10 +940,18 @@ function stripItem(cv,name){
   fig.append(b); return fig;
 }
 async function downloadAll(files){ for (const f of files){ dl(f.blob,f.name); await new Promise(r=>setTimeout(r,350)); } }
-let tok=0, spinRAF=0, spinT0=0;
-async function refresh(){
+let tok=0, spinRAF=0, spinT0=0, recording=false;
+/* alamat situs ini (lengkap dengan https:// dan folder), supaya di tweet jadi link yang bisa diklik dan mengarah ke sini */
+const SITE = () => location.protocol.startsWith('http') ? location.origin + location.pathname.replace(/index\.html$/,'') : '';
+/* banyak aksi beruntun (klik cepat, ganti tab, ganti bahasa) digabung jadi satu render supaya tidak saling tabrak */
+let refreshTimer = 0, refreshWaiters = [];
+const refresh = () => new Promise(res => {
+  refreshWaiters.push(res); clearTimeout(refreshTimer);
+  refreshTimer = setTimeout(async () => { const w = refreshWaiters; refreshWaiters = []; try { await refreshNow(); } finally { w.forEach(r=>r()); } }, 50);
+});
+async function refreshNow(){
   const my=++tok, o=await opts(); if (my!==tok) return;
-  const cap=$('#caption'); if (!cap.dataset.dirty) { const n=o.picks.length||MAX, via=`via ${location.host||'jkt48top'}/`; cap.value = LANG==='ja' ? `JKT48の${nounL(state.kind)}トップ${n}\n${via}` : `my top ${n} ${noun()} of JKT48\n${via}`; }
+  const cap=$('#caption'); if (!cap.dataset.dirty) { const n=o.picks.length||MAX, site=SITE(), via=site?`via ${site}`:''; cap.value = (LANG==='ja' ? `JKT48の${nounL(state.kind)}トップ${n}` : `my top ${n} ${noun()} of JKT48`) + (via?`\n${via}`:''); }
   renderLooks(o);
   if (state.share==='post') {
     const single = state.postMode==='single';
@@ -945,27 +959,33 @@ async function refresh(){
     $('#postSub').textContent = !o.picks.length ? tr('Pilih favoritmu dulu.') : single ? tr('Satu gambar berisi seluruh daftar. Klik Salin gambar lalu Ctrl+V di kotak tweet.') : tr('{n} foto, satu per {one}, berurutan. Seret atau salin tiap foto, atau unduh semuanya. X menerima sampai 20 foto per post.',{n:o.picks.length,one:tr(one())});
     $('#strip').replaceChildren(...postCanvases(o).map((cv,i)=>stripItem(cv, single?'jkt48-top10.png':`jkt48-top10-${String(i+1).padStart(2,'0')}.png`)));
   }
-  if (state.share==='story') scene($('#cvStory').getContext('2d'),1080,1920,o,1);
+  if (state.share==='story' && !recording) scene($('#cvStory').getContext('2d'),1080,1920,o,1);
   if (state.share==='link') renderLink();
-  if (state.share==='spin') startSpin(o);
+  if (state.share==='spin' && !recording) startSpin(o);
 }
 /* cuplikan lagu 30 dtk dari iTunes (hanya untuk didengar di halaman; video unduhan tidak bersuara karena iTunes tidak mengizinkan perekaman audio) */
 const aud = new Audio(); aud.volume = 0.7;
-async function getPreview(p){
-  if (p.prev !== undefined && p.prev !== null) return p.prev;
-  p.prev = '';
-  try {
-    const j = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(p.title+' JKT48')}&entity=song&limit=8&country=ID`).then(r=>r.json());
-    const mine = j.results.filter(r=>/JKT48/i.test(r.artistName) && r.previewUrl);
-    const hit = mine.find(r=>keyOf(r.trackName)===keyOf(p.title)) || mine.find(r=>keyOf(r.collectionName||'')===keyOf(p.title)) || null;
-    if (hit) p.prev = hit.previewUrl;
-  } catch(e){}
-  return p.prev;
+const previewJobs = new WeakMap();
+function getPreview(p){
+  if (p.prev) return Promise.resolve(p.prev);
+  if (previewJobs.has(p)) return previewJobs.get(p); // satu pencarian per lagu, walau diminta berkali-kali
+  const job = (async () => {
+    try {
+      const j = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(p.title+' JKT48')}&entity=song&limit=8&country=ID`).then(r=>r.json());
+      const mine = j.results.filter(r=>/JKT48/i.test(r.artistName) && r.previewUrl);
+      const hit = mine.find(r=>keyOf(r.trackName)===keyOf(p.title)) || mine.find(r=>keyOf(r.collectionName||'')===keyOf(p.title)) || null;
+      if (hit) p.prev = hit.previewUrl;
+    } catch(e){}
+    return p.prev || '';
+  })();
+  previewJobs.set(p, job); return job;
 }
-function stopAudio(){ try { aud.pause(); aud.removeAttribute('src'); aud.load(); } catch(e){} }
+let playTok = 0;
+function stopAudio(){ playTok++; try { aud.pause(); aud.removeAttribute('src'); aud.load(); } catch(e){} }
 async function playFor(p){
-  stopAudio(); if (!state.audio || state.kind==='oshi') return;
-  const u = await getPreview(p); if (!u || state.share!=='spin' || !state.audio) return;
+  stopAudio(); const my = playTok; if (!state.audio || state.kind==='oshi') return;
+  const u = await getPreview(p);
+  if (my!==playTok || !u || state.share!=='spin' || !state.audio) return; // sudah ganti lagu / tab / dimatikan
   aud.src = u; aud.currentTime = 0; aud.play().catch(()=>{});
 }
 function sizeSpin(){
@@ -1011,12 +1031,18 @@ function dlCanvas(cv,name){ cv.toBlob(b=>b?dl(b,name):alert(tr('Gagal membuat ga
 function record(canvas,ms,frame){
   return new Promise((res,rej)=>{
     if (!window.MediaRecorder) return rej(new Error('Browser tidak mendukung perekaman video.'));
+    if (recording) return rej(new Error('Masih merekam.'));
     const mime=['video/webm;codecs=vp9','video/webm','video/mp4'].find(m=>MediaRecorder.isTypeSupported(m));
-    const rec=new MediaRecorder(canvas.captureStream(30),{mimeType:mime,videoBitsPerSecond:8e6}), chunks=[];
-    rec.ondataavailable=e=>e.data.size&&chunks.push(e.data);
-    rec.onstop=()=>res({blob:new Blob(chunks,{type:mime}),mime});
-    rec.start(); const t0=performance.now();
-    (function f(){ const e=performance.now()-t0; frame(e/1000, clamp(e/ms,0,1)); if(e<ms) requestAnimationFrame(f); else setTimeout(()=>rec.stop(),100); })();
+    recording = true; // selama merekam, render lain tidak boleh menggambar di kanvas yang sama
+    try {
+      const rec=new MediaRecorder(canvas.captureStream(30),{mimeType:mime,videoBitsPerSecond:8e6}), chunks=[];
+      rec.ondataavailable=e=>e.data.size&&chunks.push(e.data);
+      rec.onstop=()=>{ recording=false; res({blob:new Blob(chunks,{type:mime}),mime}); };
+      rec.onerror=e=>{ recording=false; rej(e.error||new Error('Gagal merekam.')); };
+      rec.start(); const t0=performance.now();
+      // pakai timer, bukan requestAnimationFrame: rAF berhenti kalau tab disembunyikan, dan rekaman jadi menggantung
+      (function f(){ const e=performance.now()-t0; try { frame(e/1000, clamp(e/ms,0,1)); } catch(err){ try{rec.stop();}catch(_){} recording=false; return rej(err); } if(e<ms) setTimeout(f,33); else setTimeout(()=>rec.stop(),100); })();
+    } catch(err){ recording=false; rej(err); }
   });
 }
 const ext = m => m.includes('mp4')?'mp4':'webm';
@@ -1276,6 +1302,13 @@ $('#mkSpin').onclick=async()=>{
   } catch(e){ msg.textContent=e.message; }
   btn.disabled=false; refresh();
 };
+
+/* tombol yang bekerja lama (unduh, salin, share, rekam) hanya boleh jalan satu per satu: klik ganda tidak membuka dua tab atau mengunduh dua kali */
+let busyAction = false;
+for (const id of ['dlPost','copyImg','toX','shareSheet','mkStory','mkSpin','dlStoryImg']) {
+  const el = $('#'+id), h = el.onclick;
+  el.onclick = async e => { if (busyAction) return; busyAction = true; el.disabled = true; try { await h.call(el,e); } finally { busyAction = false; el.disabled = false; } };
+}
 
 /* ---------- boot (supports shared links) ---------- */
 (async()=>{
