@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JKT48 Top 10</title>
+<style>
+:root{--bg:#fff1f3;--card:#fff;--ink:#2a1218;--mute:#8a6b73;--line:#f3d3da;--red:#e4002b;--hl:#ffd60a;--soft:#fde4e8}
+@media (prefers-color-scheme:dark){:root{--bg:#141012;--card:#1f1819;--ink:#f6ecee;--mute:#a59a9c;--line:#352a2c;--soft:#2a2022}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 system-ui,"Segoe UI",sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:18px 16px 60px}
+.hero{background:linear-gradient(135deg,#e4002b 0%,#b80022 60%,#7a0017 100%);color:#fff;border-radius:26px;padding:28px 26px 24px;margin-bottom:18px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;border:34px solid rgba(255,255,255,.12)}
+.hero .eyebrow{font-size:12px;letter-spacing:.22em;font-weight:700;opacity:.85}
+.hero h1{font-size:clamp(28px,6vw,46px);margin:6px 0 6px;letter-spacing:-1px;line-height:1.05}
+.hero p{margin:0;opacity:.9;max-width:46ch}
+.tabs{display:inline-flex;gap:4px;margin:0 0 16px;padding:4px;border-radius:999px;background:var(--soft)}
+.tab{border:0;background:transparent;color:var(--ink);padding:9px 26px;border-radius:999px;cursor:pointer;font:inherit;font-weight:700}
+.tab.on{background:var(--red);color:#fff;box-shadow:0 4px 12px rgba(228,0,43,.35)}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:16px;align-items:start}
+@media(max-width:820px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--card);border:0;border-radius:22px;padding:18px;box-shadow:0 6px 24px rgba(160,20,45,.10)}
+.card+.card{margin-top:16px}
+.card h2{font-size:16px;margin:0 0 14px;display:flex;align-items:center;gap:10px}
+.card h2 b.step{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;background:var(--red);color:#fff;font-size:13px}
+.card h2 small{font-weight:400;color:var(--mute);font-size:13px}
+input[type=search],input[type=text]{width:100%;padding:11px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+.results{display:flex;gap:8px;margin-top:12px;overflow-x:auto;padding-bottom:6px}
+.res{flex:0 0 auto;width:62px;cursor:pointer;border:0;background:none;padding:0;color:inherit;font:inherit}
+.res img{width:62px;height:62px;border-radius:8px;object-fit:cover;display:block;background:var(--line)}
+.res.used img{outline:3px solid var(--red);outline-offset:-3px}
+.res small{display:none}
+.res .ph{width:62px;height:62px;border-radius:8px;background:linear-gradient(135deg,#e4002b,#6a0016);color:#fff;font-size:9px;font-weight:700;line-height:1.15;padding:5px;overflow:hidden;text-align:left;word-break:break-word}
+.res.used .ph{outline:3px solid var(--hl);outline-offset:-3px}
+.msg{color:var(--mute);font-size:13px;margin-top:8px;min-height:1em}
+ol{list-style:none;margin:0;padding:0;max-height:430px;overflow:auto}
+li.item{display:flex;align-items:center;gap:10px;padding:6px;border-radius:10px;border:1px solid transparent;cursor:grab}
+li.item.over{border-color:var(--red)}
+li.item .n{width:18px;text-align:right;color:var(--mute);font-size:13px}
+li.item img{width:40px;height:40px;border-radius:6px;object-fit:cover}
+li.item .t{flex:1;min-width:0}
+li.item .t b,li.item .t span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+li.item .t span{color:var(--mute);font-size:12px}
+li.item button{border:0;background:none;color:var(--mute);cursor:pointer;font-size:17px;padding:4px 6px}
+.empty{color:var(--mute);padding:14px;text-align:center}
+.linkbtn{margin-left:auto;border:0;background:none;color:var(--mute);text-decoration:underline;cursor:pointer;font:inherit;font-size:13px}
+/* format */
+.fmthead{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+.fmthead h2{margin:0;flex:1}
+.sw{display:flex;align-items:center;gap:7px;font-size:13px;cursor:pointer;user-select:none}
+.sw i{width:34px;height:20px;border-radius:99px;background:var(--line);position:relative;transition:.15s}
+.sw i::after{content:"";position:absolute;left:2px;top:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.15s}
+.sw.on i{background:var(--ink)}.sw.on i::after{left:16px}
+.looks{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.look{border:0;background:none;color:var(--ink);cursor:pointer;font:inherit;font-size:13px;padding:10px 2px 8px;border-radius:12px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.look.on{background:var(--soft);font-weight:700}
+.look canvas{width:100%;max-width:96px;height:auto;border-radius:6px}
+.stabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px}
+.stab{border:0;background:none;color:var(--ink);cursor:pointer;font:inherit;padding:11px;border-radius:12px}
+.stab.on{background:var(--soft);font-weight:700}
+.tweet{display:flex;gap:10px}
+.av{flex:0 0 34px;height:34px;border-radius:50%;background:var(--soft)}
+.tweet p{margin:0 0 8px;font-size:14px}
+.tweet canvas{width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block}
+.tc{min-width:0;flex:1}
+[hidden]{display:none!important}
+.strip{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;align-items:flex-start;min-height:60px}
+.strip canvas{height:190px;width:auto;flex:0 0 auto;border-radius:8px;border:0;display:block}
+.pgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.pgrid canvas{border:0;border-radius:0;width:100%;height:auto;display:block}
+.pv{display:block;margin:0 auto 12px;border-radius:14px;background:var(--soft);max-width:100%}
+.btns{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.btns>*{flex:1;min-width:140px}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:13px 16px;font:inherit;font-weight:600;cursor:pointer}
+.btn.dark{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.sub{color:var(--mute);font-size:12px;text-align:center;margin-top:8px}
+.slots{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:8px 0 12px}
+.slots div{aspect-ratio:1;border-radius:8px;background:var(--soft);overflow:hidden}
+.slots img{width:100%;height:100%;object-fit:cover;display:block}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.seg{display:flex;justify-content:center;gap:6px;margin-bottom:12px}
+.seg button{border:0;background:none;color:var(--ink);padding:6px 14px;border-radius:99px;cursor:pointer;font:inherit}
+.seg button.on{background:var(--soft);font-weight:700}
+video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">JKT48 · FAN MADE</div>
+    <h1>Susun Top 10 JKT48-mu</h1>
+    <p>Pilih album atau lagu favoritmu, atur tampilannya, lalu bagikan ke X, story, atau lewat link.</p>
+  </header>
+  <div class="tabs">
+    <button class="tab on" data-kind="album">Albums</button>
+    <button class="tab" data-kind="song">Songs</button>
+  </div>
+  <div class="grid">
+    <div>
+      <div class="card">
+        <h2><b class="step">1</b>Pilih favoritmu</h2>
+        <input id="q" type="search" placeholder="Cari album JKT48...">
+        <div id="results" class="results"></div>
+        <div id="msg" class="msg"></div>
+      </div>
+      <div class="card">
+        <h2><b class="step">♪</b>Top 10-mu <small>· drag untuk urutkan</small><button class="linkbtn" id="clear">Hapus semua</button></h2>
+        <ol id="list"></ol>
+        <div id="empty" class="empty">Belum ada pilihan. Klik cover di atas.</div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="fmthead">
+          <h2><b class="step">2</b>Gaya tampilan</h2>
+          <label class="sw" id="swNum"><i></i>Numbers</label>
+          <label class="sw" id="swNight"><i></i>Night</label>
+        </div>
+        <div class="looks" id="looks"></div>
+      </div>
+      <div class="card">
+        <h2><b class="step">3</b>Bagikan</h2>
+        <div class="stabs" id="stabs">
+          <button class="stab on" data-s="post">𝕏 Post</button>
+          <button class="stab" data-s="story">Story</button>
+          <button class="stab" data-s="link">Link</button>
+          <button class="stab" data-s="spin">Spin</button>
+        </div>
+        <div id="p-post">
+          <div class="tweet"><div class="av"></div><div class="tc">
+            <p style="margin-bottom:4px"><b>You</b> <span style="color:var(--mute)">@you · now</span></p>
+            <textarea id="caption" rows="2" maxlength="280" placeholder="Tambahkan kata-kata untuk postinganmu" style="width:100%;border:0;background:none;color:var(--ink);font:inherit;font-size:14px;resize:none;outline:none;padding:0;margin-bottom:8px"></textarea>
+            <div id="strip" class="strip" tabindex="0" aria-label="Fotomu, berurutan"></div>
+          </div></div>
+          <div class="btns"><button class="btn" id="dlPost">Unduh foto</button><button class="btn dark" id="toX">Post ke X</button></div>
+          <div class="sub" id="postSub">Gambar diunduh dulu, lalu lampirkan di tweet.</div>
+        </div>
+        <div id="p-story" hidden>
+          <canvas id="cvStory" class="pv" width="1080" height="1920" style="height:440px;width:auto"></canvas>
+          <video id="vStory" controls hidden style="max-height:440px"></video>
+          <div class="btns"><button class="btn" id="dlStoryImg">Unduh gambar</button><button class="btn dark" id="mkStory">Buat video</button></div>
+          <div class="sub" id="storyMsg">Untuk Instagram atau TikTok story. Tambahkan lagu saat kamu posting.</div>
+        </div>
+        <div id="p-link" hidden>
+          <div style="font-weight:700" id="linkTitle"></div>
+          <div class="slots" id="slots"></div>
+          <div class="two"><input type="text" id="nm" placeholder="Namamu (opsional)"><input type="text" id="lk" placeholder="Link-mu, mis. x.com/kamu"></div>
+          <button class="btn dark" style="width:100%" id="copy">Salin link</button>
+          <div class="sub" id="linkMsg"></div>
+        </div>
+        <div id="p-spin" hidden>
+          <div class="seg" id="spinSeg"><button class="on" data-m="all">Semua</button><button data-m="one">Cuma #1</button></div>
+          <canvas id="cvSpin" class="pv" width="1080" height="1080" style="width:100%"></canvas>
+          <div class="btns"><button class="btn dark" id="mkSpin">Unduh video</button></div>
+          <div class="sub" id="spinMsg"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const state = { kind:'album', look:'cds', num:false, night:false, share:'post', spin:'all', q:'', picks:{album:[],song:[]} };
+const cache = {album:[],song:[]};
+const MAX = 10, RED = '#e4002b';
+try { const s = JSON.parse(localStorage.getItem('jkt48top')||'null'); if (s && s.album) state.picks = s; } catch(e){}
+const save = () => { try{ localStorage.setItem('jkt48top', JSON.stringify(state.picks)); }catch(e){} };
+const big = u => u.replace(/\d+x\d+bb/, '600x600bb');
+const cur = () => state.picks[state.kind];
+const noun = () => state.kind==='album' ? 'albums' : 'songs';
+
+/* ---------- data: iTunes (cover + rilisan resmi) + MusicBrainz (diskografi komunitas, termasuk lagu setlist teater) ---------- */
+const MB_ARTIST = 'b1da8509-4462-46f9-8eda-137c0e4d8cfa'; // JKT48
+const MB = 'https://musicbrainz.org/ws/2';
+const wait = ms => new Promise(r=>setTimeout(r,ms));
+const keyOf = t => String(t).toLowerCase().replace(/\(.*?\)/g,'').replace(/ - .*$/,'').replace(/[^a-z0-9]+/g,'');
+function norm(r, kind){
+  return kind==='album'
+    ? { id:String(r.collectionId), title:r.collectionName.replace(/ - (Single|EP)$/i,''), sub:'JKT48'+(r.releaseDate?' · '+r.releaseDate.slice(0,4):''), img:r.artworkUrl100 }
+    : { id:String(r.trackId), title:r.trackName, sub:r.collectionName.replace(/ - (Single|EP)$/i,''), img:r.artworkUrl100 };
+}
+async function mbGet(path){
+  const r = await fetch(MB+path+(path.includes('?')?'&':'?')+'fmt=json',{headers:{Accept:'application/json'}});
+  if (!r.ok) throw new Error('MB '+r.status);
+  return r.json();
+}
+async function loadITunes(kind){
+  const entity = kind==='album' ? 'album' : 'song', out = [];
+  for (const term of ['JKT48','JKT48 '+(kind==='album'?'album':'lagu')]) {
+    try {
+      const j = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(term)}&entity=${entity}&limit=200&country=ID`).then(r=>r.json());
+      for (const r of j.results) if (/JKT48/i.test(r.artistName)) out.push(norm(r,kind));
+    } catch(e){}
+  }
+  return out;
+}
+async function loadITunesTracks(albums){
+  const out = [], ids = albums.filter(a=>/^\d+$/.test(a.id)).map(a=>a.id);
+  for (let i=0;i<ids.length;i+=25) {
+    try {
+      const j = await fetch(`https://itunes.apple.com/lookup?id=${ids.slice(i,i+25).join(',')}&entity=song&limit=200&country=ID`).then(r=>r.json());
+      for (const r of j.results) if (r.wrapperType==='track' && /JKT48/i.test(r.artistName)) out.push(norm(r,'song'));
+    } catch(e){}
+  }
+  return out;
+}
+async function loadMB(kind){
+  const out = [];
+  try {
+    if (kind==='album') {
+      for (let off=0; off<400; off+=100) {
+        const j = await mbGet(`/release-group?artist=${MB_ARTIST}&type=album|single|ep&limit=100&offset=${off}`);
+        for (const g of j['release-groups']) out.push({ id:'mb:'+g.id, title:g.title, sub:'JKT48'+(g['first-release-date']?' · '+g['first-release-date'].slice(0,4):''), img:`https://coverartarchive.org/release-group/${g.id}/front-250` });
+        if (off+100 >= j['release-group-count']) break;
+        await wait(1100);
+      }
+    } else {
+      for (let off=0; off<1500; off+=100) {
+        const j = await mbGet(`/recording?artist=${MB_ARTIST}&limit=100&offset=${off}`);
+        for (const r of j.recordings) out.push({ id:'mb:'+r.id, title:r.title, sub:'JKT48', img:null });
+        if (off+100 >= j['recording-count']) break;
+        $('#msg').textContent = `Memuat lagu... ${Math.min(off+100,j['recording-count'])}/${j['recording-count']}`;
+        await wait(1100);
+      }
+    }
+  } catch(e){}
+  return out;
+}
+/* Wikipedia Indonesia: "Daftar lagu yang direkam oleh JKT48" — daftar alfabetis termasuk lagu setlist teater */
+async function loadWiki(){
+  const out = [];
+  try {
+    const j = await fetch('https://id.wikipedia.org/w/api.php?action=parse&page='+encodeURIComponent('Daftar lagu yang direkam oleh JKT48')+'&prop=text&format=json&origin=*&formatversion=2').then(r=>r.json());
+    const doc = new DOMParser().parseFromString(j.parse.text,'text/html');
+    for (const t of doc.querySelectorAll('table')) {
+      const head = [...(t.rows[0]?.cells||[])].map(c=>c.textContent.trim());
+      if (head[0]!=='Lagu' || !head.some(h=>/Cover lagu dari/i.test(h))) continue;
+      for (const row of [...t.rows].slice(1)) {
+        const c = row.cells; if (!c.length) continue;
+        const raw = c[0].textContent.replace(/\[\d+\]/g,'').trim(); if (!raw || raw.includes('\n') || raw.length>70) continue;
+        const title = raw.replace(/\s*[（(].*$/,'').trim(); if (!title) continue;
+        const via = (c[1]?.textContent||'').replace(/\[\d+\]/g,'').trim(), set = (c[2]?.textContent||'').replace(/\[\d+\]/g,'').trim();
+        const where = [via,set].find(x=>x && x!=='-' && x!=='—' && x.length<60);
+        out.push({ id:'wk:'+title.toLowerCase().replace(/[^a-z0-9]+/g,'-'), title, sub: where ? 'JKT48 · '+where : 'JKT48', img:null });
+      }
+    }
+  } catch(e){}
+  return out;
+}
+function mergeLists(...lists){ // urutan = prioritas (yang lebih awal menang, karena punya cover)
+  const seen = new Set(), out = [];
+  for (const l of lists) for (const x of l) { const k = keyOf(x.title); if (!k || seen.has(k)) continue; seen.add(k); out.push(x); }
+  return out;
+}
+const DATA_KEY = 'jkt48data4';
+function cacheRead(kind){ try { const d = JSON.parse(localStorage.getItem(DATA_KEY+kind)||'null'); if (d && Date.now()-d.t < 7*864e5 && d.items.length) return d.items; } catch(e){} return null; }
+function cacheWrite(kind,items){ try { localStorage.setItem(DATA_KEY+kind, JSON.stringify({t:Date.now(),items})); } catch(e){} }
+async function load(kind){
+  if (cache[kind].length) return;
+  const hit = cacheRead(kind); if (hit) { cache[kind] = hit; return; }
+  $('#msg').textContent = 'Memuat daftar dari iTunes dan MusicBrainz...';
+  let out;
+  if (kind==='album') {
+    const [it, mb] = [await loadITunes('album'), await loadMB('album')];
+    out = mergeLists(it, mb);
+  } else {
+    await load('album');
+    const it = mergeLists(await loadITunes('song'), await loadITunesTracks(cache.album));
+    const mb = await loadMB('song'), wk = await loadWiki();
+    out = mergeLists(it, mb, wk);
+  }
+  cache[kind] = out;
+  if (out.length) cacheWrite(kind, out);
+  $('#msg').textContent = out.length ? '' : 'Gagal memuat data. Buka lewat server (http), bukan file.';
+}
+async function renderResults(){
+  await load(state.kind);
+  const q = state.q.toLowerCase(), used = new Set(cur().map(p=>String(p.id)));
+  const items = cache[state.kind].filter(x => !q || x.title.toLowerCase().includes(q) || x.sub.toLowerCase().includes(q));
+  const manual = state.q.trim() ? `<button class="res" data-manual="1" title="Tambah manual"><div style="width:62px;height:62px;border-radius:8px;border:2px dashed var(--red);display:grid;place-items:center;color:var(--red);font-size:26px;font-weight:700">+</div></button>` : '';
+  const shown = items.slice(0,300);
+  $('#results').innerHTML = manual + shown.map(x =>
+    `<button class="res ${used.has(String(x.id))?'used':''}" data-id="${esc(x.id)}" title="${esc(x.title)}">` +
+    (x.img ? `<img loading="lazy" src="${x.img}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'ph',textContent:this.closest('.res').title}))">` : `<div class="ph">${esc(x.title)}</div>`) + `</button>`).join('');
+  $('#msg').textContent = !items.length && cache[state.kind].length ? 'Tidak ketemu. Klik + untuk menambah manual.' : (items.length>300 ? `Menampilkan 300 dari ${items.length}. Ketik untuk mencari.` : '');
+}
+function renderList(){
+  const arr = cur();
+  $('#empty').style.display = arr.length ? 'none' : 'block';
+  $('#list').innerHTML = arr.map((p,i)=>`<li class="item" draggable="true" data-i="${i}">
+    <span class="n">${i+1}</span><img src="${p.img}" alt="${esc(p.title)}" onerror="this.onerror=null;this.src=placeholder(this.alt)"><div class="t"><b>${esc(p.title)}</b><span>${esc(p.sub)}</span></div>
+    <button data-up="${i}" title="Naik">↑</button><button data-rm="${i}" title="Hapus">×</button></li>`).join('');
+  save(); refresh();
+}
+
+function placeholder(t){
+  const c=document.createElement('canvas'); c.width=c.height=600; const x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,600,600); g.addColorStop(0,'#e4002b'); g.addColorStop(1,'#6a0016'); x.fillStyle=g; x.fillRect(0,0,600,600);
+  x.fillStyle='rgba(255,255,255,.14)'; x.beginPath(); x.arc(470,130,170,0,7); x.fill();
+  x.fillStyle='#fff'; x.font='800 54px system-ui,sans-serif'; x.textBaseline='top';
+  const words=t.split(/\s+/); let line='', y=300; const lines=[];
+  for (const w of words){ if (x.measureText(line+' '+w).width>480 && line){ lines.push(line); line=w; } else line=(line?line+' ':'')+w; } lines.push(line);
+  lines.slice(0,4).forEach(l=>{ x.fillText(l,60,y); y+=64; });
+  x.font='700 30px system-ui,sans-serif'; x.fillText('JKT48',60,60);
+  return c.toDataURL('image/jpeg',0.85);
+}
+/* ---------- images ---------- */
+const imgCache = {};
+function loadImg(src){
+  if (imgCache[src]) return imgCache[src];
+  return imgCache[src] = new Promise(res => {
+    const im = new Image(); im.crossOrigin = 'anonymous';
+    im.onload = () => {
+      let col = '#8a7f86';
+      try {
+        const t = document.createElement('canvas'); t.width = t.height = 8;
+        const x = t.getContext('2d'); x.drawImage(im,0,0,8,8);
+        const d = x.getImageData(0,0,8,8).data; let r=0,g=0,b=0;
+        for (let i=0;i<d.length;i+=4){ r+=d[i]; g+=d[i+1]; b+=d[i+2]; }
+        const n = d.length/4; col = `rgb(${r/n|0},${g/n|0},${b/n|0})`;
+      } catch(e){}
+      res({im,col});
+    };
+    im.onerror = () => res({im:null,col:'#8a7f86'});
+    im.src = big(src);
+  });
+}
+const loadAll = arr => Promise.all(arr.map(p=>loadImg(p.img)));
+
+/* ---------- drawing helpers ---------- */
+const rr = (c,x,y,w,h,r) => { c.beginPath(); c.roundRect(x,y,w,h,r); };
+const clamp = (v,a,b) => Math.min(b,Math.max(a,v));
+const ease = t => 1-Math.pow(1-t,3);
+function fitText(c,t,maxW){ if (c.measureText(t).width<=maxW) return t; while (t.length>1 && c.measureText(t+'…').width>maxW) t=t.slice(0,-1); return t+'…'; }
+function shade(col,f){ const m = col.match(/\d+/g); if(!m) return col; return `rgb(${m.slice(0,3).map(v=>clamp(Math.round(v*f),0,255)).join(',')})`; }
+function cover(c,a,x,y,s,r){
+  c.save(); rr(c,x,y,s,s,r); c.clip();
+  if (a.im) c.drawImage(a.im,x,y,s,s); else { c.fillStyle=a.col; c.fillRect(x,y,s,s); }
+  c.restore();
+}
+function badge(c,x,y,r,n){
+  c.save(); c.fillStyle = RED; c.beginPath(); c.arc(x,y,r,0,7); c.fill();
+  c.fillStyle = '#fff'; c.font = `800 ${r*1.1}px system-ui,sans-serif`; c.textAlign='center'; c.textBaseline='middle';
+  c.fillText(String(n), x, y+r*0.05); c.restore();
+}
+function vtext(c,txt,cx,cy,len,size,color,weight){
+  c.save(); c.translate(cx,cy); c.rotate(-Math.PI/2);
+  c.font = `${weight||700} ${size}px system-ui,sans-serif`; c.fillStyle = color; c.textAlign='center'; c.textBaseline='middle';
+  c.fillText(fitText(c,txt,len), 0, 0); c.restore();
+}
+
+function spine(c,x,y,w,h,p,a,look,i,o){
+  const night=o.night;
+  c.save();
+  if (look==='cds') { c.restore(); cdSpineDraw(c,x,y,w,h,p,a,night); c.save(); }
+  else if (look==='tapes') {
+    const body = shade(a.col, night?0.55:0.8);
+    c.shadowColor='rgba(0,0,0,.25)'; c.shadowBlur=14; c.shadowOffsetY=6;
+    rr(c,x,y,w,h,w*0.08); c.fillStyle=body; c.fill(); c.shadowColor='transparent';
+    c.clip();
+    c.fillStyle='rgba(0,0,0,.35)'; c.fillRect(x,y,w,h*0.05); c.fillRect(x,y+h*0.95,w,h*0.05);
+    // ribbed edge
+    c.fillStyle='rgba(255,255,255,.12)'; for (let k=0;k<4;k++) c.fillRect(x+w*0.08, y+h*0.07+k*h*0.012, w*0.84, h*0.004);
+    // label
+    const lx=x+w*0.14, lw=w*0.72, ly=y+h*0.14, lh=h*0.72;
+    rr(c,lx,ly,lw,lh,w*0.06); c.fillStyle='#f4efe6'; c.fill();
+    c.fillStyle=shade(a.col,0.9); c.fillRect(lx,ly,lw,lh*0.07);
+    if (a.im) { c.save(); rr(c,lx+lw*0.1,ly+lh*0.1,lw*0.8,lw*0.8,4); c.clip(); c.drawImage(a.im,lx+lw*0.1,ly+lh*0.1,lw*0.8,lw*0.8); c.restore(); }
+    vtext(c,p.title,x+w/2,ly+lw*0.9+(lh-lw*0.9)/2+lh*0.02,lh-lw*0.9-lh*0.08,clamp(w*0.28,14,34),'#1a1410',800);
+    c.fillStyle='rgba(0,0,0,.5)'; c.beginPath(); c.arc(x+w/2,y+h*0.025,w*0.04,0,7); c.fill(); c.beginPath(); c.arc(x+w/2,y+h*0.975,w*0.04,0,7); c.fill();
+  } else { // cds jewel case
+    c.shadowColor='rgba(0,0,0,.25)'; c.shadowBlur=14; c.shadowOffsetY=6;
+    rr(c,x,y,w,h,w*0.07); c.fillStyle=night?'#3a3a40':'#dcdde2'; c.fill(); c.shadowColor='transparent';
+    c.fillStyle='rgba(255,255,255,.35)'; c.fillRect(x+w*0.04,y,w*0.08,h);
+    const ix=x+w*0.14, iw=w*0.72;
+    c.save(); rr(c,ix,y+h*0.025,iw,h*0.95,w*0.03); c.clip();
+    c.fillStyle=shade(a.col,0.7); c.fillRect(ix,y,iw,h);
+    if (a.im){ c.globalAlpha=0.55; c.drawImage(a.im,ix-h*0.5+iw/2,y,h,h); c.globalAlpha=1; }
+    c.fillStyle='rgba(0,0,0,.35)'; c.fillRect(ix,y,iw,h);
+    c.restore();
+    if (a.im) { c.save(); rr(c,ix,y+h*0.025+(h*0.95-iw),iw,iw,3); c.clip(); c.drawImage(a.im,ix,y+h*0.025+(h*0.95-iw),iw,iw); c.restore(); }
+    vtext(c,p.title,x+w/2,y+h*0.025+(h*0.95-iw)/2,h*0.95-iw-w*0.25,clamp(w*0.3,14,36),'#fff',800);
+    c.fillStyle=night?'#222':'#9a9ba3'; c.fillRect(x,y+h*0.02,w*0.05,h*0.015); c.fillRect(x,y+h*0.965,w*0.05,h*0.015);
+  }
+  c.restore();
+  if (o.num) badge(c,x+w/2,y-w*0.28,clamp(w*0.2,11,20),i+1);
+}
+
+function featured(c,x,y,s,p,a,look,o,i){
+  const night=o.night;
+  if (look==='covers') {
+    c.save(); c.shadowColor='rgba(0,0,0,.3)'; c.shadowBlur=26; c.shadowOffsetY=10; rr(c,x,y,s,s,s*0.03); c.fillStyle='#000'; c.fill(); c.restore();
+    cover(c,a,x,y,s,s*0.03);
+  } else if (look==='vinyl') {
+    const sl = s*0.78, dx = x+sl*0.45, r = sl*0.5;
+    c.save(); c.shadowColor='rgba(0,0,0,.3)'; c.shadowBlur=22; c.shadowOffsetY=8;
+    c.fillStyle='#0e0e10'; c.beginPath(); c.arc(dx+sl*0.55,y+sl/2,r,0,7); c.fill(); c.restore();
+    c.strokeStyle='rgba(255,255,255,.07)'; c.lineWidth=1.2;
+    for (let k=0.4;k<0.98;k+=0.04){ c.beginPath(); c.arc(dx+sl*0.55,y+sl/2,r*k,0,7); c.stroke(); }
+    c.save(); c.beginPath(); c.arc(dx+sl*0.55,y+sl/2,r*0.34,0,7); c.clip();
+    if (a.im) c.drawImage(a.im,dx+sl*0.55-r*0.34,y+sl/2-r*0.34,r*0.68,r*0.68); else { c.fillStyle=a.col; c.fillRect(dx,y,sl,sl); }
+    c.restore(); c.fillStyle='#f4efe6'; c.beginPath(); c.arc(dx+sl*0.55,y+sl/2,r*0.04,0,7); c.fill();
+    c.save(); c.shadowColor='rgba(0,0,0,.35)'; c.shadowBlur=24; c.shadowOffsetY=8; rr(c,x,y,sl,sl,4); c.fillStyle='#000'; c.fill(); c.restore();
+    cover(c,a,x,y,sl,4);
+  } else { // player
+    const w=s*0.82, h=s;
+    c.save(); c.shadowColor='rgba(0,0,0,.3)'; c.shadowBlur=26; c.shadowOffsetY=10;
+    rr(c,x,y,w,h,w*0.07); c.fillStyle=night?'#1d1d22':'#fff'; c.fill(); c.restore();
+    const pad=w*0.07; cover(c,a,x+pad,y+pad,w-pad*2,w*0.04);
+    const ty=y+pad+(w-pad*2)+h*0.06, ink=night?'#f6ecee':'#17110f', mu=night?'#a59a9c':'#7b706b';
+    c.textAlign='left'; c.textBaseline='alphabetic';
+    c.font=`800 ${w*0.075}px system-ui,sans-serif`; c.fillStyle=ink; c.fillText(fitText(c,p.title,w-pad*2),x+pad,ty+w*0.05);
+    c.font=`500 ${w*0.055}px system-ui,sans-serif`; c.fillStyle=mu; c.fillText(fitText(c,p.sub,w-pad*2),x+pad,ty+w*0.05+w*0.085);
+    const by=ty+w*0.05+w*0.15;
+    c.fillStyle=night?'#3a3a42':'#e6dfd8'; rr(c,x+pad,by,w-pad*2,5,3); c.fill();
+    c.fillStyle=ink; rr(c,x+pad,by,(w-pad*2)*0.38,5,3); c.fill(); c.beginPath(); c.arc(x+pad+(w-pad*2)*0.38,by+2.5,7,0,7); c.fill();
+    const cy=by+(y+h-by)/2+4, cx=x+w/2, k=w*0.05;
+    c.fillStyle=ink; c.beginPath(); c.arc(cx,cy,k*1.5,0,7); c.fill();
+    c.fillStyle=night?'#1d1d22':'#fff'; c.fillRect(cx-k*0.5,cy-k*0.7,k*0.35,k*1.4); c.fillRect(cx+k*0.15,cy-k*0.7,k*0.35,k*1.4);
+    c.fillStyle=ink;
+    [[-1],[1]].forEach(([d])=>{ c.beginPath(); c.moveTo(cx+d*k*2.5,cy-k*0.8); c.lineTo(cx+d*k*2.5,cy+k*0.8); c.lineTo(cx+d*k*3.6,cy); c.closePath(); c.fill(); });
+  }
+  if (o.num) badge(c,x+(look==='player'?s*0.82:look==='vinyl'?s*0.78:s)-s*0.04-0, y+s*0.07, Math.max(16,s*0.05), 1);
+}
+
+/* t: animation progress 0..1 (staggered); 1 = static */
+function scene(c,W,H,o,t){
+  const {picks,assets,look,night}=o, n=picks.length, tall=H>W;
+  const paper = night?'#101013':'#f6f3ee', ink = night?'#f6ecee':'#17110f', mu = night?'#9b9094':'#7b706b';
+  c.fillStyle=paper; c.fillRect(0,0,W,H);
+  if (night){ const g=c.createRadialGradient(W/2,H*0.45,50,W/2,H*0.45,Math.max(W,H)*0.7); g.addColorStop(0,'rgba(228,0,43,.14)'); g.addColorStop(1,'rgba(0,0,0,0)'); c.fillStyle=g; c.fillRect(0,0,W,H); }
+  const k = i => clamp(t*1.7 - i*0.09, 0, 1);
+  const anim = (i,fn) => { const e=ease(k(i)); if(e<=0) return; c.save(); c.globalAlpha=e; c.translate(0,(1-e)*40); fn(); c.restore(); };
+  c.textBaseline='alphabetic';
+  const kindWord = o.kind==='album'?'albums':'songs';
+  if (tall) {
+    c.fillStyle=ink; c.font='800 120px system-ui,sans-serif'; c.textAlign='left'; c.fillText('my top '+Math.max(n,1),70,200);
+    c.fillStyle=RED; c.font='800 120px system-ui,sans-serif'; c.fillText('JKT48',70,320);
+    c.fillStyle=mu; c.font='600 40px system-ui,sans-serif'; c.textAlign='right'; c.fillText(kindWord,W-70,320); c.textAlign='left';
+  }
+  if (!n){ c.fillStyle=mu; c.font='600 40px system-ui,sans-serif'; c.textAlign='center'; c.fillText('Pilih favoritmu dulu',W/2,H/2); return; }
+  const feat = look==='covers'||look==='vinyl'||look==='player';
+  const numPad = o.num ? 34 : 0;
+  if (!feat) {
+    if (!tall) {
+      const avail=W-140, gap=14, w=Math.min(150,(avail-(n-1)*gap)/n), h=Math.min(660,H-250), tot=n*w+(n-1)*gap, x0=(W-tot)/2, y=(H-h)/2+numPad/2;
+      picks.forEach((p,i)=>anim(i,()=>spine(c,x0+i*(w+gap),y,w,h,p,assets[i],look,i,o)));
+    } else {
+      const per=5, rows=Math.ceil(n/per), gap=20, w=(W-140-(per-1)*gap)/per, h=560;
+      const y0=440+numPad;
+      picks.forEach((p,i)=>{
+        const r=Math.floor(i/per), cI=i%per, cnt=Math.min(per,n-r*per), x0=(W-(cnt*w+(cnt-1)*gap))/2;
+        anim(i,()=>spine(c,x0+cI*(w+gap),y0+r*(h+90),w,h,p,assets[i],look,i,o));
+      });
+    }
+  } else {
+    const rest=n-1;
+    if (!tall) {
+      const fs=560, fw = look==='vinyl'?fs*0.78*1.5 : look==='player'?fs*0.82 : fs, gap=40, avail=W-140;
+      const sg=10, sw=rest?Math.min(110,(avail-fw-gap-(rest-1)*sg)/rest):0, tot=fw+(rest?gap+rest*sw+(rest-1)*sg:0), x0=(W-tot)/2, y=(H-fs)/2+numPad/2;
+      anim(0,()=>featured(c,x0,y,fs,picks[0],assets[0],look,o,0));
+      for (let i=1;i<n;i++) anim(i,()=>spine(c,x0+fw+gap+(i-1)*(sw+sg),y+fs*0.08,sw,fs*0.92,picks[i],assets[i],look==='player'?'cds':'tapes',i,o));
+    } else {
+      const fs=760, fw = look==='vinyl'?fs*0.78*1.5 : look==='player'?fs*0.82 : fs, x0=(W-fw)/2, y=420+numPad;
+      anim(0,()=>featured(c,x0,y,fs,picks[0],assets[0],look,o,0));
+      const sg=10, sw=rest?Math.min(100,(W-140-(rest-1)*sg)/rest):0, tot=rest*sw+(rest-1)*sg, sx=(W-tot)/2, sy=y+fs+110+numPad/2;
+      for (let i=1;i<n;i++) anim(i,()=>spine(c,sx+(i-1)*(sw+sg),sy,sw,H-sy-130,picks[i],assets[i],look==='player'?'cds':'tapes',i,o));
+    }
+  }
+  c.fillStyle=mu; c.font='600 '+(tall?30:24)+'px system-ui,sans-serif'; c.textAlign='left'; c.textBaseline='alphabetic';
+  c.fillText(o.name? 'by '+o.name : 'JKT48 Top 10', 60, H-(tall?60:34));
+}
+
+/* ---------- spin ---------- */
+function drawSpin(c,a,pick,idx,n,time,o){
+  const W=1080, night=o.night, paper=night?'#101013':'#f6f3ee', ink=night?'#f6ecee':'#17110f', mu=night?'#9b9094':'#7b706b';
+  c.fillStyle=paper; c.fillRect(0,0,W,W);
+  const cx=W/2, cy=420, R=350, ang=time*4, pop=ease(clamp(time%1.6/0.35,0,1));
+  c.save(); c.translate(cx,cy); c.scale(0.9+0.1*pop,0.9+0.1*pop); c.globalAlpha=pop;
+  c.shadowColor='rgba(0,0,0,.35)'; c.shadowBlur=40; c.shadowOffsetY=18;
+  c.fillStyle='#0d0d0f'; c.beginPath(); c.arc(0,0,R,0,7); c.fill(); c.shadowColor='transparent';
+  c.strokeStyle='rgba(255,255,255,.06)'; c.lineWidth=1.5; for (let r=R*0.4;r<R*0.97;r+=9){ c.beginPath(); c.arc(0,0,r,0,7); c.stroke(); }
+  c.save(); c.rotate(ang*0.6); const g=c.createConicGradient?c.createConicGradient(0,0,0):null;
+  if (g){ g.addColorStop(0,'rgba(255,255,255,.0)'); g.addColorStop(0.08,'rgba(255,255,255,.16)'); g.addColorStop(0.16,'rgba(255,255,255,0)'); g.addColorStop(0.5,'rgba(255,255,255,0)'); g.addColorStop(0.58,'rgba(255,255,255,.12)'); g.addColorStop(0.66,'rgba(255,255,255,0)'); c.fillStyle=g; c.beginPath(); c.arc(0,0,R,0,7); c.fill(); }
+  c.restore();
+  c.save(); c.rotate(ang); c.beginPath(); c.arc(0,0,R*0.36,0,7); c.clip();
+  if (a.im) c.drawImage(a.im,-R*0.36,-R*0.36,R*0.72,R*0.72); else { c.fillStyle=a.col; c.fillRect(-R,-R,R*2,R*2); }
+  c.restore(); c.fillStyle=paper; c.beginPath(); c.arc(0,0,R*0.035,0,7); c.fill();
+  c.restore();
+  c.textAlign='center'; c.fillStyle=RED; c.font='800 44px system-ui,sans-serif'; c.fillText('#'+(idx+1),cx,cy+R+100);
+  c.fillStyle=ink; c.font='800 58px system-ui,sans-serif'; c.fillText(fitText(c,pick.title,W-140),cx,cy+R+170);
+  c.fillStyle=mu; c.font='500 36px system-ui,sans-serif'; c.fillText(fitText(c,pick.sub,W-140),cx,cy+R+222);
+  c.font='600 26px system-ui,sans-serif'; c.fillText('JKT48 Top 10',cx,W-36);
+}
+
+/* ---------- render pipeline ---------- */
+const opts = async () => {
+  const picks = cur().slice(), assets = await loadAll(picks);
+  return { picks, assets, look:state.look, num:state.num, night:state.night, kind:state.kind, name:$('#nm').value.trim() };
+};
+/* Satu foto per item, tanpa latar/padding: di X, foto-foto tipis ini berjajar rapat jadi satu rak.
+   CDs 200x2660 (≈0.075), Tapes 330x2130 (≈0.155), Covers 1:1, Vinyl 1.15, Player 9:16 */
+function photoCanvas(o,i){
+  const p=o.picks[i], a=o.assets[i], n=o.night, look=o.look, cv=document.createElement('canvas');
+  const dim = {cds:[200,2660], tapes:[330,2130], covers:[1200,1200], vinyl:[1380,1200], player:[1080,1920]}[look];
+  cv.width=dim[0]; cv.height=dim[1]; const c=cv.getContext('2d'), W=dim[0], H=dim[1];
+  if (look==='cds') {
+    cdSpineDraw(c,0,0,W,H,p,a,n);
+    if (o.num) badge(c,W/2,H-W*0.95,W*0.2,i+1);
+  } else if (look==='tapes') {
+    c.save(); c.scale(3,3); spine(c,0,0,W/3,H/3,p,a,'tapes',i,{night:n,num:false}); c.restore();
+    if (o.num) badge(c,W/2,H-W*0.5,W*0.17,i+1);
+  } else if (look==='covers') {
+    cover(c,a,0,0,W,0);
+    if (o.num) badge(c,90,90,56,i+1);
+  } else if (look==='vinyl') {
+    c.fillStyle=n?'#101013':'#f6f3ee'; c.fillRect(0,0,W,H);
+    const sl=960, y=120, r=480, cx=900;
+    c.fillStyle='#0d0d0f'; c.beginPath(); c.arc(cx,y+sl/2,r,0,7); c.fill();
+    c.strokeStyle='rgba(255,255,255,.07)'; c.lineWidth=2; for (let k=0.4;k<0.97;k+=0.035){ c.beginPath(); c.arc(cx,y+sl/2,r*k,0,7); c.stroke(); }
+    c.save(); c.beginPath(); c.arc(cx,y+sl/2,r*0.34,0,7); c.clip(); if (a.im) c.drawImage(a.im,cx-r*0.34,y+sl/2-r*0.34,r*0.68,r*0.68); c.restore();
+    c.fillStyle='#f6f3ee'; c.beginPath(); c.arc(cx,y+sl/2,r*0.035,0,7); c.fill();
+    c.save(); c.shadowColor='rgba(0,0,0,.4)'; c.shadowBlur=40; c.shadowOffsetX=12; rr(c,0,y,sl,sl,6); c.fillStyle='#000'; c.fill(); c.restore();
+    cover(c,a,0,y,sl,6);
+    if (o.num) badge(c,60,y+60,44,i+1);
+  } else { // player
+    c.fillStyle=shade(a.col,n?0.22:0.5); c.fillRect(0,0,W,H);
+    try { c.save(); c.filter='blur(70px)'; if (a.im) c.drawImage(a.im,-300,-100,W+600,W+600); c.restore(); } catch(e){}
+    c.fillStyle=n?'rgba(0,0,0,.6)':'rgba(0,0,0,.38)'; c.fillRect(0,0,W,H);
+    const s=880, x=(W-s)/2, y=250;
+    c.save(); c.shadowColor='rgba(0,0,0,.45)'; c.shadowBlur=60; c.shadowOffsetY=24; rr(c,x,y,s,s,28); c.fillStyle='#000'; c.fill(); c.restore();
+    cover(c,a,x,y,s,28);
+    c.textAlign='left'; c.textBaseline='alphabetic'; c.fillStyle='#fff';
+    c.font='800 64px system-ui,sans-serif'; c.fillText(fitText(c,p.title,s),x,y+s+110);
+    c.fillStyle='rgba(255,255,255,.7)'; c.font='500 44px system-ui,sans-serif'; c.fillText(fitText(c,p.sub,s),x,y+s+176);
+    const by=y+s+260; c.fillStyle='rgba(255,255,255,.3)'; rr(c,x,by,s,10,5); c.fill(); c.fillStyle='#fff'; rr(c,x,by,s*0.36,10,5); c.fill(); c.beginPath(); c.arc(x+s*0.36,by+5,14,0,7); c.fill();
+    c.font='500 30px system-ui,sans-serif'; c.fillStyle='rgba(255,255,255,.7)'; c.fillText('1:12',x,by+60); c.textAlign='right'; c.fillText('-2:48',x+s,by+60); c.textAlign='left';
+    const cy=by+200, mx=W/2; c.fillStyle='#fff'; c.beginPath(); c.arc(mx,cy,70,0,7); c.fill(); c.fillStyle='#222'; c.fillRect(mx-22,cy-28,16,56); c.fillRect(mx+6,cy-28,16,56);
+    c.fillStyle='#fff'; [[-1],[1]].forEach(([d])=>{ c.beginPath(); c.moveTo(mx+d*130,cy-36); c.lineTo(mx+d*130,cy+36); c.lineTo(mx+d*190,cy); c.closePath(); c.fill(); });
+    if (o.num) badge(c,110,110,56,i+1);
+  }
+  return cv;
+}
+function lum(col){ const m=col.match(/\d+/g); return m?(0.299*m[0]+0.587*m[1]+0.114*m[2])/255:0.5; }
+function cdSpineDraw(c,x,y,w,h,p,a,night){
+  const u=w/200, hinge=70*u, side=26*u; c.save(); c.translate(x,y);
+  const g=c.createLinearGradient(0,0,w,0); g.addColorStop(0,'#a9acb4'); g.addColorStop(0.07,'#eef0f4'); g.addColorStop(0.5,'#dfe1e6'); g.addColorStop(0.93,'#eef0f4'); g.addColorStop(1,'#9fa2aa');
+  rr(c,0,0,w,h,8*u); c.fillStyle=g; c.fill();
+  [0,h-hinge].forEach((yy,k)=>{ c.fillStyle='rgba(255,255,255,.55)'; c.fillRect(0,yy,w,hinge); c.fillStyle='rgba(0,0,0,.2)'; c.fillRect(0,yy+(k?0:hinge-3*u),w,3*u); c.fillStyle='rgba(0,0,0,.28)'; rr(c,w*0.3,yy+hinge*0.35,w*0.4,hinge*0.3,4*u); c.fill(); });
+  const px=side, py=hinge, pw=w-side*2, ph=h-hinge*2;
+  c.save(); c.beginPath(); c.rect(px,py,pw,ph); c.clip();
+  c.fillStyle=shade(a.col,0.5); c.fillRect(px,py,pw,ph);
+  if (a.im){ c.globalAlpha=.45; c.drawImage(a.im,px-(ph-pw)/2,py,ph,ph); c.globalAlpha=1; }
+  c.fillStyle='rgba(0,0,0,.3)'; c.fillRect(px,py,pw,ph);
+  if (a.im) c.drawImage(a.im,px,py,pw,pw); else { c.fillStyle=a.col; c.fillRect(px,py,pw,pw); }
+  // artist (bold) lalu judul (italic serif) di satu kolom, dibaca dari atas ke bawah
+  const avail=ph-pw-pw*0.9-30*u; let fs=58*u, art='JKT48', gap=26*u;
+  const meas=f=>{ c.font=`800 ${f}px system-ui,sans-serif`; const aw=c.measureText(art).width; c.font=`italic 500 ${f}px Georgia,"Times New Roman",serif`; return aw+gap+c.measureText(p.title).width; };
+  while (meas(fs)>avail && fs>26*u) fs-=2*u;
+  c.save(); c.translate(px+pw/2, py+pw+22*u); c.rotate(Math.PI/2); c.textBaseline='middle'; c.textAlign='left';
+  c.font=`800 ${fs}px system-ui,sans-serif`; c.fillStyle='#fff'; c.fillText(art,0,0); const aw=c.measureText(art).width;
+  c.font=`italic 500 ${fs}px Georgia,"Times New Roman",serif`; c.fillStyle='rgba(255,255,255,.92)'; c.fillText(fitText(c,p.title,avail-aw-gap),aw+gap,0);
+  c.restore();
+  // label kecil di bawah
+  c.fillStyle='rgba(255,255,255,.85)'; c.font=`800 ${22*u}px system-ui,sans-serif`; c.textAlign='center'; c.textBaseline='middle';
+  c.strokeStyle='rgba(255,255,255,.85)'; c.lineWidth=2*u; rr(c,px+pw*0.12,py+ph-pw*0.62,pw*0.76,pw*0.42,4*u); c.stroke(); c.fillText('JKT48',px+pw/2,py+ph-pw*0.41);
+  c.restore(); c.restore();
+}
+async function postFiles(){
+  const o=await opts();
+  const cvs = o.picks.map((_,i)=>photoCanvas(o,i));
+  const blobs = await Promise.all(cvs.map(cv=>new Promise(r=>cv.toBlob(r,'image/png'))));
+  return blobs.map((b,i)=>({blob:b,name:`jkt48-top10-${String(i+1).padStart(2,'0')}.png`}));
+}
+async function downloadAll(files){ for (const f of files){ dl(f.blob,f.name); await new Promise(r=>setTimeout(r,350)); } }
+let tok=0, spinRAF=0, spinT0=0;
+async function refresh(){
+  const my=++tok, o=await opts(); if (my!==tok) return;
+  const cap=$('#caption'); if (!cap.dataset.dirty) cap.value = `my top ${o.picks.length||10} ${noun()} of JKT48\nvia ${location.host||'jkt48top'}/`;
+  renderLooks(o);
+  if (state.share==='post') {
+    $('#postSub').textContent = o.picks.length ? `${o.picks.length} foto, satu per ${state.kind==='album'?'album':'lagu'}, berurutan. X menerima sampai 20 foto per post.` : 'Pilih favoritmu dulu.';
+    $('#strip').replaceChildren(...o.picks.map((_,i)=>photoCanvas(o,i)));
+  }
+  if (state.share==='story') scene($('#cvStory').getContext('2d'),1080,1920,o,1);
+  if (state.share==='link') renderLink();
+  if (state.share==='spin') startSpin(o);
+}
+function startSpin(o){
+  cancelAnimationFrame(spinRAF); const c=$('#cvSpin').getContext('2d');
+  if (!o.picks.length){ c.fillStyle='#888'; c.fillRect(0,0,1080,1080); return; }
+  spinT0=performance.now();
+  (function f(){
+    const t=(performance.now()-spinT0)/1000, n=state.spin==='all'?o.picks.length:1, i=Math.floor(t/1.6)%n;
+    drawSpin(c,o.assets[i],o.picks[i],i,n,t,o);
+    if (state.share==='spin') spinRAF=requestAnimationFrame(f);
+  })();
+}
+function renderLink(){
+  const arr=cur(), nm=$('#nm').value.trim();
+  $('#linkTitle').innerHTML = `Top ${arr.length||10} ${noun()} JKT48 <span style="color:var(--mute);font-weight:400;font-size:13px">${nm?'oleh '+esc(nm):''}</span>`;
+  $('#slots').innerHTML = Array.from({length:10},(_,i)=>`<div>${arr[i]?`<img src="${arr[i].img}" alt="">`:''}</div>`).join('');
+}
+function renderLooks(o){
+  const host=$('#looks'); if (!host.children.length){
+    [['cds','CDs'],['tapes','Tapes'],['covers','Covers'],['vinyl','Vinyl'],['player','Player']].forEach(([k,l])=>{
+      const b=document.createElement('button'); b.className='look'; b.dataset.look=k; b.innerHTML=`<canvas width="160" height="90"></canvas><span>${l}</span>`; host.appendChild(b);
+    });
+  }
+  host.querySelectorAll('.look').forEach(b=>{
+    b.classList.toggle('on',b.dataset.look===state.look);
+    const mc=b.querySelector('canvas').getContext('2d'), sub={...o,look:b.dataset.look,num:false,night:false,picks:o.picks.slice(0,10)};
+    mc.setTransform(1,0,0,1,0,0); mc.clearRect(0,0,160,90); mc.save(); mc.scale(0.1,0.1);
+    if (sub.picks.length) scene(mc,1600,900,sub,1); else { mc.fillStyle='#8883'; mc.fillRect(0,0,1600,900); }
+    mc.restore();
+  });
+}
+
+/* ---------- video / download ---------- */
+function dl(blob,name){ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),4000); }
+function dlCanvas(cv,name){ cv.toBlob(b=>b?dl(b,name):alert('Gagal membuat gambar.')); }
+function record(canvas,ms,frame){
+  return new Promise((res,rej)=>{
+    if (!window.MediaRecorder) return rej(new Error('Browser tidak mendukung perekaman video.'));
+    const mime=['video/webm;codecs=vp9','video/webm','video/mp4'].find(m=>MediaRecorder.isTypeSupported(m));
+    const rec=new MediaRecorder(canvas.captureStream(30),{mimeType:mime,videoBitsPerSecond:8e6}), chunks=[];
+    rec.ondataavailable=e=>e.data.size&&chunks.push(e.data);
+    rec.onstop=()=>res({blob:new Blob(chunks,{type:mime}),mime});
+    rec.start(); const t0=performance.now();
+    (function f(){ const e=performance.now()-t0; frame(e/1000, clamp(e/ms,0,1)); if(e<ms) requestAnimationFrame(f); else setTimeout(()=>rec.stop(),100); })();
+  });
+}
+const ext = m => m.includes('mp4')?'mp4':'webm';
+
+/* ---------- events ---------- */
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t===b));
+  state.kind=b.dataset.kind; state.q=''; $('#q').value='';
+  $('#q').placeholder = state.kind==='album'?'Cari album JKT48...':'Cari lagu JKT48...';
+  renderResults(); renderList();
+});
+$('#q').oninput = e => { state.q=e.target.value; renderResults(); };
+$('#results').onclick = e => {
+  const b=e.target.closest('.res'); if(!b) return;
+  if (b.dataset.manual) { // lagu/album yang tidak ada di iTunes (mis. lagu setlist teater)
+    const arr=cur(), t=state.q.trim(); if (arr.length>=MAX){ $('#msg').textContent='Maksimal 10.'; return; }
+    arr.push({id:'c'+Date.now(), title:t, sub:'JKT48', img:placeholder(t), custom:true});
+    state.q=''; $('#q').value=''; renderList(); renderResults(); return;
+  }
+  const arr=cur(), id=b.dataset.id, ix=arr.findIndex(p=>String(p.id)===id);
+  if (ix>=0) arr.splice(ix,1);
+  else {
+    if (arr.length>=MAX){ $('#msg').textContent='Maksimal 10.'; return; }
+    const it={...cache[state.kind].find(x=>String(x.id)===id)}; if (!it.img) it.img=placeholder(it.title); arr.push(it);
+  }
+  renderList(); renderResults();
+};
+$('#list').onclick = e => {
+  const arr=cur(), t=e.target;
+  if (t.dataset.rm!==undefined) arr.splice(+t.dataset.rm,1);
+  else if (t.dataset.up!==undefined){ const i=+t.dataset.up; if(i>0)[arr[i-1],arr[i]]=[arr[i],arr[i-1]]; }
+  else return;
+  renderList(); renderResults();
+};
+let dragI=null;
+$('#list').ondragstart=e=>{ const li=e.target.closest('li'); if(li) dragI=+li.dataset.i; };
+$('#list').ondragover=e=>e.preventDefault();
+$('#list').ondrop=e=>{ const li=e.target.closest('li'); if(!li||dragI===null) return; const arr=cur(), [m]=arr.splice(dragI,1); arr.splice(+li.dataset.i,0,m); dragI=null; renderList(); };
+$('#clear').onclick=()=>{ state.picks[state.kind]=[]; renderList(); renderResults(); };
+
+$('#looks').onclick=e=>{ const b=e.target.closest('.look'); if(!b) return; state.look=b.dataset.look; refresh(); };
+$('#swNum').onclick=()=>{ state.num=!state.num; $('#swNum').classList.toggle('on',state.num); refresh(); };
+$('#swNight').onclick=()=>{ state.night=!state.night; $('#swNight').classList.toggle('on',state.night); refresh(); };
+$('#stabs').onclick=e=>{
+  const b=e.target.closest('.stab'); if(!b) return; state.share=b.dataset.s;
+  document.querySelectorAll('.stab').forEach(t=>t.classList.toggle('on',t===b));
+  ['post','story','link','spin'].forEach(s=>$('#p-'+s).hidden = s!==state.share);
+  cancelAnimationFrame(spinRAF); refresh();
+};
+$('#spinSeg').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; state.spin=b.dataset.m; document.querySelectorAll('#spinSeg button').forEach(t=>t.classList.toggle('on',t===b)); refresh(); };
+$('#nm').oninput=()=>refresh();
+$('#caption').oninput=e=>{ e.target.dataset.dirty='1'; };
+
+$('#dlPost').onclick=async()=>{ await downloadAll(await postFiles()); };
+$('#toX').onclick=async()=>{
+  const text=$('#caption').value.trim(), url='';
+  const open=()=>window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text),'_blank','noopener');
+  // HP: share sheet bawaan (gambar ikut terlampir, tanpa login ke app ini)
+  try {
+    const files=(await postFiles()).map(f=>new File([f.blob],f.name,{type:'image/png'}));
+    if (navigator.canShare && navigator.canShare({files})) { await navigator.share({files,text}); return; }
+    // Desktop: buka compose X (pakai login X-mu sendiri), foto diunduh untuk dilampirkan
+    open();
+    await downloadAll(files.map(f=>({blob:f,name:f.name})));
+  } catch(e){}
+};
+$('#dlStoryImg').onclick=()=>dlCanvas($('#cvStory'),'jkt48-top10-story.png');
+$('#mkStory').onclick=async()=>{
+  const btn=$('#mkStory'), msg=$('#storyMsg'); btn.disabled=true; msg.textContent='Membuat video...';
+  try {
+    const o=await opts(), cv=$('#cvStory'), c=cv.getContext('2d');
+    const {blob,mime}=await record(cv,4500,(s,p)=>scene(c,1080,1920,o,clamp(p*1.25,0,1)));
+    scene(c,1080,1920,o,1);
+    const v=$('#vStory'); v.src=URL.createObjectURL(blob); v.hidden=false; cv.hidden=true;
+    dl(blob,'jkt48-top10-story.'+ext(mime)); msg.textContent='Video diunduh. Tambahkan lagu saat kamu posting.';
+  } catch(e){ msg.textContent=e.message; }
+  btn.disabled=false;
+};
+$('#copy').onclick=async()=>{
+  // seluruh daftar dikodekan di link (judul + alamat cover), jadi tidak perlu server atau lookup
+  const data={k:state.kind,l:state.look,n:+state.num,d:+state.night,nm:$('#nm').value.trim(),lk:$('#lk').value.trim(),
+    p:cur().map(p=>[p.title,p.sub,p.img&&!p.img.startsWith('data:')?p.img:0])};
+  const b64=btoa(unescape(encodeURIComponent(JSON.stringify(data)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  const url=location.href.split('#')[0]+'#d='+b64;
+  try{ await navigator.clipboard.writeText(url); $('#linkMsg').textContent='Link disalin.'; }catch(e){ $('#linkMsg').textContent=url; }
+};
+$('#mkSpin').onclick=async()=>{
+  const btn=$('#mkSpin'), msg=$('#spinMsg'); btn.disabled=true; msg.textContent='Merekam...';
+  try {
+    cancelAnimationFrame(spinRAF);
+    const o=await opts(), c=$('#cvSpin').getContext('2d'), n=state.spin==='all'?o.picks.length:1, ms=Math.max(3,n*1.6)*1000;
+    const {blob,mime}=await record($('#cvSpin'),ms,(s)=>{ const i=Math.floor(s/1.6)%n; drawSpin(c,o.assets[i],o.picks[i],i,n,s,o); });
+    dl(blob,'jkt48-top10-spin.'+ext(mime)); msg.textContent='Video diunduh.';
+  } catch(e){ msg.textContent=e.message; }
+  btn.disabled=false; refresh();
+};
+
+/* ---------- boot (supports shared links) ---------- */
+(async()=>{
+  const m=location.hash.match(/^#d=([\w-]+)/);
+  if (m) try {
+    const d=JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/-/g,'+').replace(/_/g,'/')))));
+    if (/^(album|song)$/.test(d.k)) {
+      state.kind=d.k; state.look=d.l||state.look; state.num=!!d.n; state.night=!!d.d; $('#nm').value=d.nm||''; $('#lk').value=d.lk||'';
+      state.picks[d.k]=d.p.slice(0,MAX).map(([title,sub,img],i)=>({id:'s'+i,title,sub,img:img||placeholder(title)}));
+      document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.kind===state.kind));
+      $('#swNum').classList.toggle('on',state.num); $('#swNight').classList.toggle('on',state.night);
+    }
+  } catch(e){}
+  renderList(); renderResults();
+})();
+</script>
+</body>
+</html>
