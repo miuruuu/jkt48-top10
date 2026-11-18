@@ -1757,7 +1757,7 @@ $('#caption').oninput=e=>{ e.target.dataset.dirty='1'; };
 
 $('#dlPost').onclick=async()=>{ await downloadAll(await postFiles()); };
 const isMobile = () => (navigator.userAgentData && navigator.userAgentData.mobile) || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-const openX = () => window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent($('#caption').value.trim()),'_blank','noopener');
+const openX = () => window.open('https://x.com/intent/post?text='+encodeURIComponent($('#caption').value.trim()),'_blank','noopener');
 // Bagikan lewat menu share bawaan perangkat (foto ikut terlampir)
 async function shareSheet(){
   const text=$('#caption').value.trim();
@@ -1816,7 +1816,7 @@ $('#copyImg').onclick=async()=>{
 $('#toX').onclick=async()=>{
   if (isMobile()) { if (await shareSheet()) return; }
   const single = state.postMode==='single';
-  const url='https://twitter.com/intent/tweet?text='+encodeURIComponent($('#caption').value.trim());
+  const url='https://x.com/intent/post?text='+encodeURIComponent($('#caption').value.trim());
   // dengan ekstensi: foto dikirim dulu, lalu ekstensi menempelkannya di halaman X
   if (extReady) {
     const files = await postFiles();

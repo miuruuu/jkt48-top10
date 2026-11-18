@@ -1,6 +1,10 @@
 // Berjalan di x.com / twitter.com. Jika ada foto yang baru dikirim dari situs JKT48 Top 10,
-// foto itu ditempelkan ke kotak tweet (input unggah file). Tidak memposting apa pun: kamu tetap menekan "Post" sendiri.
+// foto itu ditempelkan ke kotak tweet. Tidak memposting apa pun: kamu tetap menekan "Post" sendiri.
 (function () {
+  // hanya di halaman tulis-tweet; twitter.com biasanya dialihkan ke x.com, jadi jangan ambil foto di sana
+  if (location.hostname !== 'x.com' && location.hostname !== 'www.x.com') return;
+  if (!/^\/(intent\/(post|tweet)|compose\/(post|tweet))/.test(location.pathname)) return;
+
   function toFile(item) {
     const m = /^data:([^;,]+)(;base64)?,(.*)$/.exec(item.dataUrl);
     if (!m) return null;
@@ -17,19 +21,66 @@
         const v = fn();
         if (v) return resolve(v);
         if (Date.now() - t0 > ms) return resolve(null);
-        setTimeout(tick, 400);
+        setTimeout(tick, 300);
       })();
     });
+  }
+
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  const attached = () => document.querySelector('[data-testid="attachments"] img, [data-testid="attachments"] video, [data-testid="attachments"] [role="group"]');
+
+  function banner(text) {
+    let b = document.getElementById('jkt48-ext-note');
+    if (!b) {
+      b = document.createElement('div'); b.id = 'jkt48-ext-note';
+      b.style.cssText = 'position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:2147483647;background:#e4002b;color:#fff;padding:10px 16px;border-radius:999px;font:600 14px system-ui,sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.35)';
+      document.body.appendChild(b);
+      setTimeout(() => b.remove(), 9000);
+    }
+    b.textContent = text;
   }
 
   chrome.runtime.sendMessage({ type: 'take' }, async (res) => {
     const items = res && res.files;
     if (!items || !items.length) return;
-    const input = await waitFor(() => document.querySelector('input[type="file"][data-testid="fileInput"]') || document.querySelector('input[type="file"][accept*="image"]'), 25000);
-    if (!input) return;
+    const files = items.map(toFile).filter(Boolean);
+    if (!files.length) return;
+    banner('JKT48 Top 10: menempelkan foto...');
+
+    const editor = await waitFor(() => document.querySelector('[data-testid="tweetTextarea_0"], div[role="textbox"][contenteditable="true"]'), 25000);
+    const input = await waitFor(() => document.querySelector('input[type="file"][data-testid="fileInput"]') || document.querySelector('input[type="file"][accept*="image"]'), 10000);
+
     const dt = new DataTransfer();
-    items.map(toFile).filter(Boolean).forEach((f) => dt.items.add(f));
-    input.files = dt.files;
-    input.dispatchEvent(new Event('change', { bubbles: true }));
+    files.forEach((f) => dt.items.add(f));
+
+    // cara 1: isi input unggah file
+    if (input) {
+      try {
+        input.files = dt.files;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      } catch (e) {}
+      for (let i = 0; i < 10 && !attached(); i++) await sleep(300);
+    }
+    // cara 2: simulasi tempel (paste) di kotak tweet
+    if (!attached() && editor) {
+      try {
+        editor.focus();
+        const d2 = new DataTransfer(); files.forEach((f) => d2.items.add(f));
+        editor.dispatchEvent(new ClipboardEvent('paste', { clipboardData: d2, bubbles: true, cancelable: true }));
+      } catch (e) {}
+      for (let i = 0; i < 10 && !attached(); i++) await sleep(300);
+    }
+    // cara 3: simulasi seret-lepas (drop) ke kotak tweet
+    if (!attached() && editor) {
+      try {
+        const d3 = new DataTransfer(); files.forEach((f) => d3.items.add(f));
+        ['dragenter', 'dragover', 'drop'].forEach((t) => editor.dispatchEvent(new DragEvent(t, { dataTransfer: d3, bubbles: true, cancelable: true })));
+      } catch (e) {}
+      for (let i = 0; i < 10 && !attached(); i++) await sleep(300);
+    }
+
+    if (attached()) { banner('JKT48 Top 10: foto sudah menempel. Tulis lalu tekan Post sendiri ya.'); chrome.runtime.sendMessage({ type: 'done' }); }
+    else banner('JKT48 Top 10: foto belum bisa ditempel otomatis. Pakai tombol Unduh foto di situs ya.');
   });
 })();

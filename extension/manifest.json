@@ -1,13 +1,13 @@
-﻿{
+{
   "manifest_version": 3,
   "name": "JKT48 Top 10 ke X (tidak resmi)",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Menempelkan foto top 10 JKT48 dari situs JKT48 Top 10 ke kotak tweet X. Buatan penggemar, tidak resmi.",
   "permissions": ["storage", "unlimitedStorage"],
   "background": { "service_worker": "background.js" },
   "content_scripts": [
     {
-      "matches": ["https://top.miuru.fun/*", "http://localhost:8765/*"],
+      "matches": ["https://top.miuru.fun/*", "https://miuruuu.github.io/jkt48-top10/*", "http://localhost:8765/*"],
       "js": ["bridge.js"],
       "run_at": "document_start"
     },
