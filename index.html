@@ -111,6 +111,18 @@ body.view .start,body.view #startOpen{display:none}
 .cta span{flex:1;min-width:0}
 .cta .btn{padding:8px 14px;font-size:13px;background:#fff;color:#1a1214;border-color:#fff}
 .cta .linkbtn{margin-left:0;color:#fff;opacity:.7;font-size:20px;text-decoration:none}
+.mpsong{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.mpsong img{width:56px;height:56px;border-radius:10px;object-fit:cover;flex:0 0 auto}
+.mpsong div{min-width:0}
+.mpsong b{display:block}
+.mpsong span{font-size:13px;color:var(--mute)}
+.mpgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:8px;margin-top:10px;max-height:44vh;overflow:auto}
+.mpm{border:0;background:none;color:inherit;font:inherit;padding:0;cursor:pointer;text-align:center;min-width:0}
+.mpm img{width:100%;aspect-ratio:2/3;object-fit:cover;object-position:top;border-radius:10px;background:var(--line);display:block}
+.mpm:hover img,.mpm:focus-visible img{outline:3px solid var(--red);outline-offset:-3px}
+.mpm span{display:block;font-size:11px;line-height:1.2;margin-top:3px}
+.pairbtn{padding:0 6px;color:var(--red)}
+.mmav{width:26px;height:26px;border-radius:50%;object-fit:cover;object-position:top;vertical-align:middle}
 .newdot{position:absolute;top:4px;right:4px;background:var(--red);color:#fff;font:700 9px/1 system-ui,sans-serif;padding:3px 6px;border-radius:99px;font-style:normal;letter-spacing:.04em}
 .nudge{display:flex;align-items:center;gap:8px;margin-top:12px;padding:10px 12px;border-radius:14px;background:var(--soft);font-size:13px}
 .nudge[hidden]{display:none}
@@ -323,6 +335,7 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
         <ol id="list"></ol>
         <div id="empty" class="empty">Belum ada pilihan. Klik cover di atas.</div>
         <div id="nudge" class="nudge" hidden></div>
+        <div id="pairBar" class="nudge" hidden></div>
         <div id="challenge" class="lstats" hidden></div>
         <div id="liveStats" class="lstats" hidden></div>
         <div class="saved">
@@ -467,6 +480,14 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
   <div class="bhead"><b>Oshi Battle</b><button class="linkbtn" id="bClose" type="button" aria-label="Tutup">×</button></div>
   <div id="bBody"></div>
 </div></div>
+<div class="ovl" id="mpick" hidden role="dialog" aria-modal="true" aria-label="Pilih member"><div class="box">
+  <div class="bhead"><b>♥</b><button class="linkbtn" id="mpClose" type="button" aria-label="Tutup">×</button></div>
+  <div id="mpSong" class="mpsong"></div>
+  <input id="mpQ" type="search" placeholder="Cari member..." autocomplete="off" spellcheck="false">
+  <div class="chips" id="mpTeams"></div>
+  <div id="mpGrid" class="mpgrid"></div>
+  <div class="bfoot"><button class="linkbtn" id="mpClear" type="button" style="margin-left:0">Hapus pasangan</button><button class="linkbtn" id="mpSkip" type="button">Lewati</button></div>
+</div></div>
 <div class="cta" id="cta" hidden></div>
 <div class="ovl" id="careModal" hidden role="dialog" aria-modal="true" aria-labelledby="careTitle"><div class="box">
   <div class="bhead"><b id="careTitle">Sebelum pergi, sedikit pesan</b><button class="linkbtn" id="careX" type="button" aria-label="Tutup">×</button></div>
@@ -526,7 +547,7 @@ const EN = {
  'Perangkat ini tidak mendukung menu share dengan foto. Pakai "Unduh foto".':'This device does not support the share menu with photos. Use "Download photos".',
  'Membuat video...':'Making video...','Video diunduh. Tambahkan lagu saat kamu posting.':'Video downloaded. Add a song when you post.','Link disalin.':'Link copied.','Merekam...':'Recording...','Video diunduh (tanpa suara). Tambahkan lagu saat kamu posting.':'Video downloaded (no sound). Add a song when you post.',
  'Bingung nentuin oshi? Santai. Tinggal pilih satu dari dua, ulang terus, nanti urutannya jadi sendiri.':'Cannot pick your oshi? Easy. Just choose one of two, again and again, and the ranking builds itself.','Urutkan oshi-ku':'Rank my oshi','Isi dulu minimal 2 oshi di daftarmu, baru bisa diurutkan.':'Add at least 2 oshi to your list first.','Belum ketemu oshinya? Cari lewat battle':'Not sure who your oshi is? Find them by battle','Peserta diambil acak dari {n} member yang lagi tampil (ikut filter yang kamu pilih).':'Contestants are picked at random from the {n} members shown (follows your filter).','Berapa peserta?':'How many contestants?','MULAI BATTLE!':'START BATTLE!','Member yang tampil kurang dari 4. Hapus filter atau pencarian dulu.':'Fewer than 4 members shown. Clear the filter or search first.','Duel {m} dari {t} · Babak {r}':'Duel {m} of {t} · Round {r}','Duel {n} dari sekitar {t}':'Duel {n} of about {t}','Siapa yang lebih kamu pilih? (tombol ← → juga bisa)':'Who do you pick? (← → keys work too)','Salah pilih? Ulangi':'Oops? Undo','Ini urutan hatimu':'This is your heart\'s ranking','Juara hatimu':'Champion of your heart','Jadikan top-ku':'Make it my top list','Tambah ke top-ku':'Add to my top list','Simpan urutan ini':'Save this order','Daftarmu sudah diurutkan.':'Your list has been reordered.','Ditambahkan {n} oshi.':'Added {n} oshi.','Battle lagi!':'Battle again!','Tutup':'Close',
- 'Bandingkan dengan link teman':'Compare with a friend\'s link','Tempel link share temanmu':'Paste your friend\'s share link','Bandingkan':'Compare','Link itu bukan link daftar JKT48 Top 10.':'That is not a JKT48 Top 10 share link.','Daftarmu masih kosong untuk jenis ini. Isi dulu di tab-nya.':'Your list is empty for this type. Fill it in on its tab first.','Kecocokan {n}%':'Match {n}%','Sama-sama ada ({n})':'In both ({n})','Cuma di daftarmu ({n})':'Only in yours ({n})','Cuma di daftar temanmu ({n})':'Only in your friend\'s ({n})','kamu #{a} · temanmu #{b}':'you #{a} · friend #{b}','Tidak ada yang sama.':'Nothing in common.','FINAL: siapa juaranya?':'FINAL: who takes the crown?','⚔ Bingung? Oshi Battle':'⚔ Can\'t decide? Oshi Battle','psst, pencet gw dulu bentar ↓':'psst, tap me for a sec ↓','Sebelum pergi, sedikit pesan':'Before you go, a small note','Oke, lanjut':'Okay, continue','Receipt: satu gambar berisi seluruh daftar. Seret, salin, atau unduh.':'Receipt: one image with your whole list. Drag, copy or download.','Photo strip: {n} strip, 4 foto tiap strip. Seret atau salin tiap strip, atau unduh ZIP.':'Photo strip: {n} strip(s), 4 photos each. Drag or copy each strip, or download a ZIP.','Nama di struk':'Name on the receipt','Kosongkan = GUEST':'Leave empty = GUEST','Statistik':'Stats','Statistik daftarmu':'Your list stats','BARU':'NEW','Bingung urutannya? Coba Oshi Battle: pilih satu dari dua sampai ketemu.':'Cannot decide the order? Try Oshi Battle: pick one of two until it is clear.','Coba':'Try','Urutan baru! Lihat sebagai kartu Rarity: #1 jadi SSR.':'New order! See it as Rarity cards: #1 becomes SSR.','Lihat':'View','Coba format Receipt: daftarmu jadi struk belanja.':'Try the Receipt format: your list as a shopping receipt.','Bandingkan dengan daftarku':'Compare with my list','Kamu diajak membandingkan dengan daftar {nama}.':'You are invited to compare with {nama}\'s list.','Pilih minimal 2 untuk melihat kecocokannya.':'Pick at least 2 to see the match.','temanmu':'your friend','Lihat sebagai kartu Rarity':'See as Rarity cards','Lihat statistik':'See stats','mau ngapain di sini?':'what do you want to do here?','web iseng, tapi fiturnya nggak iseng-iseng amat:':'a for-fun site, but the features are not that silly:','💿 Album & Lagu':'💿 Albums & Songs','jadiin top 10 lu rak CD, kaset, sampai struk belanja.':'turn your top 10 into a CD shelf, cassettes, even a shopping receipt.','🎤 Oshi':'🎤 Oshi','kartu gacha SSR, strip photobooth, photobook. oshi lu dipajang kayak idol beneran.':'SSR gacha cards, photobooth strips, photobooks. show off your oshi like a real idol.','⚔️ Oshi Battle':'⚔️ Oshi Battle','bingung milih? biar mereka yang duel, lu tinggal klik.':'cannot choose? let them duel, you just click.','📊 Statistik':'📊 Stats','muncul sendiri pas lu milih. ketauan deh oshi lu tim apa. maaf kalo kena mental.':'shows up by itself as you pick. it reveals which team your oshi are from. sorry if it hurts.','🤝 Sehati nggak?':'🤝 Same wavelength?','kirim link lu ke temen, liat selera kalian sama berapa persen.':'send your link to a friend and see how much your tastes match.','🎭 Poster setlist':'🎭 Setlist poster','susun lagu jadi setlist konser impian, lengkap sama posternya.':'arrange songs into your dream concert setlist, poster included.','skip, gw udah ngerti':'skip, i get it','Fitur apa aja sih?':'what can this do?','Ajak temen adu selera: kirim link lu, nanti keluar persen kecocokannya.':'Challenge a friend: send your link and see the match percentage.','Bingung ngurutin oshi? Suruh mereka duel, lu tinggal klik.':'Cannot rank your oshi? Make them duel, you just click.','Mau tau oshi lu mayoritas tim apa? Ada statistiknya, lho.':'Want to know which team most of your oshi are from? There are stats.','Daftar lu bisa jadi struk belanja, serius.':'Your list can become a shopping receipt, seriously.','Oshi #1 lu bisa jadi kartu SSR berfoil. Mau?':'Your #1 oshi can become a foil SSR card. Want it?','Jadiin strip photobooth, 4 foto per lembar.':'Make it a photobooth strip, 4 photos per sheet.','Duelin':'Duel!','Statistik oshi-ku':'My oshi stats','Statistik album-ku':'My album stats','Statistik lagu-ku':'My song stats','Per tim':'By team','Tim favorit':'Favorite team','Angkatan terbanyak':'Most common generation','{a} dari {b}':'{a} of {b}','Data angkatan belum tersedia':'Generation data not loaded yet','Per angkatan':'By generation','Per tahun rilis':'By release year','Per jenis':'By type','Per sumber':'By source','Per album':'By album','Tahun terbanyak':'Most common year','Rentang tahun':'Year range','Album terbanyak':'Top album','Dari berapa album':'Number of albums','Lainnya':'Other','Statistik: satu gambar berisi ringkasan daftarmu. Seret, salin, atau unduh.':'Stats: one image summarizing your list. Drag, copy or download.','Urutan oshi-ku':'My oshi ranking','Juara hatiku':'Champion of my heart','{n} peserta · {m} duel':'{n} contestants · {m} duels','Diurutkan lewat {n} duel':'Ranked through {n} duels','Browser ini menolak menyalin. Coba unduh gambarnya.':'This browser refused to copy. Try downloading the image.'
+ 'Bandingkan dengan link teman':'Compare with a friend\'s link','Tempel link share temanmu':'Paste your friend\'s share link','Bandingkan':'Compare','Link itu bukan link daftar JKT48 Top 10.':'That is not a JKT48 Top 10 share link.','Daftarmu masih kosong untuk jenis ini. Isi dulu di tab-nya.':'Your list is empty for this type. Fill it in on its tab first.','Kecocokan {n}%':'Match {n}%','Sama-sama ada ({n})':'In both ({n})','Cuma di daftarmu ({n})':'Only in yours ({n})','Cuma di daftar temanmu ({n})':'Only in your friend\'s ({n})','kamu #{a} · temanmu #{b}':'you #{a} · friend #{b}','Tidak ada yang sama.':'Nothing in common.','FINAL: siapa juaranya?':'FINAL: who takes the crown?','⚔ Bingung? Oshi Battle':'⚔ Can\'t decide? Oshi Battle','psst, pencet gw dulu bentar ↓':'psst, tap me for a sec ↓','Sebelum pergi, sedikit pesan':'Before you go, a small note','Oke, lanjut':'Okay, continue','Receipt: satu gambar berisi seluruh daftar. Seret, salin, atau unduh.':'Receipt: one image with your whole list. Drag, copy or download.','Photo strip: {n} strip, 4 foto tiap strip. Seret atau salin tiap strip, atau unduh ZIP.':'Photo strip: {n} strip(s), 4 photos each. Drag or copy each strip, or download a ZIP.','Nama di struk':'Name on the receipt','Kosongkan = GUEST':'Leave empty = GUEST','Statistik':'Stats','Statistik daftarmu':'Your list stats','BARU':'NEW','Bingung urutannya? Coba Oshi Battle: pilih satu dari dua sampai ketemu.':'Cannot decide the order? Try Oshi Battle: pick one of two until it is clear.','Coba':'Try','Urutan baru! Lihat sebagai kartu Rarity: #1 jadi SSR.':'New order! See it as Rarity cards: #1 becomes SSR.','Lihat':'View','Coba format Receipt: daftarmu jadi struk belanja.':'Try the Receipt format: your list as a shopping receipt.','Bandingkan dengan daftarku':'Compare with my list','Kamu diajak membandingkan dengan daftar {nama}.':'You are invited to compare with {nama}\'s list.','Pilih minimal 2 untuk melihat kecocokannya.':'Pick at least 2 to see the match.','temanmu':'your friend','Lihat sebagai kartu Rarity':'See as Rarity cards','Lihat statistik':'See stats','mau ngapain di sini?':'what do you want to do here?','web iseng, tapi fiturnya nggak iseng-iseng amat:':'a for-fun site, but the features are not that silly:','💿 Album & Lagu':'💿 Albums & Songs','jadiin top 10 lu rak CD, kaset, sampai struk belanja.':'turn your top 10 into a CD shelf, cassettes, even a shopping receipt.','🎤 Oshi':'🎤 Oshi','kartu gacha SSR, strip photobooth, photobook. oshi lu dipajang kayak idol beneran.':'SSR gacha cards, photobooth strips, photobooks. show off your oshi like a real idol.','⚔️ Oshi Battle':'⚔️ Oshi Battle','bingung milih? biar mereka yang duel, lu tinggal klik.':'cannot choose? let them duel, you just click.','📊 Statistik':'📊 Stats','muncul sendiri pas lu milih. ketauan deh oshi lu tim apa. maaf kalo kena mental.':'shows up by itself as you pick. it reveals which team your oshi are from. sorry if it hurts.','🤝 Sehati nggak?':'🤝 Same wavelength?','kirim link lu ke temen, liat selera kalian sama berapa persen.':'send your link to a friend and see how much your tastes match.','🎭 Poster setlist':'🎭 Setlist poster','susun lagu jadi setlist konser impian, lengkap sama posternya.':'arrange songs into your dream concert setlist, poster included.','skip, gw udah ngerti':'skip, i get it','Fitur apa aja sih?':'what can this do?','Ajak temen adu selera: kirim link lu, nanti keluar persen kecocokannya.':'Challenge a friend: send your link and see the match percentage.','Bingung ngurutin oshi? Suruh mereka duel, lu tinggal klik.':'Cannot rank your oshi? Make them duel, you just click.','Mau tau oshi lu mayoritas tim apa? Ada statistiknya, lho.':'Want to know which team most of your oshi are from? There are stats.','Daftar lu bisa jadi struk belanja, serius.':'Your list can become a shopping receipt, seriously.','Oshi #1 lu bisa jadi kartu SSR berfoil. Mau?':'Your #1 oshi can become a foil SSR card. Want it?','Jadiin strip photobooth, 4 foto per lembar.':'Make it a photobooth strip, 4 photos per sheet.','Duelin':'Duel!','Kartu duet':'Duet card','Siapa member yang bikin lu inget lagu ini?':'Which member does this song remind you of?','Cari member...':'Search members...','Lewati':'Skip','Hapus pasangan':'Remove pairing','Pasangin':'Pair','Pilih member':'Pick a member','Semua lagu sudah dipasangin.':'All songs are paired.','bikin gw inget sama':'reminds me of','Pasangkan dulu lagu dengan member':'Pair a song with a member first','Ada lagu yang bikin lu inget member tertentu? Pasangin, jadi kartu duet.':'Any song that reminds you of a certain member? Pair them into a duet card.','Lagu lu bisa dipasangin sama member yang bikin lu inget. Jadi kartu duet.':'Pair your songs with the member they remind you of. Duet cards!','💞 Kartu duet':'💞 Duet cards','lagu apa yang bikin lu inget member siapa? pasangin, jadi kartu.':'which song reminds you of which member? pair them up, get a card.','Member terbanyak':'Top member','Kartu duet: {n} kartu, satu per lagu yang sudah dipasangkan. Seret, salin, atau unduh.':'Duet cards: {n} card(s), one per paired song. Drag, copy or download.','{n} lagu sudah dipasangkan.':'{n} song(s) paired.','Masukin ke daftar Oshi':'Add to my Oshi list','Pasangin sisanya':'Pair the rest','Dimasukkan {n} member ke daftar Oshi.':'Added {n} member(s) to your Oshi list.','Semua member sudah ada di daftar Oshi, atau daftarnya penuh.':'All members are already in your Oshi list, or it is full.','Statistik oshi-ku':'My oshi stats','Statistik album-ku':'My album stats','Statistik lagu-ku':'My song stats','Per tim':'By team','Tim favorit':'Favorite team','Angkatan terbanyak':'Most common generation','{a} dari {b}':'{a} of {b}','Data angkatan belum tersedia':'Generation data not loaded yet','Per angkatan':'By generation','Per tahun rilis':'By release year','Per jenis':'By type','Per sumber':'By source','Per album':'By album','Tahun terbanyak':'Most common year','Rentang tahun':'Year range','Album terbanyak':'Top album','Dari berapa album':'Number of albums','Lainnya':'Other','Statistik: satu gambar berisi ringkasan daftarmu. Seret, salin, atau unduh.':'Stats: one image summarizing your list. Drag, copy or download.','Urutan oshi-ku':'My oshi ranking','Juara hatiku':'Champion of my heart','{n} peserta · {m} duel':'{n} contestants · {m} duels','Diurutkan lewat {n} duel':'Ranked through {n} duels','Browser ini menolak menyalin. Coba unduh gambarnya.':'This browser refused to copy. Try downloading the image.'
 };
 const EN_HTML = {
  insp:'inspired by <a href="https://taylor.fyi/top/" target="_blank" rel="noopener">taylor.fyi/top</a> by <a href="https://x.com/taylor_" target="_blank" rel="noopener">@taylor_</a> on x. i am just a fan who borrowed the idea for jkt48, no official connection.',
@@ -598,7 +619,7 @@ const JA = {
  'Perangkat ini tidak mendukung menu share dengan foto. Pakai "Unduh foto".':'この端末は写真付きの共有メニューに対応していません。「写真をダウンロード」をお使いください。',
  'Membuat video...':'動画を作成中...','Video diunduh. Tambahkan lagu saat kamu posting.':'動画をダウンロードしました。投稿時に曲を追加してください。','Link disalin.':'リンクをコピーしました。','Merekam...':'録画中...','Video diunduh (tanpa suara). Tambahkan lagu saat kamu posting.':'動画をダウンロードしました(音なし)。投稿時に曲を追加してください。',
  'Bingung nentuin oshi? Santai. Tinggal pilih satu dari dua, ulang terus, nanti urutannya jadi sendiri.':'推しが決められない?大丈夫。2人から1人を選び続けるだけで、ランキングが完成します。','Urutkan oshi-ku':'推しを並べ替える','Isi dulu minimal 2 oshi di daftarmu, baru bisa diurutkan.':'まずリストに2人以上追加してください。','Belum ketemu oshinya? Cari lewat battle':'推しが決まらない?バトルで探そう','Peserta diambil acak dari {n} member yang lagi tampil (ikut filter yang kamu pilih).':'表示中の{n}人からランダムに選ばれます(フィルターに従います)。','Berapa peserta?':'何人で戦う?','MULAI BATTLE!':'バトル開始!','Member yang tampil kurang dari 4. Hapus filter atau pencarian dulu.':'表示中のメンバーが4人未満です。フィルターや検索を解除してください。','Duel {m} dari {t} · Babak {r}':'デュエル {m}/{t} · 第{r}ラウンド','Duel {n} dari sekitar {t}':'デュエル {n} / 約{t}','Siapa yang lebih kamu pilih? (tombol ← → juga bisa)':'どっちを選ぶ?(← → キーも使えます)','Salah pilih? Ulangi':'間違えた?戻す','Ini urutan hatimu':'あなたの推しランキング','Juara hatimu':'あなたの優勝','Jadikan top-ku':'これをマイトップにする','Tambah ke top-ku':'マイトップに追加','Simpan urutan ini':'この順番を保存','Daftarmu sudah diurutkan.':'リストを並べ替えました。','Ditambahkan {n} oshi.':'{n}人を追加しました。','Battle lagi!':'もう一度バトル!','Tutup':'閉じる',
- 'Bandingkan dengan link teman':'友達のリンクと比較','Tempel link share temanmu':'友達の共有リンクを貼り付け','Bandingkan':'比較する','Link itu bukan link daftar JKT48 Top 10.':'JKT48 Top 10 の共有リンクではありません。','Daftarmu masih kosong untuk jenis ini. Isi dulu di tab-nya.':'この種類のリストが空です。先にそのタブで選んでください。','Kecocokan {n}%':'一致度 {n}%','Sama-sama ada ({n})':'両方にある({n})','Cuma di daftarmu ({n})':'あなたのだけ({n})','Cuma di daftar temanmu ({n})':'友達のだけ({n})','kamu #{a} · temanmu #{b}':'あなた #{a} · 友達 #{b}','Tidak ada yang sama.':'共通するものはありません。','FINAL: siapa juaranya?':'決勝:優勝は誰?','⚔ Bingung? Oshi Battle':'⚔ 迷ったら 推しバトル','psst, pencet gw dulu bentar ↓':'ちょっとだけ、タップして ↓','Sebelum pergi, sedikit pesan':'最後にひとこと','Oke, lanjut':'OK、続ける','Receipt: satu gambar berisi seluruh daftar. Seret, salin, atau unduh.':'レシート:リスト全体を1枚に。ドラッグ、コピー、ダウンロードできます。','Photo strip: {n} strip, 4 foto tiap strip. Seret atau salin tiap strip, atau unduh ZIP.':'フォトストリップ:{n}枚、1枚につき4枚の写真。ドラッグかコピー、またはZIPでダウンロード。','Rarity':'レアリティ','Photo strip':'フォトストリップ','Receipt':'レシート','Nama di struk':'レシートの名前','Kosongkan = GUEST':'空欄 = GUEST','Statistik':'統計','Statistik daftarmu':'リストの統計','BARU':'NEW','Bingung urutannya? Coba Oshi Battle: pilih satu dari dua sampai ketemu.':'順番に迷ったら、推しバトルを試してみよう。2人から1人を選ぶだけ。','Coba':'試す','Urutan baru! Lihat sebagai kartu Rarity: #1 jadi SSR.':'新しい順番!レアリティカードで見てみよう:1位がSSRに。','Lihat':'見る','Coba format Receipt: daftarmu jadi struk belanja.':'レシート形式を試そう:リストが買い物レシートに。','Bandingkan dengan daftarku':'自分のリストと比較','Kamu diajak membandingkan dengan daftar {nama}.':'{nama}さんのリストと比較してみませんか。','Pilih minimal 2 untuk melihat kecocokannya.':'2つ以上選ぶと一致度が見られます。','temanmu':'友達','Lihat sebagai kartu Rarity':'レアリティカードで見る','Lihat statistik':'統計を見る','mau ngapain di sini?':'ここで何をする?','web iseng, tapi fiturnya nggak iseng-iseng amat:':'お遊びサイトだけど、機能は意外とちゃんとしてます:','💿 Album & Lagu':'💿 アルバムと楽曲','jadiin top 10 lu rak CD, kaset, sampai struk belanja.':'トップ10をCD棚やカセット、買い物レシートにできます。','🎤 Oshi':'🎤 推し','kartu gacha SSR, strip photobooth, photobook. oshi lu dipajang kayak idol beneran.':'SSRガチャカード、フォトブース風ストリップ、フォトブック。推しを本物のアイドルみたいに飾れます。','⚔️ Oshi Battle':'⚔️ 推しバトル','bingung milih? biar mereka yang duel, lu tinggal klik.':'選べない?推しに戦わせて、あなたはクリックするだけ。','📊 Statistik':'📊 統計','muncul sendiri pas lu milih. ketauan deh oshi lu tim apa. maaf kalo kena mental.':'選ぶと自動で出ます。推しがどのチームかバレます。ごめんね。','🤝 Sehati nggak?':'🤝 気が合う?','kirim link lu ke temen, liat selera kalian sama berapa persen.':'友達にリンクを送って、好みが何%合うか見てみよう。','🎭 Poster setlist':'🎭 セットリストポスター','susun lagu jadi setlist konser impian, lengkap sama posternya.':'楽曲を並べて夢のセットリストを作成。ポスター付き。','skip, gw udah ngerti':'スキップ、わかった','Fitur apa aja sih?':'どんな機能があるの?','Ajak temen adu selera: kirim link lu, nanti keluar persen kecocokannya.':'友達に挑戦:リンクを送って一致度を見てみよう。','Bingung ngurutin oshi? Suruh mereka duel, lu tinggal klik.':'推しの順番に迷う?戦わせて、クリックするだけ。','Mau tau oshi lu mayoritas tim apa? Ada statistiknya, lho.':'推しは何チームが多い?統計があります。','Daftar lu bisa jadi struk belanja, serius.':'リストが買い物レシートになります、本当に。','Oshi #1 lu bisa jadi kartu SSR berfoil. Mau?':'1位の推しがSSRカードに。見てみる?','Jadiin strip photobooth, 4 foto per lembar.':'フォトブース風ストリップに。1枚に4枚の写真。','Duelin':'戦わせる','Statistik oshi-ku':'私の推しの統計','Statistik album-ku':'私のアルバム統計','Statistik lagu-ku':'私の楽曲統計','Per tim':'チーム別','Tim favorit':'一番多いチーム','Angkatan terbanyak':'一番多い期','{a} dari {b}':'{a} / {b}','Data angkatan belum tersedia':'期のデータがまだありません','Per angkatan':'期別','Per tahun rilis':'リリース年別','Per jenis':'種類別','Per sumber':'ソース別','Per album':'アルバム別','Tahun terbanyak':'一番多い年','Rentang tahun':'年の範囲','Album terbanyak':'一番多いアルバム','Dari berapa album':'アルバムの数','Lainnya':'その他','Statistik: satu gambar berisi ringkasan daftarmu. Seret, salin, atau unduh.':'統計:リストの要約を1枚に。ドラッグ、コピー、ダウンロードできます。','Urutan oshi-ku':'私の推しランキング','Juara hatiku':'私の心の優勝者','{n} peserta · {m} duel':'{n}人参加・{m}試合','Diurutkan lewat {n} duel':'{n}回のデュエルで並べ替え','Browser ini menolak menyalin. Coba unduh gambarnya.':'コピーできませんでした。画像をダウンロードしてください。'
+ 'Bandingkan dengan link teman':'友達のリンクと比較','Tempel link share temanmu':'友達の共有リンクを貼り付け','Bandingkan':'比較する','Link itu bukan link daftar JKT48 Top 10.':'JKT48 Top 10 の共有リンクではありません。','Daftarmu masih kosong untuk jenis ini. Isi dulu di tab-nya.':'この種類のリストが空です。先にそのタブで選んでください。','Kecocokan {n}%':'一致度 {n}%','Sama-sama ada ({n})':'両方にある({n})','Cuma di daftarmu ({n})':'あなたのだけ({n})','Cuma di daftar temanmu ({n})':'友達のだけ({n})','kamu #{a} · temanmu #{b}':'あなた #{a} · 友達 #{b}','Tidak ada yang sama.':'共通するものはありません。','FINAL: siapa juaranya?':'決勝:優勝は誰?','⚔ Bingung? Oshi Battle':'⚔ 迷ったら 推しバトル','psst, pencet gw dulu bentar ↓':'ちょっとだけ、タップして ↓','Sebelum pergi, sedikit pesan':'最後にひとこと','Oke, lanjut':'OK、続ける','Receipt: satu gambar berisi seluruh daftar. Seret, salin, atau unduh.':'レシート:リスト全体を1枚に。ドラッグ、コピー、ダウンロードできます。','Photo strip: {n} strip, 4 foto tiap strip. Seret atau salin tiap strip, atau unduh ZIP.':'フォトストリップ:{n}枚、1枚につき4枚の写真。ドラッグかコピー、またはZIPでダウンロード。','Rarity':'レアリティ','Photo strip':'フォトストリップ','Receipt':'レシート','Nama di struk':'レシートの名前','Kosongkan = GUEST':'空欄 = GUEST','Statistik':'統計','Statistik daftarmu':'リストの統計','BARU':'NEW','Bingung urutannya? Coba Oshi Battle: pilih satu dari dua sampai ketemu.':'順番に迷ったら、推しバトルを試してみよう。2人から1人を選ぶだけ。','Coba':'試す','Urutan baru! Lihat sebagai kartu Rarity: #1 jadi SSR.':'新しい順番!レアリティカードで見てみよう:1位がSSRに。','Lihat':'見る','Coba format Receipt: daftarmu jadi struk belanja.':'レシート形式を試そう:リストが買い物レシートに。','Bandingkan dengan daftarku':'自分のリストと比較','Kamu diajak membandingkan dengan daftar {nama}.':'{nama}さんのリストと比較してみませんか。','Pilih minimal 2 untuk melihat kecocokannya.':'2つ以上選ぶと一致度が見られます。','temanmu':'友達','Lihat sebagai kartu Rarity':'レアリティカードで見る','Lihat statistik':'統計を見る','mau ngapain di sini?':'ここで何をする?','web iseng, tapi fiturnya nggak iseng-iseng amat:':'お遊びサイトだけど、機能は意外とちゃんとしてます:','💿 Album & Lagu':'💿 アルバムと楽曲','jadiin top 10 lu rak CD, kaset, sampai struk belanja.':'トップ10をCD棚やカセット、買い物レシートにできます。','🎤 Oshi':'🎤 推し','kartu gacha SSR, strip photobooth, photobook. oshi lu dipajang kayak idol beneran.':'SSRガチャカード、フォトブース風ストリップ、フォトブック。推しを本物のアイドルみたいに飾れます。','⚔️ Oshi Battle':'⚔️ 推しバトル','bingung milih? biar mereka yang duel, lu tinggal klik.':'選べない?推しに戦わせて、あなたはクリックするだけ。','📊 Statistik':'📊 統計','muncul sendiri pas lu milih. ketauan deh oshi lu tim apa. maaf kalo kena mental.':'選ぶと自動で出ます。推しがどのチームかバレます。ごめんね。','🤝 Sehati nggak?':'🤝 気が合う?','kirim link lu ke temen, liat selera kalian sama berapa persen.':'友達にリンクを送って、好みが何%合うか見てみよう。','🎭 Poster setlist':'🎭 セットリストポスター','susun lagu jadi setlist konser impian, lengkap sama posternya.':'楽曲を並べて夢のセットリストを作成。ポスター付き。','skip, gw udah ngerti':'スキップ、わかった','Fitur apa aja sih?':'どんな機能があるの?','Ajak temen adu selera: kirim link lu, nanti keluar persen kecocokannya.':'友達に挑戦:リンクを送って一致度を見てみよう。','Bingung ngurutin oshi? Suruh mereka duel, lu tinggal klik.':'推しの順番に迷う?戦わせて、クリックするだけ。','Mau tau oshi lu mayoritas tim apa? Ada statistiknya, lho.':'推しは何チームが多い?統計があります。','Daftar lu bisa jadi struk belanja, serius.':'リストが買い物レシートになります、本当に。','Oshi #1 lu bisa jadi kartu SSR berfoil. Mau?':'1位の推しがSSRカードに。見てみる?','Jadiin strip photobooth, 4 foto per lembar.':'フォトブース風ストリップに。1枚に4枚の写真。','Duelin':'戦わせる','Kartu duet':'デュエットカード','Siapa member yang bikin lu inget lagu ini?':'この曲で思い出すメンバーは?','Cari member...':'メンバーを検索...','Lewati':'スキップ','Hapus pasangan':'ペアを解除','Pasangin':'ペアにする','Pilih member':'メンバーを選ぶ','Semua lagu sudah dipasangin.':'すべての曲をペアにしました。','bikin gw inget sama':'思い出すのは','Pasangkan dulu lagu dengan member':'まず曲とメンバーをペアにしてください','Ada lagu yang bikin lu inget member tertentu? Pasangin, jadi kartu duet.':'特定のメンバーを思い出す曲は?ペアにしてデュエットカードに。','Lagu lu bisa dipasangin sama member yang bikin lu inget. Jadi kartu duet.':'曲を思い出すメンバーとペアに。デュエットカードに!','💞 Kartu duet':'💞 デュエットカード','lagu apa yang bikin lu inget member siapa? pasangin, jadi kartu.':'どの曲でどのメンバーを思い出す?ペアにしてカードに。','Member terbanyak':'一番多いメンバー','Kartu duet: {n} kartu, satu per lagu yang sudah dipasangkan. Seret, salin, atau unduh.':'デュエットカード:{n}枚、ペアにした曲ごとに1枚。ドラッグ、コピー、ダウンロードできます。','{n} lagu sudah dipasangkan.':'{n}曲をペアにしました。','Masukin ke daftar Oshi':'推しリストに追加','Pasangin sisanya':'残りをペアにする','Dimasukkan {n} member ke daftar Oshi.':'{n}人を推しリストに追加しました。','Semua member sudah ada di daftar Oshi, atau daftarnya penuh.':'全員がすでにリストにいるか、リストがいっぱいです。','Statistik oshi-ku':'私の推しの統計','Statistik album-ku':'私のアルバム統計','Statistik lagu-ku':'私の楽曲統計','Per tim':'チーム別','Tim favorit':'一番多いチーム','Angkatan terbanyak':'一番多い期','{a} dari {b}':'{a} / {b}','Data angkatan belum tersedia':'期のデータがまだありません','Per angkatan':'期別','Per tahun rilis':'リリース年別','Per jenis':'種類別','Per sumber':'ソース別','Per album':'アルバム別','Tahun terbanyak':'一番多い年','Rentang tahun':'年の範囲','Album terbanyak':'一番多いアルバム','Dari berapa album':'アルバムの数','Lainnya':'その他','Statistik: satu gambar berisi ringkasan daftarmu. Seret, salin, atau unduh.':'統計:リストの要約を1枚に。ドラッグ、コピー、ダウンロードできます。','Urutan oshi-ku':'私の推しランキング','Juara hatiku':'私の心の優勝者','{n} peserta · {m} duel':'{n}人参加・{m}試合','Diurutkan lewat {n} duel':'{n}回のデュエルで並べ替え','Browser ini menolak menyalin. Coba unduh gambarnya.':'コピーできませんでした。画像をダウンロードしてください。'
 };
 const JA_HTML = {
  insp:'<a href="https://taylor.fyi/top/" target="_blank" rel="noopener">taylor.fyi/top</a>(<a href="https://x.com/taylor_" target="_blank" rel="noopener">@taylor_</a> さん作)に着想を得ました。アイデアを借りてJKT48向けに作ったファンで、公式な関係はありません。',
@@ -1051,13 +1072,14 @@ function renderFilters(){
 /* ---------- sinergi antar fitur: penanda BARU, petunjuk kontekstual, tantangan bandingkan dari link teman ---------- */
 let CHAL = null, nudgeOverride = null;
 const lsGet = k => { try { return localStorage.getItem(k); } catch(e){ return null; } }, lsSet = (k,v) => { try { localStorage.setItem(k,v); } catch(e){} };
-const NEW_LOOKS = ['rarity','strip','receipt','stats'], NEW_UNTIL = Date.UTC(2026,11,4);
+const NEW_LOOKS = ['rarity','strip','receipt','stats','duet'], NEW_UNTIL = Date.UTC(2026,11,4);
 const isNewLook = k => NEW_LOOKS.includes(k) && Date.now()<NEW_UNTIL && lsGet('jkt48seen_'+k)!=='1';
 function setLook(l){ state.look=l; lsSet('jkt48seen_'+l,'1'); save(); refresh(); const lk=$('#looks'); if (lk) lk.scrollIntoView({behavior:'smooth',block:'center'}); }
 function renderNudge(){
   const host=$('#nudge'), n=cur().length; let h=null;
   if (nudgeOverride && nudgeOverride.kind===state.kind) h=nudgeOverride;
   else if (state.kind==='oshi' && n>=3 && lsGet('jkt48n_battle')!=='1') h={id:'battle',text:'Bingung urutannya? Coba Oshi Battle: pilih satu dari dua sampai ketemu.',btn:'Coba',act:()=>btOpen()};
+  else if (state.kind==='song' && n>=3 && !cur().some(p=>p.mm) && lsGet('jkt48n_pair')!=='1') h={id:'pair',text:'Ada lagu yang bikin lu inget member tertentu? Pasangin, jadi kartu duet.',btn:'Pasangin',act:()=>openPair(0,false)};
   else if ((state.kind==='album'||state.kind==='song') && n>=3 && lsGet('jkt48n_receipt')!=='1' && lsGet('jkt48seen_receipt')!=='1') h={id:'receipt',text:'Coba format Receipt: daftarmu jadi struk belanja.',btn:'Coba',act:()=>setLook('receipt')};
   if (!h) { host.hidden=true; host._h=null; return; }
   host.innerHTML=`<span>${esc(tr(h.text))}</span><button class="btn dark" type="button" data-nact>${esc(tr(h.btn))}</button><button class="linkbtn" type="button" data-nx aria-label="${esc(tr('Tutup'))}">×</button>`;
@@ -1113,8 +1135,8 @@ function renderList(){
   $('#empty').style.display = arr.length ? 'none' : 'block';
   $('#list').innerHTML = arr.map((p,i)=>`<li class="item" draggable="true" data-i="${i}">
     <span class="n">${i+1}</span><img src="${esc(p.img)}" alt="${esc(p.title)}" onerror="this.onerror=null;this.src=placeholder(this.alt)"><div class="t"><b>${esc(p.title)}</b><span>${esc(p.sub)}</span></div>
-    <button data-up="${i}" title="${tr('Naik')}">↑</button><button data-rm="${i}" title="${tr('Hapus')}">×</button></li>`).join('');
-  save(); refresh(); renderLiveStats(); renderNudge(); renderChallenge();
+    ${state.kind==='song'?`<button class="pairbtn" data-pair="${i}" title="${tr('Pilih member')}">${p.mm?`<img class="mmav" src="${esc(p.mm.img)}" alt="">`:'♥'}</button>`:''}<button data-up="${i}" title="${tr('Naik')}">↑</button><button data-rm="${i}" title="${tr('Hapus')}">×</button></li>`).join('');
+  save(); refresh(); renderLiveStats(); renderNudge(); renderChallenge(); renderPairBar();
 }
 
 function placeholder(t){
@@ -1322,6 +1344,12 @@ function scene(c,W,H,o,t){
   const feat = look==='covers'||look==='vinyl'||look==='player';
   const numPad = o.num ? 34 : 0, oshiLook = OSHI_LOOKS.includes(look);
   if (oshiLook) { oshiGrid(c,W,H,o,tall,numPad,anim); }
+  else if (look==='duet') {
+    const ay=(tall?440:90)+numPad, ah=H-ay-(tall?150:110), pages=duetPages(o).slice(0,5), cnt=pages.length, gap=22; let ch=ah, cw=ch*0.8;
+    if (cnt*cw+(cnt-1)*gap>W-140) { cw=(W-140-(cnt-1)*gap)/cnt; ch=cw/0.8; }
+    const x0=(W-(cnt*cw+(cnt-1)*gap))/2, y0=ay+(ah-ch)/2;
+    pages.forEach((cv,i)=>anim(i,()=>{ c.save(); c.shadowColor='rgba(0,0,0,.3)'; c.shadowBlur=24; c.shadowOffsetY=10; c.drawImage(cv,x0+i*(cw+gap),y0,cw,ch); c.restore(); }));
+  }
   else if (look==='strip' || look==='receipt' || look==='stats') {
     const ay=(tall?440:90)+numPad, ah=H-ay-(tall?150:110);
     if (look==='strip') {
@@ -1415,10 +1443,10 @@ function spinFrame(c,o,t){
 }
 /* ---------- render pipeline ---------- */
 const opts = async () => {
-  const picks = cur().slice(), assets = await loadAll(picks);
+  const picks = cur().slice(), assets = await loadAll(picks), mAssets = state.look==='duet' ? await Promise.all(picks.map(p=>p.mm?loadImg(p.mm.img):null)) : [];
   if (state.look==='stats' && state.kind==='oshi') await Promise.race([loadGenMap(), new Promise(r=>setTimeout(r,6000))]);
   const theme = buildTheme(state.theme, state.custom);
-  return { picks, assets, look:state.look, num:state.num, theme, night:theme.dark, font:state.font, vinyl:state.vinyl, pbColor:state.pbColor, spine:state.spine, rcName:state.rcName, sl:state.sl, kind:state.kind, name:$('#nm').value.trim() };
+  return { picks, assets, mAssets, look:state.look, num:state.num, theme, night:theme.dark, font:state.font, vinyl:state.vinyl, pbColor:state.pbColor, spine:state.spine, rcName:state.rcName, sl:state.sl, kind:state.kind, name:$('#nm').value.trim() };
 };
 /* Satu foto per item, tanpa latar/padding: di X, foto-foto tipis ini berjajar rapat jadi satu rak.
    CDs 200x2660 (≈0.075), Tapes 330x2130 (≈0.155), Covers 1:1, Vinyl 1.15, Player 9:16 */
@@ -1580,6 +1608,74 @@ function stripCanvas(o,from){
   c.fillText(new Date().toLocaleDateString(LOC(),{day:'numeric',month:'short',year:'numeric'})+(o.name?'  ·  '+o.name:''),W/2,H-52);
   return cv;
 }
+/* ---------- Kartu duet: lagu dipasangkan dengan member yang bikin inget (satu member per lagu) ---------- */
+function duetCanvas(o,i){
+  applyTheme(o); const p=o.picks[i], a=o.assets[i], mm=p.mm, ma=o.mAssets&&o.mAssets[i], W=1080, H=1350, cv=document.createElement('canvas'); cv.width=W; cv.height=H; const c=cv.getContext('2d');
+  const col=(a&&(a.dom||a.col))||'#3a2a33', tc=TEAM_COLOR[mm.team]||RED, tcl=mm.team==='T'?'#cfd3da':tc;
+  const g=c.createLinearGradient(0,0,0,H); g.addColorStop(0,shade(col,0.6)); g.addColorStop(1,'#0a0608'); c.fillStyle=g; c.fillRect(0,0,W,H);
+  c.save(); c.shadowColor='rgba(0,0,0,.5)'; c.shadowBlur=50; c.shadowOffsetY=20; rr(c,150,90,780,780,40); c.fillStyle='#000'; c.fill(); c.restore();
+  c.save(); rr(c,150,90,780,780,40); c.clip(); drawCoverFit(c,a&&a.im,150,90,780,780,0.2); c.restore();
+  const cx=860, cy=840, r=200; c.save(); c.shadowColor='rgba(0,0,0,.55)'; c.shadowBlur=40; c.shadowOffsetY=14; c.fillStyle='#fff'; c.beginPath(); c.arc(cx,cy,r+14,0,7); c.fill(); c.restore();
+  c.fillStyle=tc; c.beginPath(); c.arc(cx,cy,r+6,0,7); c.fill(); c.save(); c.beginPath(); c.arc(cx,cy,r-6,0,7); c.clip(); drawCoverFit(c,ma&&ma.im,cx-r,cy-r,r*2,r*2,0); c.restore();
+  c.textAlign='center'; c.textBaseline='alphabetic'; c.fillStyle='#fff'; c.font='800 60px system-ui,sans-serif'; c.fillText(fitText(c,p.title,W-160),W/2,1110);
+  c.fillStyle='rgba(255,255,255,.62)'; c.font='600 30px system-ui,sans-serif'; c.fillText(tr('bikin gw inget sama'),W/2,1168);
+  c.fillStyle=tcl; let fs=84; c.font='900 84px system-ui,sans-serif'; while (fs>40 && c.measureText(mm.title).width>W-160) { fs-=4; c.font='900 '+fs+'px system-ui,sans-serif'; } c.fillText(fitText(c,mm.title,W-160),W/2,1262);
+  c.fillStyle='rgba(255,255,255,.55)'; c.font='600 26px system-ui,sans-serif'; c.fillText((TEAM[mm.team]||'JKT48').toUpperCase(),W/2,1308);
+  if (o.num) badge(c,90,90,56,i+1);
+  return cv;
+}
+function duetPages(o){
+  const idx=o.picks.map((p,i)=>p.mm?i:-1).filter(i=>i>=0);
+  if (idx.length) return idx.map(i=>duetCanvas(o,i));
+  const cv=document.createElement('canvas'); cv.width=1080; cv.height=1350; const c=cv.getContext('2d'); fillBg(c,1080,1350,o.theme);
+  c.textAlign='center'; c.fillStyle=o.theme.ink; c.font='800 54px system-ui,sans-serif'; c.fillText('♥',540,610); c.font='700 38px system-ui,sans-serif'; c.fillText(fitText(c,tr('Pasangkan dulu lagu dengan member'),940),540,700);
+  return [cv];
+}
+const MP = { queue:[], pos:0, single:false, team:'all', text:'' };
+async function openPair(start,single){
+  const arr=cur(); if (state.kind!=='song' || !arr.length) return;
+  await load('oshi');
+  MP.single=!!single; MP.queue = single ? [start] : arr.map((p,i)=>p.mm?-1:i).filter(i=>i>=0);
+  if (!MP.queue.length) { $('#msg').textContent=tr('Semua lagu sudah dipasangin.'); return; }
+  MP.pos=0; MP.team='all'; MP.text=''; $('#mpQ').value=''; lsSet('jkt48n_pair','1'); $('#mpick').hidden=false; document.body.style.overflow='hidden'; renderPair();
+}
+function mpClose(){ $('#mpick').hidden=true; document.body.style.overflow=''; }
+function renderPair(){
+  const arr=cur(), p=arr[MP.queue[MP.pos]]; if (!p) { mpClose(); return; }
+  $('#mpSong').innerHTML=`<img src="${esc(p.img)}" alt="" onerror="this.onerror=null;this.src=placeholder('?')"><div><b>${esc(p.title)}</b><span>${esc(tr('Siapa member yang bikin lu inget lagu ini?'))}${MP.queue.length>1?` (${MP.pos+1}/${MP.queue.length})`:''}</span></div>`;
+  $('#mpTeams').innerHTML=[['all','Semua'],['L','Love'],['D','Dream'],['P','Passion'],['T','Trainee'],['X','Ex-member']].map(([k,l])=>`<button class="chip ${MP.team===k?'on':''}" type="button" data-t="${k}">${esc(tr(l))}</button>`).join('');
+  const q=MP.text, list=cache.oshi.filter(x=>(MP.team==='all' ? (x.team!=='X' || !!q) : x.team===MP.team) && (!q || qMatch(x,q))).slice(0,90);
+  $('#mpGrid').innerHTML=list.map(x=>`<button class="mpm" type="button" data-id="${esc(x.id)}" title="${esc(x.title)}"><img loading="lazy" src="${esc(x.img)}" alt="" onerror="this.onerror=null;this.src=placeholder(this.title||'?')"><span>${esc(x.title)}</span></button>`).join('');
+  $('#mpClear').hidden = !p.mm;
+}
+function mpNext(){
+  MP.pos++; save(); renderList();
+  if (MP.pos>=MP.queue.length) { mpClose(); if (!MP.single) $('#msg').textContent=tr('Semua lagu sudah dipasangin.'); }
+  else renderPair();
+}
+$('#mpGrid').onclick = e => { const b=e.target.closest('[data-id]'); if (!b) return; const m=cache.oshi.find(x=>String(x.id)===b.dataset.id), p=cur()[MP.queue[MP.pos]]; if (!m || !p) return; p.mm={id:m.id,title:m.title,img:m.img,team:m.team}; mpNext(); };
+$('#mpTeams').onclick = e => { const b=e.target.closest('[data-t]'); if (b) { MP.team=b.dataset.t; renderPair(); } };
+$('#mpQ').oninput = e => { MP.text=e.target.value.trim().toLowerCase(); renderPair(); };
+$('#mpSkip').onclick = mpNext;
+$('#mpClear').onclick = () => { const p=cur()[MP.queue[MP.pos]]; if (p) delete p.mm; mpNext(); };
+$('#mpClose').onclick = mpClose;
+$('#mpick').onclick = e => { if (e.target.id==='mpick') mpClose(); };
+document.addEventListener('keydown', e => { if (e.key==='Escape' && !$('#mpick').hidden) mpClose(); });
+function importPairsToOshi(){                                    // manual: member dari pasangan lagu masuk ke daftar Oshi (tanpa duplikat, sampai penuh)
+  const oshi=state.picks.oshi, seen=new Set(oshi.map(p=>String(p.id))); let n=0;
+  for (const s of state.picks.song) {
+    if (!s.mm) continue; if (oshi.length>=MAX) break; if (seen.has(String(s.mm.id))) continue; seen.add(String(s.mm.id));
+    const src=(cache.oshi||[]).find(x=>String(x.id)===String(s.mm.id)); oshi.push(src ? {...src} : {id:s.mm.id,title:s.mm.title,sub:TEAM[s.mm.team]||'JKT48',team:s.mm.team,img:s.mm.img}); n++;
+  }
+  save(); goTab('oshi'); setTimeout(()=>{ $('#msg').textContent = n ? tr('Dimasukkan {n} member ke daftar Oshi.',{n}) : tr('Semua member sudah ada di daftar Oshi, atau daftarnya penuh.'); },500);
+}
+function renderPairBar(){
+  const host=$('#pairBar'), arr=cur(); if (state.kind!=='song' || !arr.length) { host.hidden=true; return; }
+  const paired=arr.filter(p=>p.mm).length; if (!paired) { host.hidden=true; return; }
+  host.innerHTML=`<span>${esc(tr('{n} lagu sudah dipasangkan.',{n:paired}))}</span><button class="btn dark" type="button" data-imp>${esc(tr('Masukin ke daftar Oshi'))}</button>${paired<arr.length?`<button class="btn" type="button" data-rest>${esc(tr('Pasangin sisanya'))}</button>`:''}`;
+  host.hidden=false;
+}
+$('#pairBar').onclick = e => { if (e.target.closest('[data-imp]')) importPairsToOshi(); else if (e.target.closest('[data-rest]')) openPair(0,false); };
 /* ---------- receipt: struk belanja ala receiptify (album dan lagu) ---------- */
 function receiptPath(c,x,y,w,h,t){
   const n=Math.floor(w/t); c.beginPath(); c.moveTo(x,y+t); for (let k=0;k<=n;k++) c.lineTo(x+k*w/n,y+(k%2?t:0)); c.lineTo(x+w,y+h-t); for (let k=n;k>=0;k--) c.lineTo(x+k*w/n,y+h-(k%2?0:t)); c.closePath();
@@ -1846,7 +1942,7 @@ function slPages(o){
 function singleCanvas(o){
   const cv=document.createElement('canvas'); cv.width=1600; cv.height=900; scene(cv.getContext('2d'),1600,900,o,1); return cv;
 }
-const postCanvases = o => state.postMode==='single' ? [singleCanvas(o)] : o.look==='receipt' ? [receiptCanvas(o,true)] : o.look==='stats' ? [statsCanvas(o)] : o.look==='strip' ? stripPages(o) : o.look==='setlistposter' ? slPages(o) : o.look==='photobook' ? [photobookPage(o,0), ...o.picks.map((_,i)=>photobookPage(o,i+1))] : o.picks.map((_,i)=>photoCanvas(o,i));
+const postCanvases = o => state.postMode==='single' ? [singleCanvas(o)] : o.look==='duet' ? duetPages(o) : o.look==='receipt' ? [receiptCanvas(o,true)] : o.look==='stats' ? [statsCanvas(o)] : o.look==='strip' ? stripPages(o) : o.look==='setlistposter' ? slPages(o) : o.look==='photobook' ? [photobookPage(o,0), ...o.picks.map((_,i)=>photobookPage(o,i+1))] : o.picks.map((_,i)=>photoCanvas(o,i));
 async function postFiles(){
   const o=await opts();
   const cvs = postCanvases(o), one1 = cvs.length===1;
@@ -1888,8 +1984,8 @@ async function refreshNow(){
   if (state.share==='post') {
     const single = state.postMode==='single';
     $('#copyImg').hidden = !single; $('#copySeq').hidden = single || o.picks.length<2; $('#dlZip').hidden = single || o.picks.length<2; seqIdx = 0; $('#copySeq').textContent = tr('Salin berurutan');
-    const pcs = postCanvases(o), book = o.look==='photobook' && !single, slp = o.look==='setlistposter' && !single, rcp = o.look==='receipt' && !single, strp = o.look==='strip' && !single, stt = o.look==='stats' && !single;
-    $('#postSub').textContent = !o.picks.length ? tr('Pilih favoritmu dulu.') : single ? tr('Satu gambar berisi seluruh daftar. Klik Salin gambar lalu Ctrl+V di kotak tweet.') : rcp ? tr('Receipt: satu gambar berisi seluruh daftar. Seret, salin, atau unduh.') : stt ? tr('Statistik: satu gambar berisi ringkasan daftarmu. Seret, salin, atau unduh.') : strp ? tr('Photo strip: {n} strip, 4 foto tiap strip. Seret atau salin tiap strip, atau unduh ZIP.',{n:pcs.length}) : slp ? tr('Poster setlist: {n} halaman, berurutan. Seret atau salin tiap halaman, atau unduh ZIP.',{n:pcs.length}) : book ? tr('Photobook: sampul + {n} halaman, berurutan. Seret atau salin tiap halaman, atau unduh ZIP. X menerima sampai 20 foto per post.',{n:o.picks.length}) : tr('{n} foto, satu per {one}, berurutan. Seret atau salin tiap foto, atau unduh semuanya. X menerima sampai 20 foto per post.',{n:o.picks.length,one:tr(one())});
+    const pcs = postCanvases(o), book = o.look==='photobook' && !single, slp = o.look==='setlistposter' && !single, rcp = o.look==='receipt' && !single, strp = o.look==='strip' && !single, stt = o.look==='stats' && !single, dtt = o.look==='duet' && !single;
+    $('#postSub').textContent = !o.picks.length ? tr('Pilih favoritmu dulu.') : single ? tr('Satu gambar berisi seluruh daftar. Klik Salin gambar lalu Ctrl+V di kotak tweet.') : rcp ? tr('Receipt: satu gambar berisi seluruh daftar. Seret, salin, atau unduh.') : stt ? tr('Statistik: satu gambar berisi ringkasan daftarmu. Seret, salin, atau unduh.') : dtt ? tr('Kartu duet: {n} kartu, satu per lagu yang sudah dipasangkan. Seret, salin, atau unduh.',{n:o.picks.filter(p=>p.mm).length}) : strp ? tr('Photo strip: {n} strip, 4 foto tiap strip. Seret atau salin tiap strip, atau unduh ZIP.',{n:pcs.length}) : slp ? tr('Poster setlist: {n} halaman, berurutan. Seret atau salin tiap halaman, atau unduh ZIP.',{n:pcs.length}) : book ? tr('Photobook: sampul + {n} halaman, berurutan. Seret atau salin tiap halaman, atau unduh ZIP. X menerima sampai 20 foto per post.',{n:o.picks.length}) : tr('{n} foto, satu per {one}, berurutan. Seret atau salin tiap foto, atau unduh semuanya. X menerima sampai 20 foto per post.',{n:o.picks.length,one:tr(one())});
     $('#strip').replaceChildren(...pcs.map((cv,i)=>stripItem(cv, single?'jkt48-top10.png':`jkt48-top10-${String(i+1).padStart(2,'0')}.png`)));
     $('#copySeq').hidden = single || pcs.length<2; $('#dlZip').hidden = single || pcs.length<2;
   }
@@ -1949,7 +2045,7 @@ function renderLooks(o){
   const host=$('#looks'), group = state.kind==='oshi' ? 'oshi' : state.kind==='setlist' ? 'setlist' : state.kind==='song' ? 'lagu' : 'musik';
   if (host.dataset.group !== group) { // jenis format berbeda: member tidak cocok dengan CD, vinyl, dan player
     host.dataset.group = group; host.replaceChildren();
-    (group==='oshi' ? OSHI_MENU.map(k=>[k,OSHI_LOOK_NAMES[k]]) : group==='setlist' ? [['cds','DVD'],['tapes','Tapes'],['covers','Covers'],['vinyl','Vinyl'],['player','Player']] : [['cds','CDs'],['tapes','Tapes'],['covers','Covers'],['vinyl','Vinyl'],['player','Player'],...(group==='lagu'?[['setlistposter','Poster setlist']]:[]),['receipt','Receipt'],['stats','Statistik']]).forEach(([k,l])=>{
+    (group==='oshi' ? OSHI_MENU.map(k=>[k,OSHI_LOOK_NAMES[k]]) : group==='setlist' ? [['cds','DVD'],['tapes','Tapes'],['covers','Covers'],['vinyl','Vinyl'],['player','Player']] : [['cds','CDs'],['tapes','Tapes'],['covers','Covers'],['vinyl','Vinyl'],['player','Player'],...(group==='lagu'?[['setlistposter','Poster setlist'],['duet','Kartu duet']]:[]),['receipt','Receipt'],['stats','Statistik']]).forEach(([k,l])=>{
       const b=document.createElement('button'); b.className='look'; b.dataset.look=k; b.innerHTML=`<canvas width="160" height="90"></canvas><span>${tr(l)}</span>`; host.appendChild(b);
     });
   }
@@ -2094,12 +2190,12 @@ photoIn.onchange = () => {
 };
 $('#filters').onchange = e => { if (e.target.id==='yearSel') { state.year=e.target.value; renderResults(); } };
 /* format dan tab Spin menyesuaikan jenis daftar: Oshi memakai Photocard/Polaroid/ID Card/Foto, tanpa Spin */
-const validLook = (l,k) => k==='oshi' ? OSHI_MENU.includes(l) : k==='setlist' ? ['cds','tapes','covers','vinyl','player'].includes(l) : (['cds','tapes','covers','vinyl','player','receipt','stats'].includes(l) || (l==='setlistposter' && k==='song'));
+const validLook = (l,k) => k==='oshi' ? OSHI_MENU.includes(l) : k==='setlist' ? ['cds','tapes','covers','vinyl','player'].includes(l) : (['cds','tapes','covers','vinyl','player','receipt','stats'].includes(l) || ((l==='setlistposter'||l==='duet') && k==='song'));
 function syncKindUI(){
   const oshi = state.kind==='oshi';
   if (oshi && !OSHI_MENU.includes(state.look)) state.look = 'photocard';
   else if (!oshi && (OSHI_LOOKS.includes(state.look) || state.look==='photobook' || state.look==='strip')) state.look = 'cds';
-  if (state.look==='setlistposter' && state.kind!=='song') state.look = 'cds';
+  if ((state.look==='setlistposter'||state.look==='duet') && state.kind!=='song') state.look = 'cds';
   if (state.look==='receipt' && !['album','song'].includes(state.kind)) state.look = 'cds';
   if (state.look==='stats' && state.kind==='setlist') state.look = 'cds';
   document.querySelector('[data-s=spin]').hidden = oshi;
@@ -2140,7 +2236,7 @@ function togglePick(id){
   renderList(); renderResults(); return true;
 }
 $('#list').onclick = e => {
-  const arr=cur(), t=e.target;
+  const arr=cur(), t=e.target, pb=t.closest('[data-pair]'); if (pb) { openPair(+pb.dataset.pair,true); return; }
   if (t.dataset.rm!==undefined) arr.splice(+t.dataset.rm,1);
   else if (t.dataset.up!==undefined){ const i=+t.dataset.up; if(i>0)[arr[i-1],arr[i]]=[arr[i],arr[i-1]]; }
   else return;
@@ -2186,7 +2282,7 @@ function statsData(o){
   }
   const sm=cnt(p=>p.src||'lain'), am=cnt(p=>p.sub), at=top(am), SL={rilis:tr('Rilis resmi'),setlist:tr('Setlist teater'),wiki:tr('Hanya di wiki'),lain:tr('Lainnya')}, SC={rilis:RED,setlist:'#3a86ff',wiki:'#8e7cc3',lain:'#9aa3b2'};
   return { title:tr('Statistik lagu-ku'), donutTitle:tr('Per sumber'), donut:['rilis','setlist','wiki','lain'].filter(t=>sm.has(t)).map(t=>({label:SL[t],value:sm.get(t),color:SC[t]})),
-    tiles:[ {k:tr('Album terbanyak'),v:at?at[0]:'—',s:at?of(at[1],n):''}, {k:tr('Dari berapa album'),v:String(am.size),s:''}, {k:tr('Setlist teater'),v:String(sm.get('setlist')||0),s:of(sm.get('setlist')||0,n)} ],
+    tiles:[ {k:tr('Album terbanyak'),v:at?at[0]:'—',s:at?of(at[1],n):''}, (()=>{ const tm=top(cnt(p=>p.mm&&p.mm.title)); return tm ? {k:tr('Member terbanyak'),v:tm[0],s:of(tm[1],n)} : {k:tr('Dari berapa album'),v:String(am.size),s:''}; })(), {k:tr('Setlist teater'),v:String(sm.get('setlist')||0),s:of(sm.get('setlist')||0,n)} ],
     chart:{kind:'h',title:tr('Per album'),items:[...am.entries()].sort((a,b)=>b[1]-a[1]).slice(0,5)} };
 }
 function statsCanvas(o){
@@ -2612,7 +2708,7 @@ $('#mkStory').onclick=async()=>{
 $('#copy').onclick=async()=>{ lsSet('jkt48n_compare','1');
   // seluruh daftar dikodekan di link (judul + alamat cover), jadi tidak perlu server atau lookup
   const data={k:state.kind,l:state.look,n:+state.num,v:state.vinyl,pb:state.pbColor,ss:state.spine==='photo'?'photo':undefined,rn:state.look==='receipt'&&state.rcName?state.rcName:undefined,sl:state.look==='setlistposter'?[state.sl.t,state.sl.s,state.sl.e]:undefined,th:state.theme,cu:state.theme==='custom'?state.custom:undefined,f:state.font,nm:$('#nm').value.trim(),lk:$('#lk').value.trim(),
-    p:cur().map(p=>[p.title,p.sub,p.img&&!p.img.startsWith('data:')?p.img:0,p.plays||0,p.ms||0])};
+    p:cur().map(p=>[p.title,p.sub,p.img&&!p.img.startsWith('data:')?p.img:0,p.plays||0,p.ms||0,p.mm?[p.mm.title,p.mm.img&&!p.mm.img.startsWith('data:')?p.mm.img:0,p.mm.team||'T']:0])};
   const b64=btoa(unescape(encodeURIComponent(JSON.stringify(data)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
   const url=location.href.split('#')[0]+'#d='+b64;
   try{ await navigator.clipboard.writeText(url); $('#linkMsg').textContent=tr('Link disalin.'); }catch(e){ $('#linkMsg').textContent=url; }
@@ -2656,6 +2752,7 @@ function ctaPool(){
   if (k==='oshi' && !done('battle')) list.push({id:'battle',text:'Bingung ngurutin oshi? Suruh mereka duel, lu tinggal klik.',btn:'Duelin',act:()=>btOpen()});
   if (k==='oshi' && !seen('rarity')) list.push({id:'rarity',text:'Oshi #1 lu bisa jadi kartu SSR berfoil. Mau?',btn:'Coba',act:()=>setLook('rarity')});
   if (k==='oshi' && !seen('strip')) list.push({id:'strip',text:'Jadiin strip photobooth, 4 foto per lembar.',btn:'Coba',act:()=>setLook('strip')});
+  if (k==='song' && !seen('duet')) list.push({id:'duet',text:'Lagu lu bisa dipasangin sama member yang bikin lu inget. Jadi kartu duet.',btn:'Coba',act:()=>openPair(0,false)});
   if ((k==='album'||k==='song') && !seen('receipt')) list.push({id:'receipt',text:'Daftar lu bisa jadi struk belanja, serius.',btn:'Coba',act:()=>setLook('receipt')});
   if ((k==='oshi'||k==='album'||k==='song') && !seen('stats')) list.push({id:'stats',text:'Mau tau oshi lu mayoritas tim apa? Ada statistiknya, lho.',btn:'Coba',act:()=>setLook('stats')});
   return list.filter(x=>lsGet('jkt48n_skip_'+x.id)!=='1');
@@ -2682,7 +2779,8 @@ const START_ITEMS = [
   ['battle','⚔️ Oshi Battle','bingung milih? biar mereka yang duel, lu tinggal klik.'],
   ['stats','📊 Statistik','muncul sendiri pas lu milih. ketauan deh oshi lu tim apa. maaf kalo kena mental.'],
   ['compare','🤝 Sehati nggak?','kirim link lu ke temen, liat selera kalian sama berapa persen.'],
-  ['setlist','🎭 Poster setlist','susun lagu jadi setlist konser impian, lengkap sama posternya.']
+  ['setlist','🎭 Poster setlist','susun lagu jadi setlist konser impian, lengkap sama posternya.'],
+  ['duet','💞 Kartu duet','lagu apa yang bikin lu inget member siapa? pasangin, jadi kartu.']
 ];
 function renderStart(){
   const host=$('#start'); host.innerHTML=`<div class="st-h">${esc(tr('mau ngapain di sini?'))}</div><div class="st-sub">${esc(tr('web iseng, tapi fiturnya nggak iseng-iseng amat:'))}</div><div class="st-grid">${START_ITEMS.map(([id,t,d])=>`<button class="st-card" type="button" data-go="${id}"><b>${esc(tr(t))}</b><span>${esc(tr(d))}</span></button>`).join('')}</div><button class="linkbtn st-skip" type="button" data-skip>${esc(tr('skip, gw udah ngerti'))}</button>`;
@@ -2694,6 +2792,7 @@ function startGo(id){
   else if (id==='battle') { goTab('oshi'); setTimeout(()=>btOpen(),250); }
   else if (id==='compare') { goTab(state.kind==='setlist'?'album':state.kind); setTimeout(goCompare,300); }
   else if (id==='setlist') { goTab('song'); setTimeout(()=>setLook('setlistposter'),300); }
+  else if (id==='duet') { goTab('song'); setTimeout(()=>openPair(0,false),400); }
   const q=$('#q'); if (q && id!=='compare' && id!=='battle') q.scrollIntoView({behavior:'smooth',block:'center'});
 }
 $('#start').onclick = e => { const g=e.target.closest('[data-go]'); if (g) { startGo(g.dataset.go); return; } if (e.target.closest('[data-skip]')) { lsSet('jkt48start','1'); $('#start').hidden=true; } };
@@ -2733,10 +2832,10 @@ function safeLink(s){
 }
 async function showView(d){
   document.body.classList.add('view');
-  const picks=d.p.slice(0,20).map(([title,sub,img,plays,ms],i)=>({id:'s'+i,title:String(title),sub:String(sub||''),img:(typeof img==='string'&&/^https:\/\//.test(img))?img:placeholder(String(title)),plays:+plays||0,ms:+ms||0}));
+  const picks=d.p.slice(0,20).map(([title,sub,img,plays,ms,mm],i)=>({id:'s'+i,title:String(title),sub:String(sub||''),img:(typeof img==='string'&&/^https:\/\//.test(img))?img:placeholder(String(title)),plays:+plays||0,ms:+ms||0,mm:(Array.isArray(mm)&&mm[0])?{title:String(mm[0]).slice(0,60),img:(typeof mm[1]==='string'&&/^https:\/\//.test(mm[1]))?mm[1]:placeholder(String(mm[0])),team:/^[LDPTX]$/.test(mm[2])?mm[2]:'T'}:null}));
   const look=validLook(d.l,d.k) ? d.l : (d.k==='oshi'?'photocard':'cds'), name=String(d.nm||'').slice(0,40);
   const themeId = d.th==='custom' || THEMES[d.th] ? d.th : (d.d ? 'night' : 'classic'), theme = buildTheme(themeId, d.cu && typeof d.cu==='object' ? d.cu : {});
-  const o={picks,assets:await loadAll(picks),look,num:!!d.n,theme,night:theme.dark,font:FONTS[d.f]?d.f:'sys',vinyl:VINYL_LIST.includes(d.v)?d.v:'auto',pbColor:(d.pb==='team'||validHex(d.pb))?d.pb:'team',spine:d.ss==='photo'?'photo':'team',rcName:String(d.rn||'').slice(0,24),sl:Array.isArray(d.sl)?slClean({t:d.sl[0],s:d.sl[1],e:d.sl[2]}):slClean(),kind:d.k,name};
+  const o={picks,assets:await loadAll(picks),mAssets:look==='duet'?await Promise.all(picks.map(p=>p.mm?loadImg(p.mm.img):null)):[],look,num:!!d.n,theme,night:theme.dark,font:FONTS[d.f]?d.f:'sys',vinyl:VINYL_LIST.includes(d.v)?d.v:'auto',pbColor:(d.pb==='team'||validHex(d.pb))?d.pb:'team',spine:d.ss==='photo'?'photo':'team',rcName:String(d.rn||'').slice(0,24),sl:Array.isArray(d.sl)?slClean({t:d.sl[0],s:d.sl[1],e:d.sl[2]}):slClean(),kind:d.k,name};
   document.title=`${listTitleText(picks.length,d.k)}${name?' '+tr('oleh')+' '+name:''}`;
   $('#vTitle').textContent=listTitleText(picks.length,d.k);
   const by=$('#vBy'); by.textContent=''; const parts=[];
