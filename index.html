@@ -95,6 +95,22 @@ body.view .ribbon{display:none}
 .lstats{margin-top:14px;padding:14px;border-radius:16px;background:var(--soft);font-size:13px}
 .lstats[hidden]{display:none}
 .look{position:relative}
+.start{margin:0 0 16px;padding:16px;border-radius:22px;background:var(--card);box-shadow:0 6px 24px rgba(160,20,45,.10)}
+.start[hidden]{display:none}
+.st-h{font-weight:900;font-size:20px}
+.st-sub{color:var(--mute);font-size:13px;margin:2px 0 12px}
+.st-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.st-card{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:16px;padding:12px;text-align:left;cursor:pointer;font:inherit}
+.st-card:hover,.st-card:focus-visible{border-color:var(--red);outline:none}
+.st-card b{display:block;font-size:14px}
+.st-card span{display:block;color:var(--mute);font-size:12.5px;margin-top:3px;line-height:1.4}
+.st-skip{margin:10px 0 0;display:block}
+body.view .start,body.view #startOpen{display:none}
+.cta{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:2500;width:min(92vw,520px);background:#1a1214;color:#fff;border-radius:16px;padding:12px 14px;display:flex;gap:10px;align-items:center;box-shadow:0 14px 40px rgba(0,0,0,.45);font-size:13.5px}
+.cta[hidden]{display:none}
+.cta span{flex:1;min-width:0}
+.cta .btn{padding:8px 14px;font-size:13px;background:#fff;color:#1a1214;border-color:#fff}
+.cta .linkbtn{margin-left:0;color:#fff;opacity:.7;font-size:20px;text-decoration:none}
 .newdot{position:absolute;top:4px;right:4px;background:var(--red);color:#fff;font:700 9px/1 system-ui,sans-serif;padding:3px 6px;border-radius:99px;font-style:normal;letter-spacing:.04em}
 .nudge{display:flex;align-items:center;gap:8px;margin-top:12px;padding:10px 12px;border-radius:14px;background:var(--soft);font-size:13px}
 .nudge[hidden]{display:none}
@@ -274,12 +290,14 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
     <h1 id="h1">Susun Top 10 JKT48-mu</h1>
     <p data-k="hero">web iseng buat nyusun top 10 album, lagu, atau oshi jkt48 lu. pilih, atur tampilannya, terus pamerin ke x atau mana aja. nggak resmi, nggak serius, nggak ada duit yang berpindah tangan.</p>
   </header>
+  <section class="start" id="start" hidden></section>
   <div class="tabs">
     <button class="tab on" data-kind="album">Albums</button>
     <button class="tab" data-kind="song">Songs</button>
     <button class="tab" data-kind="oshi">Oshi</button>
     <button class="tab" data-kind="setlist">Setlists</button>
   </div>
+  <button class="linkbtn" id="startOpen" type="button" style="margin:0 0 0 10px;vertical-align:middle">Fitur apa aja sih?</button>
   <div class="grid">
     <div>
       <div class="card">
@@ -449,9 +467,11 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
   <div class="bhead"><b>Oshi Battle</b><button class="linkbtn" id="bClose" type="button" aria-label="Tutup">×</button></div>
   <div id="bBody"></div>
 </div></div>
+<div class="cta" id="cta" hidden></div>
 <div class="ovl" id="careModal" hidden role="dialog" aria-modal="true" aria-labelledby="careTitle"><div class="box">
   <div class="bhead"><b id="careTitle">Sebelum pergi, sedikit pesan</b><button class="linkbtn" id="careX" type="button" aria-label="Tutup">×</button></div>
   <div class="care" id="careBody" style="margin-top:0"></div>
+  <div id="careCta" class="nudge" hidden></div>
   <button class="btn dark" id="careOk" type="button" style="width:100%;margin-top:12px">Oke, lanjut</button>
 </div></div>
 <script>
@@ -506,7 +526,7 @@ const EN = {
  'Perangkat ini tidak mendukung menu share dengan foto. Pakai "Unduh foto".':'This device does not support the share menu with photos. Use "Download photos".',
  'Membuat video...':'Making video...','Video diunduh. Tambahkan lagu saat kamu posting.':'Video downloaded. Add a song when you post.','Link disalin.':'Link copied.','Merekam...':'Recording...','Video diunduh (tanpa suara). Tambahkan lagu saat kamu posting.':'Video downloaded (no sound). Add a song when you post.',
  'Bingung nentuin oshi? Santai. Tinggal pilih satu dari dua, ulang terus, nanti urutannya jadi sendiri.':'Cannot pick your oshi? Easy. Just choose one of two, again and again, and the ranking builds itself.','Urutkan oshi-ku':'Rank my oshi','Isi dulu minimal 2 oshi di daftarmu, baru bisa diurutkan.':'Add at least 2 oshi to your list first.','Belum ketemu oshinya? Cari lewat battle':'Not sure who your oshi is? Find them by battle','Peserta diambil acak dari {n} member yang lagi tampil (ikut filter yang kamu pilih).':'Contestants are picked at random from the {n} members shown (follows your filter).','Berapa peserta?':'How many contestants?','MULAI BATTLE!':'START BATTLE!','Member yang tampil kurang dari 4. Hapus filter atau pencarian dulu.':'Fewer than 4 members shown. Clear the filter or search first.','Duel {m} dari {t} · Babak {r}':'Duel {m} of {t} · Round {r}','Duel {n} dari sekitar {t}':'Duel {n} of about {t}','Siapa yang lebih kamu pilih? (tombol ← → juga bisa)':'Who do you pick? (← → keys work too)','Salah pilih? Ulangi':'Oops? Undo','Ini urutan hatimu':'This is your heart\'s ranking','Juara hatimu':'Champion of your heart','Jadikan top-ku':'Make it my top list','Tambah ke top-ku':'Add to my top list','Simpan urutan ini':'Save this order','Daftarmu sudah diurutkan.':'Your list has been reordered.','Ditambahkan {n} oshi.':'Added {n} oshi.','Battle lagi!':'Battle again!','Tutup':'Close',
- 'Bandingkan dengan link teman':'Compare with a friend\'s link','Tempel link share temanmu':'Paste your friend\'s share link','Bandingkan':'Compare','Link itu bukan link daftar JKT48 Top 10.':'That is not a JKT48 Top 10 share link.','Daftarmu masih kosong untuk jenis ini. Isi dulu di tab-nya.':'Your list is empty for this type. Fill it in on its tab first.','Kecocokan {n}%':'Match {n}%','Sama-sama ada ({n})':'In both ({n})','Cuma di daftarmu ({n})':'Only in yours ({n})','Cuma di daftar temanmu ({n})':'Only in your friend\'s ({n})','kamu #{a} · temanmu #{b}':'you #{a} · friend #{b}','Tidak ada yang sama.':'Nothing in common.','FINAL: siapa juaranya?':'FINAL: who takes the crown?','⚔ Bingung? Oshi Battle':'⚔ Can\'t decide? Oshi Battle','psst, pencet gw dulu bentar ↓':'psst, tap me for a sec ↓','Sebelum pergi, sedikit pesan':'Before you go, a small note','Oke, lanjut':'Okay, continue','Receipt: satu gambar berisi seluruh daftar. Seret, salin, atau unduh.':'Receipt: one image with your whole list. Drag, copy or download.','Photo strip: {n} strip, 4 foto tiap strip. Seret atau salin tiap strip, atau unduh ZIP.':'Photo strip: {n} strip(s), 4 photos each. Drag or copy each strip, or download a ZIP.','Nama di struk':'Name on the receipt','Kosongkan = GUEST':'Leave empty = GUEST','Statistik':'Stats','Statistik daftarmu':'Your list stats','BARU':'NEW','Bingung urutannya? Coba Oshi Battle: pilih satu dari dua sampai ketemu.':'Cannot decide the order? Try Oshi Battle: pick one of two until it is clear.','Coba':'Try','Urutan baru! Lihat sebagai kartu Rarity: #1 jadi SSR.':'New order! See it as Rarity cards: #1 becomes SSR.','Lihat':'View','Coba format Receipt: daftarmu jadi struk belanja.':'Try the Receipt format: your list as a shopping receipt.','Bandingkan dengan daftarku':'Compare with my list','Kamu diajak membandingkan dengan daftar {nama}.':'You are invited to compare with {nama}\'s list.','Pilih minimal 2 untuk melihat kecocokannya.':'Pick at least 2 to see the match.','temanmu':'your friend','Lihat sebagai kartu Rarity':'See as Rarity cards','Lihat statistik':'See stats','Statistik oshi-ku':'My oshi stats','Statistik album-ku':'My album stats','Statistik lagu-ku':'My song stats','Per tim':'By team','Tim favorit':'Favorite team','Angkatan terbanyak':'Most common generation','{a} dari {b}':'{a} of {b}','Data angkatan belum tersedia':'Generation data not loaded yet','Per angkatan':'By generation','Per tahun rilis':'By release year','Per jenis':'By type','Per sumber':'By source','Per album':'By album','Tahun terbanyak':'Most common year','Rentang tahun':'Year range','Album terbanyak':'Top album','Dari berapa album':'Number of albums','Lainnya':'Other','Statistik: satu gambar berisi ringkasan daftarmu. Seret, salin, atau unduh.':'Stats: one image summarizing your list. Drag, copy or download.','Urutan oshi-ku':'My oshi ranking','Juara hatiku':'Champion of my heart','{n} peserta · {m} duel':'{n} contestants · {m} duels','Diurutkan lewat {n} duel':'Ranked through {n} duels','Browser ini menolak menyalin. Coba unduh gambarnya.':'This browser refused to copy. Try downloading the image.'
+ 'Bandingkan dengan link teman':'Compare with a friend\'s link','Tempel link share temanmu':'Paste your friend\'s share link','Bandingkan':'Compare','Link itu bukan link daftar JKT48 Top 10.':'That is not a JKT48 Top 10 share link.','Daftarmu masih kosong untuk jenis ini. Isi dulu di tab-nya.':'Your list is empty for this type. Fill it in on its tab first.','Kecocokan {n}%':'Match {n}%','Sama-sama ada ({n})':'In both ({n})','Cuma di daftarmu ({n})':'Only in yours ({n})','Cuma di daftar temanmu ({n})':'Only in your friend\'s ({n})','kamu #{a} · temanmu #{b}':'you #{a} · friend #{b}','Tidak ada yang sama.':'Nothing in common.','FINAL: siapa juaranya?':'FINAL: who takes the crown?','⚔ Bingung? Oshi Battle':'⚔ Can\'t decide? Oshi Battle','psst, pencet gw dulu bentar ↓':'psst, tap me for a sec ↓','Sebelum pergi, sedikit pesan':'Before you go, a small note','Oke, lanjut':'Okay, continue','Receipt: satu gambar berisi seluruh daftar. Seret, salin, atau unduh.':'Receipt: one image with your whole list. Drag, copy or download.','Photo strip: {n} strip, 4 foto tiap strip. Seret atau salin tiap strip, atau unduh ZIP.':'Photo strip: {n} strip(s), 4 photos each. Drag or copy each strip, or download a ZIP.','Nama di struk':'Name on the receipt','Kosongkan = GUEST':'Leave empty = GUEST','Statistik':'Stats','Statistik daftarmu':'Your list stats','BARU':'NEW','Bingung urutannya? Coba Oshi Battle: pilih satu dari dua sampai ketemu.':'Cannot decide the order? Try Oshi Battle: pick one of two until it is clear.','Coba':'Try','Urutan baru! Lihat sebagai kartu Rarity: #1 jadi SSR.':'New order! See it as Rarity cards: #1 becomes SSR.','Lihat':'View','Coba format Receipt: daftarmu jadi struk belanja.':'Try the Receipt format: your list as a shopping receipt.','Bandingkan dengan daftarku':'Compare with my list','Kamu diajak membandingkan dengan daftar {nama}.':'You are invited to compare with {nama}\'s list.','Pilih minimal 2 untuk melihat kecocokannya.':'Pick at least 2 to see the match.','temanmu':'your friend','Lihat sebagai kartu Rarity':'See as Rarity cards','Lihat statistik':'See stats','mau ngapain di sini?':'what do you want to do here?','web iseng, tapi fiturnya nggak iseng-iseng amat:':'a for-fun site, but the features are not that silly:','💿 Album & Lagu':'💿 Albums & Songs','jadiin top 10 lu rak CD, kaset, sampai struk belanja.':'turn your top 10 into a CD shelf, cassettes, even a shopping receipt.','🎤 Oshi':'🎤 Oshi','kartu gacha SSR, strip photobooth, photobook. oshi lu dipajang kayak idol beneran.':'SSR gacha cards, photobooth strips, photobooks. show off your oshi like a real idol.','⚔️ Oshi Battle':'⚔️ Oshi Battle','bingung milih? biar mereka yang duel, lu tinggal klik.':'cannot choose? let them duel, you just click.','📊 Statistik':'📊 Stats','muncul sendiri pas lu milih. ketauan deh oshi lu tim apa. maaf kalo kena mental.':'shows up by itself as you pick. it reveals which team your oshi are from. sorry if it hurts.','🤝 Sehati nggak?':'🤝 Same wavelength?','kirim link lu ke temen, liat selera kalian sama berapa persen.':'send your link to a friend and see how much your tastes match.','🎭 Poster setlist':'🎭 Setlist poster','susun lagu jadi setlist konser impian, lengkap sama posternya.':'arrange songs into your dream concert setlist, poster included.','skip, gw udah ngerti':'skip, i get it','Fitur apa aja sih?':'what can this do?','Ajak temen adu selera: kirim link lu, nanti keluar persen kecocokannya.':'Challenge a friend: send your link and see the match percentage.','Bingung ngurutin oshi? Suruh mereka duel, lu tinggal klik.':'Cannot rank your oshi? Make them duel, you just click.','Mau tau oshi lu mayoritas tim apa? Ada statistiknya, lho.':'Want to know which team most of your oshi are from? There are stats.','Daftar lu bisa jadi struk belanja, serius.':'Your list can become a shopping receipt, seriously.','Oshi #1 lu bisa jadi kartu SSR berfoil. Mau?':'Your #1 oshi can become a foil SSR card. Want it?','Jadiin strip photobooth, 4 foto per lembar.':'Make it a photobooth strip, 4 photos per sheet.','Duelin':'Duel!','Statistik oshi-ku':'My oshi stats','Statistik album-ku':'My album stats','Statistik lagu-ku':'My song stats','Per tim':'By team','Tim favorit':'Favorite team','Angkatan terbanyak':'Most common generation','{a} dari {b}':'{a} of {b}','Data angkatan belum tersedia':'Generation data not loaded yet','Per angkatan':'By generation','Per tahun rilis':'By release year','Per jenis':'By type','Per sumber':'By source','Per album':'By album','Tahun terbanyak':'Most common year','Rentang tahun':'Year range','Album terbanyak':'Top album','Dari berapa album':'Number of albums','Lainnya':'Other','Statistik: satu gambar berisi ringkasan daftarmu. Seret, salin, atau unduh.':'Stats: one image summarizing your list. Drag, copy or download.','Urutan oshi-ku':'My oshi ranking','Juara hatiku':'Champion of my heart','{n} peserta · {m} duel':'{n} contestants · {m} duels','Diurutkan lewat {n} duel':'Ranked through {n} duels','Browser ini menolak menyalin. Coba unduh gambarnya.':'This browser refused to copy. Try downloading the image.'
 };
 const EN_HTML = {
  insp:'inspired by <a href="https://taylor.fyi/top/" target="_blank" rel="noopener">taylor.fyi/top</a> by <a href="https://x.com/taylor_" target="_blank" rel="noopener">@taylor_</a> on x. i am just a fan who borrowed the idea for jkt48, no official connection.',
@@ -578,7 +598,7 @@ const JA = {
  'Perangkat ini tidak mendukung menu share dengan foto. Pakai "Unduh foto".':'この端末は写真付きの共有メニューに対応していません。「写真をダウンロード」をお使いください。',
  'Membuat video...':'動画を作成中...','Video diunduh. Tambahkan lagu saat kamu posting.':'動画をダウンロードしました。投稿時に曲を追加してください。','Link disalin.':'リンクをコピーしました。','Merekam...':'録画中...','Video diunduh (tanpa suara). Tambahkan lagu saat kamu posting.':'動画をダウンロードしました(音なし)。投稿時に曲を追加してください。',
  'Bingung nentuin oshi? Santai. Tinggal pilih satu dari dua, ulang terus, nanti urutannya jadi sendiri.':'推しが決められない?大丈夫。2人から1人を選び続けるだけで、ランキングが完成します。','Urutkan oshi-ku':'推しを並べ替える','Isi dulu minimal 2 oshi di daftarmu, baru bisa diurutkan.':'まずリストに2人以上追加してください。','Belum ketemu oshinya? Cari lewat battle':'推しが決まらない?バトルで探そう','Peserta diambil acak dari {n} member yang lagi tampil (ikut filter yang kamu pilih).':'表示中の{n}人からランダムに選ばれます(フィルターに従います)。','Berapa peserta?':'何人で戦う?','MULAI BATTLE!':'バトル開始!','Member yang tampil kurang dari 4. Hapus filter atau pencarian dulu.':'表示中のメンバーが4人未満です。フィルターや検索を解除してください。','Duel {m} dari {t} · Babak {r}':'デュエル {m}/{t} · 第{r}ラウンド','Duel {n} dari sekitar {t}':'デュエル {n} / 約{t}','Siapa yang lebih kamu pilih? (tombol ← → juga bisa)':'どっちを選ぶ?(← → キーも使えます)','Salah pilih? Ulangi':'間違えた?戻す','Ini urutan hatimu':'あなたの推しランキング','Juara hatimu':'あなたの優勝','Jadikan top-ku':'これをマイトップにする','Tambah ke top-ku':'マイトップに追加','Simpan urutan ini':'この順番を保存','Daftarmu sudah diurutkan.':'リストを並べ替えました。','Ditambahkan {n} oshi.':'{n}人を追加しました。','Battle lagi!':'もう一度バトル!','Tutup':'閉じる',
- 'Bandingkan dengan link teman':'友達のリンクと比較','Tempel link share temanmu':'友達の共有リンクを貼り付け','Bandingkan':'比較する','Link itu bukan link daftar JKT48 Top 10.':'JKT48 Top 10 の共有リンクではありません。','Daftarmu masih kosong untuk jenis ini. Isi dulu di tab-nya.':'この種類のリストが空です。先にそのタブで選んでください。','Kecocokan {n}%':'一致度 {n}%','Sama-sama ada ({n})':'両方にある({n})','Cuma di daftarmu ({n})':'あなたのだけ({n})','Cuma di daftar temanmu ({n})':'友達のだけ({n})','kamu #{a} · temanmu #{b}':'あなた #{a} · 友達 #{b}','Tidak ada yang sama.':'共通するものはありません。','FINAL: siapa juaranya?':'決勝:優勝は誰?','⚔ Bingung? Oshi Battle':'⚔ 迷ったら 推しバトル','psst, pencet gw dulu bentar ↓':'ちょっとだけ、タップして ↓','Sebelum pergi, sedikit pesan':'最後にひとこと','Oke, lanjut':'OK、続ける','Receipt: satu gambar berisi seluruh daftar. Seret, salin, atau unduh.':'レシート:リスト全体を1枚に。ドラッグ、コピー、ダウンロードできます。','Photo strip: {n} strip, 4 foto tiap strip. Seret atau salin tiap strip, atau unduh ZIP.':'フォトストリップ:{n}枚、1枚につき4枚の写真。ドラッグかコピー、またはZIPでダウンロード。','Rarity':'レアリティ','Photo strip':'フォトストリップ','Receipt':'レシート','Nama di struk':'レシートの名前','Kosongkan = GUEST':'空欄 = GUEST','Statistik':'統計','Statistik daftarmu':'リストの統計','BARU':'NEW','Bingung urutannya? Coba Oshi Battle: pilih satu dari dua sampai ketemu.':'順番に迷ったら、推しバトルを試してみよう。2人から1人を選ぶだけ。','Coba':'試す','Urutan baru! Lihat sebagai kartu Rarity: #1 jadi SSR.':'新しい順番!レアリティカードで見てみよう:1位がSSRに。','Lihat':'見る','Coba format Receipt: daftarmu jadi struk belanja.':'レシート形式を試そう:リストが買い物レシートに。','Bandingkan dengan daftarku':'自分のリストと比較','Kamu diajak membandingkan dengan daftar {nama}.':'{nama}さんのリストと比較してみませんか。','Pilih minimal 2 untuk melihat kecocokannya.':'2つ以上選ぶと一致度が見られます。','temanmu':'友達','Lihat sebagai kartu Rarity':'レアリティカードで見る','Lihat statistik':'統計を見る','Statistik oshi-ku':'私の推しの統計','Statistik album-ku':'私のアルバム統計','Statistik lagu-ku':'私の楽曲統計','Per tim':'チーム別','Tim favorit':'一番多いチーム','Angkatan terbanyak':'一番多い期','{a} dari {b}':'{a} / {b}','Data angkatan belum tersedia':'期のデータがまだありません','Per angkatan':'期別','Per tahun rilis':'リリース年別','Per jenis':'種類別','Per sumber':'ソース別','Per album':'アルバム別','Tahun terbanyak':'一番多い年','Rentang tahun':'年の範囲','Album terbanyak':'一番多いアルバム','Dari berapa album':'アルバムの数','Lainnya':'その他','Statistik: satu gambar berisi ringkasan daftarmu. Seret, salin, atau unduh.':'統計:リストの要約を1枚に。ドラッグ、コピー、ダウンロードできます。','Urutan oshi-ku':'私の推しランキング','Juara hatiku':'私の心の優勝者','{n} peserta · {m} duel':'{n}人参加・{m}試合','Diurutkan lewat {n} duel':'{n}回のデュエルで並べ替え','Browser ini menolak menyalin. Coba unduh gambarnya.':'コピーできませんでした。画像をダウンロードしてください。'
+ 'Bandingkan dengan link teman':'友達のリンクと比較','Tempel link share temanmu':'友達の共有リンクを貼り付け','Bandingkan':'比較する','Link itu bukan link daftar JKT48 Top 10.':'JKT48 Top 10 の共有リンクではありません。','Daftarmu masih kosong untuk jenis ini. Isi dulu di tab-nya.':'この種類のリストが空です。先にそのタブで選んでください。','Kecocokan {n}%':'一致度 {n}%','Sama-sama ada ({n})':'両方にある({n})','Cuma di daftarmu ({n})':'あなたのだけ({n})','Cuma di daftar temanmu ({n})':'友達のだけ({n})','kamu #{a} · temanmu #{b}':'あなた #{a} · 友達 #{b}','Tidak ada yang sama.':'共通するものはありません。','FINAL: siapa juaranya?':'決勝:優勝は誰?','⚔ Bingung? Oshi Battle':'⚔ 迷ったら 推しバトル','psst, pencet gw dulu bentar ↓':'ちょっとだけ、タップして ↓','Sebelum pergi, sedikit pesan':'最後にひとこと','Oke, lanjut':'OK、続ける','Receipt: satu gambar berisi seluruh daftar. Seret, salin, atau unduh.':'レシート:リスト全体を1枚に。ドラッグ、コピー、ダウンロードできます。','Photo strip: {n} strip, 4 foto tiap strip. Seret atau salin tiap strip, atau unduh ZIP.':'フォトストリップ:{n}枚、1枚につき4枚の写真。ドラッグかコピー、またはZIPでダウンロード。','Rarity':'レアリティ','Photo strip':'フォトストリップ','Receipt':'レシート','Nama di struk':'レシートの名前','Kosongkan = GUEST':'空欄 = GUEST','Statistik':'統計','Statistik daftarmu':'リストの統計','BARU':'NEW','Bingung urutannya? Coba Oshi Battle: pilih satu dari dua sampai ketemu.':'順番に迷ったら、推しバトルを試してみよう。2人から1人を選ぶだけ。','Coba':'試す','Urutan baru! Lihat sebagai kartu Rarity: #1 jadi SSR.':'新しい順番!レアリティカードで見てみよう:1位がSSRに。','Lihat':'見る','Coba format Receipt: daftarmu jadi struk belanja.':'レシート形式を試そう:リストが買い物レシートに。','Bandingkan dengan daftarku':'自分のリストと比較','Kamu diajak membandingkan dengan daftar {nama}.':'{nama}さんのリストと比較してみませんか。','Pilih minimal 2 untuk melihat kecocokannya.':'2つ以上選ぶと一致度が見られます。','temanmu':'友達','Lihat sebagai kartu Rarity':'レアリティカードで見る','Lihat statistik':'統計を見る','mau ngapain di sini?':'ここで何をする?','web iseng, tapi fiturnya nggak iseng-iseng amat:':'お遊びサイトだけど、機能は意外とちゃんとしてます:','💿 Album & Lagu':'💿 アルバムと楽曲','jadiin top 10 lu rak CD, kaset, sampai struk belanja.':'トップ10をCD棚やカセット、買い物レシートにできます。','🎤 Oshi':'🎤 推し','kartu gacha SSR, strip photobooth, photobook. oshi lu dipajang kayak idol beneran.':'SSRガチャカード、フォトブース風ストリップ、フォトブック。推しを本物のアイドルみたいに飾れます。','⚔️ Oshi Battle':'⚔️ 推しバトル','bingung milih? biar mereka yang duel, lu tinggal klik.':'選べない?推しに戦わせて、あなたはクリックするだけ。','📊 Statistik':'📊 統計','muncul sendiri pas lu milih. ketauan deh oshi lu tim apa. maaf kalo kena mental.':'選ぶと自動で出ます。推しがどのチームかバレます。ごめんね。','🤝 Sehati nggak?':'🤝 気が合う?','kirim link lu ke temen, liat selera kalian sama berapa persen.':'友達にリンクを送って、好みが何%合うか見てみよう。','🎭 Poster setlist':'🎭 セットリストポスター','susun lagu jadi setlist konser impian, lengkap sama posternya.':'楽曲を並べて夢のセットリストを作成。ポスター付き。','skip, gw udah ngerti':'スキップ、わかった','Fitur apa aja sih?':'どんな機能があるの?','Ajak temen adu selera: kirim link lu, nanti keluar persen kecocokannya.':'友達に挑戦:リンクを送って一致度を見てみよう。','Bingung ngurutin oshi? Suruh mereka duel, lu tinggal klik.':'推しの順番に迷う?戦わせて、クリックするだけ。','Mau tau oshi lu mayoritas tim apa? Ada statistiknya, lho.':'推しは何チームが多い?統計があります。','Daftar lu bisa jadi struk belanja, serius.':'リストが買い物レシートになります、本当に。','Oshi #1 lu bisa jadi kartu SSR berfoil. Mau?':'1位の推しがSSRカードに。見てみる?','Jadiin strip photobooth, 4 foto per lembar.':'フォトブース風ストリップに。1枚に4枚の写真。','Duelin':'戦わせる','Statistik oshi-ku':'私の推しの統計','Statistik album-ku':'私のアルバム統計','Statistik lagu-ku':'私の楽曲統計','Per tim':'チーム別','Tim favorit':'一番多いチーム','Angkatan terbanyak':'一番多い期','{a} dari {b}':'{a} / {b}','Data angkatan belum tersedia':'期のデータがまだありません','Per angkatan':'期別','Per tahun rilis':'リリース年別','Per jenis':'種類別','Per sumber':'ソース別','Per album':'アルバム別','Tahun terbanyak':'一番多い年','Rentang tahun':'年の範囲','Album terbanyak':'一番多いアルバム','Dari berapa album':'アルバムの数','Lainnya':'その他','Statistik: satu gambar berisi ringkasan daftarmu. Seret, salin, atau unduh.':'統計:リストの要約を1枚に。ドラッグ、コピー、ダウンロードできます。','Urutan oshi-ku':'私の推しランキング','Juara hatiku':'私の心の優勝者','{n} peserta · {m} duel':'{n}人参加・{m}試合','Diurutkan lewat {n} duel':'{n}回のデュエルで並べ替え','Browser ini menolak menyalin. Coba unduh gambarnya.':'コピーできませんでした。画像をダウンロードしてください。'
 };
 const JA_HTML = {
  insp:'<a href="https://taylor.fyi/top/" target="_blank" rel="noopener">taylor.fyi/top</a>(<a href="https://x.com/taylor_" target="_blank" rel="noopener">@taylor_</a> さん作)に着想を得ました。アイデアを借りてJKT48向けに作ったファンで、公式な関係はありません。',
@@ -635,7 +655,7 @@ function setLang(l){
   document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.l===l));
   if (document.body.classList.contains('view')) { location.reload(); return; }
   applyLangTree(document.body);
-  renderHeads(); renderThemeUI(); renderResults(); renderList(); renderSaved($('#savedSel').value); $('#sfUser').placeholder = tr($('#impSrc').value==='lastfm' ? 'Username Last.fm' : 'Username stats.fm'); $('#q').placeholder = tr(KIND[state.kind].ph);
+  renderHeads(); renderThemeUI(); renderStart(); renderResults(); renderList(); renderSaved($('#savedSel').value); $('#sfUser').placeholder = tr($('#impSrc').value==='lastfm' ? 'Username Last.fm' : 'Username stats.fm'); $('#q').placeholder = tr(KIND[state.kind].ph);
 }
 const slClean = v => ({ t:String(v&&v.t||'').slice(0,40), s:String(v&&v.s||'').slice(0,50), e:Math.max(0,Math.min(5,Math.floor(+(v&&v.e)||0))) });
 const state = { sl:{t:'',s:'',e:0}, pbColor:'team', spine:'team', rcName:'', vinyl:'auto', theme:'classic', custom:{bg:'#fff1f3',ink:'#2a1218',acc:'#e4002b',bg2:''}, font:'sys', postMode:'multi', kind:'album', look:'cds', num:false, night:false, share:'post', spin:'all', spinFmt:'sq', audio:true, q:'', filter:'all', year:'all', picks:{album:[],song:[],oshi:[],setlist:[]} };
@@ -2589,7 +2609,7 @@ $('#mkStory').onclick=async()=>{
   } catch(e){ msg.textContent=e.message; }
   btn.disabled=false;
 };
-$('#copy').onclick=async()=>{
+$('#copy').onclick=async()=>{ lsSet('jkt48n_compare','1');
   // seluruh daftar dikodekan di link (judul + alamat cover), jadi tidak perlu server atau lookup
   const data={k:state.kind,l:state.look,n:+state.num,v:state.vinyl,pb:state.pbColor,ss:state.spine==='photo'?'photo':undefined,rn:state.look==='receipt'&&state.rcName?state.rcName:undefined,sl:state.look==='setlistposter'?[state.sl.t,state.sl.s,state.sl.e]:undefined,th:state.theme,cu:state.theme==='custom'?state.custom:undefined,f:state.font,nm:$('#nm').value.trim(),lk:$('#lk').value.trim(),
     p:cur().map(p=>[p.title,p.sub,p.img&&!p.img.startsWith('data:')?p.img:0,p.plays||0,p.ms||0])};
@@ -2613,7 +2633,7 @@ $('#mkSpin').onclick=async()=>{
 let busyAction = false;
 for (const id of ['dlPost','dlZip','copyImg','toX','shareSheet','mkStory','mkSpin','dlStoryImg']) {
   const el = $('#'+id), h = el.onclick;
-  el.onclick = async e => { if (busyAction) return; busyAction = true; el.disabled = true; try { await h.call(el,e); careMaybe(); } finally { busyAction = false; el.disabled = false; } };
+  el.onclick = async e => { if (busyAction) return; busyAction = true; el.disabled = true; try { await h.call(el,e); afterExport(); } finally { busyAction = false; el.disabled = false; } };
 }
 
 /* pesan kepedulian: muncul sekali per browser, sesudah orang selesai mengunduh/menyalin/membagikan gambar (bukan saat baru membuka situs) */
@@ -2622,11 +2642,62 @@ function careMaybe(){
   if (careShown || document.body.classList.contains('view')) return;
   try { if (localStorage.getItem('jkt48care')==='1') return; } catch(e){}
   careShown = true; try { localStorage.setItem('jkt48care','1'); } catch(e){}
-  const show = () => { $('#careBody').className='care zine'; $('#careBody').innerHTML = $('#care').innerHTML; $('#careModal').hidden=false; $('#careOk').focus(); };
+  const show = () => { $('#careBody').className='care zine'; $('#careBody').innerHTML = $('#care').innerHTML; const cc=pickCta(), row=$('#careCta'); if (cc) { row.innerHTML=`<span>${esc(tr(cc.text))}</span><button class="btn dark" type="button" data-ca>${esc(tr(cc.btn))}</button>`; row._c=cc; row.hidden=false; lsSet('jkt48n_last',cc.id); } else row.hidden=true; $('#careModal').hidden=false; $('#careOk').focus(); };
   if (document.hidden) { const f=()=>{ if (!document.hidden) { document.removeEventListener('visibilitychange',f); setTimeout(show,500); } }; document.addEventListener('visibilitychange',f); }   // mis. tab X terbuka: tunggu sampai pengguna kembali
   else setTimeout(show,700);
 }
 const careClose = () => { $('#careModal').hidden=true; };
+/* ---------- ajakan setelah ekspor: ekspor pertama = modal kepedulian (dengan ajakan di dalamnya), berikutnya = toast kecil; tidak pernah dua-duanya ---------- */
+const goTab = k => { const t=document.querySelector('.tab[data-kind="'+k+'"]'); if (t) t.click(); };
+function goCompare(){ lsSet('jkt48n_compare','1'); const s=document.querySelector('.stab[data-s="link"]'); if (s) s.click(); const b=$('#cmpBox'); if (b) b.open=true; $('#p-link').scrollIntoView({behavior:'smooth',block:'center'}); }
+function ctaPool(){
+  const k=state.kind, seen=l=>lsGet('jkt48seen_'+l)==='1', done=id=>lsGet('jkt48n_'+id)==='1', list=[];
+  if (!done('compare')) list.push({id:'compare',text:'Ajak temen adu selera: kirim link lu, nanti keluar persen kecocokannya.',btn:'Coba',act:goCompare});
+  if (k==='oshi' && !done('battle')) list.push({id:'battle',text:'Bingung ngurutin oshi? Suruh mereka duel, lu tinggal klik.',btn:'Duelin',act:()=>btOpen()});
+  if (k==='oshi' && !seen('rarity')) list.push({id:'rarity',text:'Oshi #1 lu bisa jadi kartu SSR berfoil. Mau?',btn:'Coba',act:()=>setLook('rarity')});
+  if (k==='oshi' && !seen('strip')) list.push({id:'strip',text:'Jadiin strip photobooth, 4 foto per lembar.',btn:'Coba',act:()=>setLook('strip')});
+  if ((k==='album'||k==='song') && !seen('receipt')) list.push({id:'receipt',text:'Daftar lu bisa jadi struk belanja, serius.',btn:'Coba',act:()=>setLook('receipt')});
+  if ((k==='oshi'||k==='album'||k==='song') && !seen('stats')) list.push({id:'stats',text:'Mau tau oshi lu mayoritas tim apa? Ada statistiknya, lho.',btn:'Coba',act:()=>setLook('stats')});
+  return list.filter(x=>lsGet('jkt48n_skip_'+x.id)!=='1');
+}
+const pickCta = () => { const l=ctaPool(), last=lsGet('jkt48n_last'); return l.find(x=>x.id!==last) || l[0] || null; };   // ajakan berputar: jangan yang sama dua kali berturut-turut
+$('#careCta').onclick = e => { const c=$('#careCta')._c; if (c && e.target.closest('[data-ca]')) { careClose(); c.act(); } };
+let ctaShown=false, ctaTimer=0;
+function ctaToast(){
+  if (ctaShown) return; const c=pickCta(); if (!c) return; ctaShown=true;
+  const show=()=>{ const host=$('#cta'); host.innerHTML=`<span>${esc(tr(c.text))}</span><button class="btn" type="button" data-ca>${esc(tr(c.btn))}</button><button class="linkbtn" type="button" data-cx2 aria-label="${esc(tr('Tutup'))}">×</button>`; host._c=c; host.hidden=false; lsSet('jkt48n_last',c.id); clearTimeout(ctaTimer); ctaTimer=setTimeout(()=>{ host.hidden=true; },15000); };
+  if (document.hidden) { const f=()=>{ if (!document.hidden) { document.removeEventListener('visibilitychange',f); setTimeout(show,500); } }; document.addEventListener('visibilitychange',f); }
+  else setTimeout(show,900);
+}
+$('#cta').onclick = e => { const host=$('#cta'), c=host._c; if (!c) return; if (e.target.closest('[data-ca]')) { host.hidden=true; c.act(); } else if (e.target.closest('[data-cx2]')) { host.hidden=true; lsSet('jkt48n_skip_'+c.id,'1'); } };
+function afterExport(){
+  if (document.body.classList.contains('view')) return;
+  if (!(careShown || lsGet('jkt48care')==='1')) { careMaybe(); return; }
+  ctaToast();
+}
+/* ---------- panel "mau ngapain di sini?" untuk pengunjung baru (muncul sekali, bisa dibuka lagi lewat tautan di bawah hero) ---------- */
+const START_ITEMS = [
+  ['album','💿 Album & Lagu','jadiin top 10 lu rak CD, kaset, sampai struk belanja.'],
+  ['oshi','🎤 Oshi','kartu gacha SSR, strip photobooth, photobook. oshi lu dipajang kayak idol beneran.'],
+  ['battle','⚔️ Oshi Battle','bingung milih? biar mereka yang duel, lu tinggal klik.'],
+  ['stats','📊 Statistik','muncul sendiri pas lu milih. ketauan deh oshi lu tim apa. maaf kalo kena mental.'],
+  ['compare','🤝 Sehati nggak?','kirim link lu ke temen, liat selera kalian sama berapa persen.'],
+  ['setlist','🎭 Poster setlist','susun lagu jadi setlist konser impian, lengkap sama posternya.']
+];
+function renderStart(){
+  const host=$('#start'); host.innerHTML=`<div class="st-h">${esc(tr('mau ngapain di sini?'))}</div><div class="st-sub">${esc(tr('web iseng, tapi fiturnya nggak iseng-iseng amat:'))}</div><div class="st-grid">${START_ITEMS.map(([id,t,d])=>`<button class="st-card" type="button" data-go="${id}"><b>${esc(tr(t))}</b><span>${esc(tr(d))}</span></button>`).join('')}</div><button class="linkbtn st-skip" type="button" data-skip>${esc(tr('skip, gw udah ngerti'))}</button>`;
+  host.hidden = lsGet('jkt48start')==='1' || document.body.classList.contains('view');
+}
+function startGo(id){
+  lsSet('jkt48start','1'); $('#start').hidden=true;
+  if (id==='album') goTab('album'); else if (id==='oshi'||id==='stats') goTab('oshi');
+  else if (id==='battle') { goTab('oshi'); setTimeout(()=>btOpen(),250); }
+  else if (id==='compare') { goTab(state.kind==='setlist'?'album':state.kind); setTimeout(goCompare,300); }
+  else if (id==='setlist') { goTab('song'); setTimeout(()=>setLook('setlistposter'),300); }
+  const q=$('#q'); if (q && id!=='compare' && id!=='battle') q.scrollIntoView({behavior:'smooth',block:'center'});
+}
+$('#start').onclick = e => { const g=e.target.closest('[data-go]'); if (g) { startGo(g.dataset.go); return; } if (e.target.closest('[data-skip]')) { lsSet('jkt48start','1'); $('#start').hidden=true; } };
+$('#startOpen').onclick = () => { const s=$('#start'); s.hidden=!s.hidden; if (!s.hidden) s.scrollIntoView({behavior:'smooth',block:'start'}); };
 $('#careX').onclick = careClose; $('#careOk').onclick = careClose;
 $('#careModal').onclick = e => { if (e.target.id==='careModal') careClose(); };
 document.addEventListener('keydown', e => { if (e.key==='Escape' && !$('#careModal').hidden) careClose(); });
@@ -2642,7 +2713,7 @@ $('#ribbonX').onclick = () => { $('#ribbon').hidden=true; try { localStorage.set
   applyLangTree(document.body); $('#q').placeholder = tr(KIND[state.kind].ph);
   renderSaved(); renderHeads(); renderThemeUI(); $('#swNum').classList.toggle('on',state.num);
   if (shared) { showView(shared); return; }
-  renderList(); renderResults();
+  renderStart(); renderList(); renderResults();
   // data tab lain diambil di latar belakang supaya pindah tab terasa instan (dilewati kalau mode hemat data)
   if (!(navigator.connection && navigator.connection.saveData)) setTimeout(async()=>{ for (const k of ['oshi','setlist','song']) { if (k===state.kind) continue; try { await load(k); } catch(e){} await wait(300); } try { loadGenMap(); } catch(e){} if (LANG==='ja' || /^ja/i.test(navigator.language||'')) loadJaNames(); }, 1500);   // nama Jepang hanya diambil duluan untuk pengguna berbahasa Jepang
 })();
