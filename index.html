@@ -1193,7 +1193,7 @@ function loadImg(src){
   if (imgCache[src]) return imgCache[src];
   return imgCache[src] = new Promise(res => {
     const im = new Image(); im.crossOrigin = 'anonymous';
-    im.onload = () => { clearTimeout(tm);
+    im.onload = async () => { clearTimeout(tm); try { await im.decode(); } catch(e){}
       let col = '#8a7f86', src = im, pal = ['#e4002b','#ffcf3f','#2a6fdb'], dom = null;
       if (Math.abs(im.naturalWidth-im.naturalHeight) > 2 && !/[?&]h=900(&|$)/.test(im.src)) { // foto member tetap potret // foto non-persegi: potong jadi persegi (wajah di atas)
         try { const s=Math.min(im.naturalWidth,im.naturalHeight), q=document.createElement('canvas'); q.width=q.height=s;
@@ -1228,7 +1228,14 @@ const loadAll = arr => Promise.all(arr.map(p=>loadImg(p.img)));
 const rr = (c,x,y,w,h,r) => { c.beginPath(); c.roundRect(x,y,w,h,r); };
 const clamp = (v,a,b) => Math.min(b,Math.max(a,v));
 const ease = t => 1-Math.pow(1-t,3);
-function fitText(c,t,maxW){ if (c.measureText(t).width<=maxW) return t; while (t.length>1 && c.measureText(t+'…').width>maxW) t=t.slice(0,-1); return t+'…'; }
+/* measureText paling mahal di profiler (puluhan kali per teks): hasilnya disimpan per (font, teks), dan pemotongan teks memakai pencarian biner */
+const MW = new Map();
+function mw(c,t){ const k=c.font+'|'+(c.letterSpacing||'')+'|'+t; let v=MW.get(k); if (v===undefined) { v=c.measureText(t).width; if (MW.size>8000) MW.clear(); MW.set(k,v); } return v; }
+function fitText(c,t,maxW){
+  if (mw(c,t)<=maxW) return t;
+  let lo=1, hi=t.length; while (lo<hi) { const mid=(lo+hi+1)>>1; if (mw(c,t.slice(0,mid)+'…')<=maxW) lo=mid; else hi=mid-1; }
+  return t.slice(0,lo)+'…';
+}
 function shade(col,f){ const m = col.match(/\d+/g); if(!m) return col; return `rgb(${m.slice(0,3).map(v=>clamp(Math.round(v*f),0,255)).join(',')})`; }
 function cover(c,a,x,y,s,r){
   c.save(); rr(c,x,y,s,s,r); c.clip();
@@ -1538,7 +1545,9 @@ function drawCoverFit(c,im,x,y,w,h,focusY){ // object-fit: cover, fokus ke atas 
 }
 const OSHI_RATIO = { photocard:0.64, rarity:0.64, polaroid:0.84, idcard:0.62, photo:1 };
 function fitLine(c,text,maxW,size,weight,family,minRatio,upper){ // kecilkan huruf sampai muat, jangan dipotong dulu
-  let s=size; const f=()=>{ c.font=`${weight} ${s}px ${family}`; }; f(); while (c.measureText(text).width>maxW && s>size*(minRatio||0.55)) { s-=size*0.02; f(); } return fitText(c,text,maxW);
+  const f=s=>{ c.font=`${weight} ${s}px ${family}`; }; f(size); const w=mw(c,text);
+  if (w>maxW) f(Math.max(size*(minRatio||0.55), size*maxW/w*0.995));                        // ukuran dihitung langsung, bukan dikurangi 2% berulang-ulang
+  return fitText(c,text,maxW);
 }
 function oshiCard(c,x,y,w,h,p,a,look,i,o){
   const tc = TEAM_COLOR[teamOf(p)] || RED, name = p.title;
@@ -1862,9 +1871,9 @@ function catalogNo(p,kind){ // nomor hiasan (bukan nomor katalog resmi)
 }
 function spineTitle(c,cx,y0,y1,title,maxCross,u,T,F){
   const text = F.up ? title.toUpperCase() : title, len = y1-y0;
-  const fit = (t,size) => { c.font = `${F.it} ${F.w} ${size}px ${F.f}`; return c.measureText(t).width; };
+  const fit = (t,size) => { c.font = `${F.it} ${F.w} ${size}px ${F.f}`; return mw(c,t); };
   let size = maxCross, lines = [text];
-  while (size > 30*u && fit(text,size) > len) size -= 2*u;
+  { const base=fit(text,100)/100; if (base*size>len) { const k=Math.ceil((size-len/base)/(2*u)), kmax=Math.ceil((size-30*u)/(2*u)); size-=2*u*Math.max(0,Math.min(k,kmax)); } }   // langsung ke ukuran yang muat (lebar skala lurus dengan ukuran huruf)
   if (fit(text,size) > len && text.includes(' ')) { // terlalu panjang: pecah jadi dua kolom, kolom pertama di kanan
     const ws = text.split(' '); let best = null;
     for (let i=1;i<ws.length;i++){ const a=ws.slice(0,i).join(' '), b=ws.slice(i).join(' '), m=Math.max(fit(a,24*u),fit(b,24*u)); if (!best || m<best.m) best={a,b,m}; }
@@ -1976,9 +1985,17 @@ async function copyBlob(blob){
   try { await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]); return true; } catch(e){ return false; }
 }
 /* satu foto di strip: bisa diseret ke kotak tweet atau disalin dengan tombol kecil */
+/* PNG pratinjau di-encode satu per satu di waktu senggang (bukan semuanya sekaligus tiap pilihan berubah); langsung di-encode kalau kursor mendekat atau tombol salin ditekan */
+const blobQ = []; let blobBusy = false, blobGen = 0;
+function ensureBlob(cv){ return cv._blob ? Promise.resolve(cv._blob) : (cv._enc || (cv._enc=new Promise(r=>cv.toBlob(b=>{ cv._blob=b; r(b); },'image/png')))); }
+function pumpBlob(){
+  const it=blobQ.shift(); if (!it) { blobBusy=false; return; } blobBusy=true;
+  const [cv,gen]=it; if (gen!==blobGen || !cv.isConnected || cv._blob || cv._enc) { setTimeout(pumpBlob,0); return; }
+  ensureBlob(cv).then(()=>setTimeout(pumpBlob,0));
+}
 function stripItem(cv,name){
   const fig=document.createElement('figure'); fig.append(cv);
-  cv.toBlob(b=>{ cv._blob=b; },'image/png'); cv.draggable=true; cv.title=tr('Seret ke kotak tweet, atau klik tombol salin');
+  blobQ.push([cv,blobGen]); if (!blobBusy) setTimeout(pumpBlob,30); cv.addEventListener('pointerenter',()=>ensureBlob(cv)); cv.draggable=true; cv.title=tr('Seret ke kotak tweet, atau klik tombol salin');
   cv.addEventListener('dragstart',e=>{
     if (!cv._blob) return; const f=new File([cv._blob],name,{type:'image/png'});
     try { e.dataTransfer.items.add(f); } catch(_){}
@@ -1986,7 +2003,7 @@ function stripItem(cv,name){
     e.dataTransfer.effectAllowed='copy';
   });
   const b=document.createElement('button'); b.type='button'; b.className='cp'; b.title=tr('Salin gambar ini'); b.textContent='⧉';
-  b.onclick=async()=>{ if (!cv._blob) return; const ok=await copyBlob(cv._blob); b.textContent=ok?'✓':'!'; setTimeout(()=>b.textContent='⧉',1200); $('#postSub').textContent = ok ? tr('Tersalin: {name}. Tekan Ctrl+V di kotak tweet.',{name}) : tr('Browser ini menolak menyalin gambar. Seret fotonya atau pakai Unduh foto.'); };
+  b.onclick=async()=>{ await ensureBlob(cv); if (!cv._blob) return; const ok=await copyBlob(cv._blob); b.textContent=ok?'✓':'!'; setTimeout(()=>b.textContent='⧉',1200); $('#postSub').textContent = ok ? tr('Tersalin: {name}. Tekan Ctrl+V di kotak tweet.',{name}) : tr('Browser ini menolak menyalin gambar. Seret fotonya atau pakai Unduh foto.'); };
   fig.append(b); return fig;
 }
 async function downloadAll(files){ for (const f of files){ dl(f.blob,f.name); await new Promise(r=>setTimeout(r,350)); } }
@@ -2008,7 +2025,7 @@ async function refreshNow(){
     $('#copyImg').hidden = !single; $('#copySeq').hidden = single || o.picks.length<2; $('#dlZip').hidden = single || o.picks.length<2; seqIdx = 0; $('#copySeq').textContent = tr('Salin berurutan');
     const pcs = postCanvases(o), book = o.look==='photobook' && !single, slp = o.look==='setlistposter' && !single, rcp = o.look==='receipt' && !single, strp = o.look==='strip' && !single, stt = o.look==='stats' && !single, dtt = o.look==='duet' && !single;
     $('#postSub').textContent = !o.picks.length ? tr('Pilih favoritmu dulu.') : single ? tr('Satu gambar berisi seluruh daftar. Klik Salin gambar lalu Ctrl+V di kotak tweet.') : rcp ? tr('Receipt: satu gambar berisi seluruh daftar. Seret, salin, atau unduh.') : stt ? tr('Statistik: satu gambar berisi ringkasan daftarmu. Seret, salin, atau unduh.') : dtt ? tr('Kartu duet: {n} kartu, satu per lagu yang sudah dipasangkan. Seret, salin, atau unduh.',{n:o.picks.filter(p=>p.mm).length}) : strp ? tr('Photo strip: {n} strip, 4 foto tiap strip. Seret atau salin tiap strip, atau unduh ZIP.',{n:pcs.length}) : slp ? tr('Poster setlist: {n} halaman, berurutan. Seret atau salin tiap halaman, atau unduh ZIP.',{n:pcs.length}) : book ? tr('Photobook: sampul + {n} halaman, berurutan. Seret atau salin tiap halaman, atau unduh ZIP. X menerima sampai 20 foto per post.',{n:o.picks.length}) : tr('{n} foto, satu per {one}, berurutan. Seret atau salin tiap foto, atau unduh semuanya. X menerima sampai 20 foto per post.',{n:o.picks.length,one:tr(one())});
-    $('#strip').replaceChildren(...pcs.map((cv,i)=>stripItem(cv, single?'jkt48-top10.png':`jkt48-top10-${String(i+1).padStart(2,'0')}.png`)));
+    blobGen++; $('#strip').replaceChildren(...pcs.map((cv,i)=>stripItem(cv, single?'jkt48-top10.png':`jkt48-top10-${String(i+1).padStart(2,'0')}.png`)));
     $('#copySeq').hidden = single || pcs.length<2; $('#dlZip').hidden = single || pcs.length<2;
     if (!single && pcs.length>4) $('#postSub').textContent += ' '+tr('Kalau X lu cuma menerima 4 foto, perbarui aplikasinya.');
   }
@@ -2072,14 +2089,26 @@ function renderLooks(o){
       const b=document.createElement('button'); b.className='look'; b.dataset.look=k; b.innerHTML=`<canvas width="160" height="90"></canvas><span>${tr(l)}</span>`; host.appendChild(b);
     });
   }
-  host.querySelectorAll('.look').forEach(b=>{
+  const btns=[...host.querySelectorAll('.look')];
+  btns.forEach(b=>{
     b.classList.toggle('on',b.dataset.look===state.look);
     { let bd=b.querySelector('.newdot'); if (isNewLook(b.dataset.look)) { if (!bd) { bd=document.createElement('em'); bd.className='newdot'; b.appendChild(bd); } bd.textContent=tr('BARU'); } else if (bd) bd.remove(); }
+  });
+  drawLookThumbs(btns,o);
+}
+/* thumbnail format digambar satu per frame (yang aktif dulu) dan dibatalkan kalau ada render yang lebih baru, supaya pindah tab atau memilih item tidak membekukan layar */
+let lookTok = 0;
+function drawLookThumbs(btns,o){
+  const my=++lookTok, order=[...btns].sort((a,b)=>(b.dataset.look===state.look)-(a.dataset.look===state.look)); let i=0;
+  const step=()=>{
+    if (my!==lookTok) return; const b=order[i++]; if (!b) return;
     const mc=b.querySelector('canvas').getContext('2d'), sub={...o,look:b.dataset.look,num:false,picks:o.picks.slice(0,10)};
     mc.setTransform(1,0,0,1,0,0); mc.clearRect(0,0,160,90); mc.save(); mc.scale(0.1,0.1);
-    if (sub.picks.length) scene(mc,1600,900,sub,1); else { mc.fillStyle='#8883'; mc.fillRect(0,0,1600,900); }
-    mc.restore();
-  });
+    try { if (sub.picks.length) scene(mc,1600,900,sub,1); else { mc.fillStyle='#8883'; mc.fillRect(0,0,1600,900); } } catch(e){}
+    mc.restore(); next();
+  };
+  const next=()=>{ let done=false; const go=()=>{ if (done) return; done=true; step(); }; requestAnimationFrame(go); setTimeout(go,120); };   // setTimeout menjaga jalan walau tab sedang di latar belakang
+  next();
 }
 
 /* ---------- video / download ---------- */
