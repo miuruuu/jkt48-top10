@@ -43,8 +43,8 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 system-ui,"Seg
 .card h2 small{font-weight:400;color:var(--mute);font-size:13px}
 input[type=search],input[type=text]{width:100%;padding:11px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
 .results{display:flex;gap:8px;margin-top:12px;overflow-x:auto;padding-bottom:6px}
-.res{flex:0 0 auto;width:62px;cursor:pointer;border:0;background:none;padding:0;color:inherit;font:inherit}
-.res img{width:62px;height:62px;border-radius:8px;object-fit:cover;display:block;background:var(--line)}
+.res{flex:0 0 auto;width:var(--rw,76px);cursor:pointer;border:0;background:none;padding:0;color:inherit;font:inherit}
+.res img{width:var(--rw,76px);height:var(--rw,76px);border-radius:8px;object-fit:cover;display:block;background:var(--line)}
 .res.used img{outline:3px solid var(--red);outline-offset:-3px}
 .themehead{margin-top:14px;font-size:13px;font-weight:700;color:var(--mute)}
 .themes{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
@@ -117,7 +117,9 @@ body.view .hero:not(.vhero),body.view .tabs,body.view .grid{display:none}
 .imp select{padding:10px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
 .imp .btn{padding:10px 16px}
 .res small{display:none}
-.res .ph{width:62px;height:62px;border-radius:8px;background:linear-gradient(135deg,#e4002b,#6a0016);color:#fff;font-size:9px;font-weight:700;line-height:1.15;padding:5px;overflow:hidden;text-align:left;word-break:break-word}
+.res .ph{width:var(--rw,76px);height:var(--rw,76px);border-radius:8px;background:linear-gradient(135deg,#e4002b,#6a0016);color:#fff;font-size:22px;font-weight:800;display:grid;place-items:center;overflow:hidden;text-align:center}
+.res .cap{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-top:5px;font-size:10.5px;line-height:1.25;font-weight:600;text-align:center;color:var(--ink);word-break:break-word}
+.res.used .cap{color:var(--red)}
 .res.used .ph{outline:3px solid var(--hl);outline-offset:-3px}
 .msg{color:var(--mute);font-size:13px;margin-top:8px;min-height:1em}
 ol{list-style:none;margin:0;padding:0;max-height:430px;overflow:auto}
@@ -825,6 +827,7 @@ function passFilter(x){
   const okY = (state.kind!=='album' && state.kind!=='setlist') || yr==='all' || (x.sub||'').includes(yr);
   return okF && okY;
 }
+const resIni = t => String(t).trim().split(/\s+/).slice(0,2).map(w=>[...w][0]||'').join('').toUpperCase();   // inisial untuk kotak tanpa gambar; judul lengkap ada di bawah kotak
 async function renderResults(){
   const myTok = ++renderTok, kindAtStart = state.kind;
   await load(kindAtStart); await ensureJa(state.q);
@@ -833,12 +836,12 @@ async function renderResults(){
   renderFilters();
   const items = cache[state.kind].filter(x => passFilter(x) && (!q || qMatch(x,q)));
   lastItems = items;
-  const manual = state.q.trim() ? `<button class="res" data-manual="1" title="${tr('Tambah manual')}"><div style="width:62px;height:62px;border-radius:8px;border:2px dashed var(--red);display:grid;place-items:center;color:var(--red);font-size:26px;font-weight:700">+</div></button>` : '';
-  const photoTile = state.q.trim() ? `<button class="res" data-photo="1" title="${tr('Tambah manual dengan foto sendiri')}"><div style="width:62px;height:62px;border-radius:8px;border:2px dashed var(--red);display:grid;place-items:center;color:var(--red);font-size:22px">📷</div></button>` : '';
+  const manual = state.q.trim() ? `<button class="res" data-manual="1" title="${tr('Tambah manual')}"><div style="width:var(--rw,76px);height:var(--rw,76px);border-radius:8px;border:2px dashed var(--red);display:grid;place-items:center;color:var(--red);font-size:26px;font-weight:700">+</div></button>` : '';
+  const photoTile = state.q.trim() ? `<button class="res" data-photo="1" title="${tr('Tambah manual dengan foto sendiri')}"><div style="width:var(--rw,76px);height:var(--rw,76px);border-radius:8px;border:2px dashed var(--red);display:grid;place-items:center;color:var(--red);font-size:22px">📷</div></button>` : '';
   const shown = items.slice(0,300);
   $('#results').innerHTML = manual + photoTile + shown.map(x =>
     `<button class="res ${used.has(String(x.id))?'used':''}" data-id="${esc(x.id)}" title="${esc(x.title)}">` +
-    (x.img ? `<img loading="lazy" src="${x.img}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'ph',textContent:this.closest('.res').title}))">` : `<div class="ph">${esc(x.title)}</div>`) + `</button>`).join('');
+    (x.img ? `<img loading="lazy" src="${x.img}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'ph',textContent:resIni(this.closest('.res').title)}))">` : `<div class="ph">${esc(resIni(x.title))}</div>`) + `<span class="cap">${esc(x.title)}</span></button>`).join('');
   $('#msg').textContent = !items.length && cache[state.kind].length ? tr('Tidak ketemu. Klik + untuk menambah manual.') : (items.length>300 ? tr('Menampilkan 300 dari {n}. Ketik untuk mencari.',{n:items.length}) : '');
 }
 const FILTERS = {
@@ -1002,6 +1005,7 @@ function featured(c,x,y,s,p,a,look,o,i){
   if (look==='covers') {
     c.save(); c.shadowColor='rgba(0,0,0,.3)'; c.shadowBlur=26; c.shadowOffsetY=10; rr(c,x,y,s,s,s*0.03); c.fillStyle='#000'; c.fill(); c.restore();
     cover(c,a,x,y,s,s*0.03);
+    if (o.kind==='song') { c.textAlign='center'; c.textBaseline='alphabetic'; c.fillStyle=o.theme.ink; c.font=`800 ${s*0.068}px system-ui,sans-serif`; c.fillText(fitText(c,p.title,s*1.1),x+s/2,y+s+s*0.095); c.textAlign='left'; }
   } else if (look==='vinyl') {
     const sl = s*0.78, dx = x+sl*0.45, r = sl*0.5;
     c.save(); c.shadowColor='rgba(0,0,0,.3)'; c.shadowBlur=22; c.shadowOffsetY=8;
@@ -1144,6 +1148,7 @@ const opts = async () => {
 function photoCanvas(o,i){
   applyTheme(o); const p=o.picks[i], a=o.assets[i], n=o.night, look=o.look, cv=document.createElement('canvas');
   const dim = {cds:[200,2660], tapes:[330,2130], covers:[1200,1200], vinyl:[1380,1200], player:[1080,1920], photocard:[1080,1560], polaroid:[1080,1340], idcard:[1000,1620], photo:[1200,1200]}[look];
+  if (look==='covers' && o.kind==='song') dim[1]=1470;      // lagu: kartu cover dengan judul di tengah bawahnya
   cv.width=dim[0]; cv.height=dim[1]; const c=cv.getContext('2d'), W=dim[0], H=dim[1];
   if (look==='cds') {
     cdSpineDraw(c,0,0,W,H,p,a,n,o.kind);
@@ -1154,6 +1159,13 @@ function photoCanvas(o,i){
   } else if (OSHI_LOOKS.includes(look)) {
     fillBg(c,W,H,o.theme); const ratio=OSHI_RATIO[look], pad=W*(look==='photo'?0.03:0.1); let cw=W-2*pad, ch=cw/ratio; if (ch>H-2*pad) { ch=H-2*pad; cw=ch*ratio; }
     oshiCard(c,(W-cw)/2,(H-ch)/2,cw,ch,p,a,look,i,{num:o.num});
+  } else if (look==='covers' && o.kind==='song') {
+    const th=o.theme, panel = n ? '#0e0e10' : mixHex(th.bg,'#000000',0.07), ink = n ? '#ffffff' : th.ink, mu = n ? 'rgba(255,255,255,.62)' : th.mu;
+    c.save(); rr(c,0,0,W,H,40); c.clip(); c.fillStyle=panel; c.fillRect(0,0,W,H); cover(c,a,0,0,W,0);
+    c.textAlign='center'; c.textBaseline='alphabetic'; c.fillStyle=ink; c.font='800 66px system-ui,sans-serif'; c.fillText(fitText(c,p.title,W-110),W/2,W+110);
+    c.fillStyle=mu; c.font='500 46px system-ui,sans-serif'; c.fillText(fitText(c,(p.sub||'').replace(/^JKT48\s*·\s*/,'JKT48 · '),W-110),W/2,W+185); c.restore();
+    c.strokeStyle='rgba(128,128,128,.28)'; c.lineWidth=3; rr(c,1.5,1.5,W-3,H-3,40); c.stroke();
+    if (o.num) badge(c,90,90,56,i+1);
   } else if (look==='covers') {
     cover(c,a,0,0,W,0);
     if (o.num) badge(c,90,90,56,i+1);
