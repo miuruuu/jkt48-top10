@@ -393,6 +393,11 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
   <div class="bhead"><b>Oshi Battle</b><button class="linkbtn" id="bClose" type="button" aria-label="Tutup">×</button></div>
   <div id="bBody"></div>
 </div></div>
+<div class="ovl" id="careModal" hidden role="dialog" aria-modal="true" aria-labelledby="careTitle"><div class="box">
+  <div class="bhead"><b id="careTitle">Sebelum pergi, sedikit pesan</b><button class="linkbtn" id="careX" type="button" aria-label="Tutup">×</button></div>
+  <div class="care" id="careBody" style="margin-top:0"></div>
+  <button class="btn dark" id="careOk" type="button" style="width:100%;margin-top:12px">Oke, lanjut</button>
+</div></div>
 <script>
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -445,7 +450,7 @@ const EN = {
  'Perangkat ini tidak mendukung menu share dengan foto. Pakai "Unduh foto".':'This device does not support the share menu with photos. Use "Download photos".',
  'Membuat video...':'Making video...','Video diunduh. Tambahkan lagu saat kamu posting.':'Video downloaded. Add a song when you post.','Link disalin.':'Link copied.','Merekam...':'Recording...','Video diunduh (tanpa suara). Tambahkan lagu saat kamu posting.':'Video downloaded (no sound). Add a song when you post.',
  'Bingung nentuin oshi? Santai. Tinggal pilih satu dari dua, ulang terus, nanti urutannya jadi sendiri.':'Cannot pick your oshi? Easy. Just choose one of two, again and again, and the ranking builds itself.','Urutkan oshi-ku':'Rank my oshi','Isi dulu minimal 2 oshi di daftarmu, baru bisa diurutkan.':'Add at least 2 oshi to your list first.','Belum ketemu oshinya? Cari lewat battle':'Not sure who your oshi is? Find them by battle','Peserta diambil acak dari {n} member yang lagi tampil (ikut filter yang kamu pilih).':'Contestants are picked at random from the {n} members shown (follows your filter).','Berapa peserta?':'How many contestants?','MULAI BATTLE!':'START BATTLE!','Member yang tampil kurang dari 4. Hapus filter atau pencarian dulu.':'Fewer than 4 members shown. Clear the filter or search first.','Duel {m} dari {t} · Babak {r}':'Duel {m} of {t} · Round {r}','Duel {n} dari sekitar {t}':'Duel {n} of about {t}','Siapa yang lebih kamu pilih? (tombol ← → juga bisa)':'Who do you pick? (← → keys work too)','Salah pilih? Ulangi':'Oops? Undo','Ini urutan hatimu':'This is your heart\'s ranking','Juara hatimu':'Champion of your heart','Jadikan top-ku':'Make it my top list','Tambah ke top-ku':'Add to my top list','Simpan urutan ini':'Save this order','Daftarmu sudah diurutkan.':'Your list has been reordered.','Ditambahkan {n} oshi.':'Added {n} oshi.','Battle lagi!':'Battle again!','Tutup':'Close',
- 'Bandingkan dengan link teman':'Compare with a friend\'s link','Tempel link share temanmu':'Paste your friend\'s share link','Bandingkan':'Compare','Link itu bukan link daftar JKT48 Top 10.':'That is not a JKT48 Top 10 share link.','Daftarmu masih kosong untuk jenis ini. Isi dulu di tab-nya.':'Your list is empty for this type. Fill it in on its tab first.','Kecocokan {n}%':'Match {n}%','Sama-sama ada ({n})':'In both ({n})','Cuma di daftarmu ({n})':'Only in yours ({n})','Cuma di daftar temanmu ({n})':'Only in your friend\'s ({n})','kamu #{a} · temanmu #{b}':'you #{a} · friend #{b}','Tidak ada yang sama.':'Nothing in common.','FINAL: siapa juaranya?':'FINAL: who takes the crown?','⚔ Bingung? Oshi Battle':'⚔ Can\'t decide? Oshi Battle','Free Palestine · Save Indonesia: kebakaran hutan masih terjadi':'Free Palestine · Save Indonesia: the forest fires are still burning'
+ 'Bandingkan dengan link teman':'Compare with a friend\'s link','Tempel link share temanmu':'Paste your friend\'s share link','Bandingkan':'Compare','Link itu bukan link daftar JKT48 Top 10.':'That is not a JKT48 Top 10 share link.','Daftarmu masih kosong untuk jenis ini. Isi dulu di tab-nya.':'Your list is empty for this type. Fill it in on its tab first.','Kecocokan {n}%':'Match {n}%','Sama-sama ada ({n})':'In both ({n})','Cuma di daftarmu ({n})':'Only in yours ({n})','Cuma di daftar temanmu ({n})':'Only in your friend\'s ({n})','kamu #{a} · temanmu #{b}':'you #{a} · friend #{b}','Tidak ada yang sama.':'Nothing in common.','FINAL: siapa juaranya?':'FINAL: who takes the crown?','⚔ Bingung? Oshi Battle':'⚔ Can\'t decide? Oshi Battle','Free Palestine · Save Indonesia: kebakaran hutan masih terjadi':'Free Palestine · Save Indonesia: the forest fires are still burning','Sebelum pergi, sedikit pesan':'Before you go, a small note','Oke, lanjut':'Okay, continue'
 };
 const EN_HTML = {
  insp:'inspired by <a href="https://taylor.fyi/top/" target="_blank" rel="noopener">taylor.fyi/top</a> by <a href="https://x.com/taylor_" target="_blank" rel="noopener">@taylor_</a> on x. i am just a fan who borrowed the idea for jkt48, no official connection.',
@@ -517,7 +522,7 @@ const JA = {
  'Perangkat ini tidak mendukung menu share dengan foto. Pakai "Unduh foto".':'この端末は写真付きの共有メニューに対応していません。「写真をダウンロード」をお使いください。',
  'Membuat video...':'動画を作成中...','Video diunduh. Tambahkan lagu saat kamu posting.':'動画をダウンロードしました。投稿時に曲を追加してください。','Link disalin.':'リンクをコピーしました。','Merekam...':'録画中...','Video diunduh (tanpa suara). Tambahkan lagu saat kamu posting.':'動画をダウンロードしました(音なし)。投稿時に曲を追加してください。',
  'Bingung nentuin oshi? Santai. Tinggal pilih satu dari dua, ulang terus, nanti urutannya jadi sendiri.':'推しが決められない?大丈夫。2人から1人を選び続けるだけで、ランキングが完成します。','Urutkan oshi-ku':'推しを並べ替える','Isi dulu minimal 2 oshi di daftarmu, baru bisa diurutkan.':'まずリストに2人以上追加してください。','Belum ketemu oshinya? Cari lewat battle':'推しが決まらない?バトルで探そう','Peserta diambil acak dari {n} member yang lagi tampil (ikut filter yang kamu pilih).':'表示中の{n}人からランダムに選ばれます(フィルターに従います)。','Berapa peserta?':'何人で戦う?','MULAI BATTLE!':'バトル開始!','Member yang tampil kurang dari 4. Hapus filter atau pencarian dulu.':'表示中のメンバーが4人未満です。フィルターや検索を解除してください。','Duel {m} dari {t} · Babak {r}':'デュエル {m}/{t} · 第{r}ラウンド','Duel {n} dari sekitar {t}':'デュエル {n} / 約{t}','Siapa yang lebih kamu pilih? (tombol ← → juga bisa)':'どっちを選ぶ?(← → キーも使えます)','Salah pilih? Ulangi':'間違えた?戻す','Ini urutan hatimu':'あなたの推しランキング','Juara hatimu':'あなたの優勝','Jadikan top-ku':'これをマイトップにする','Tambah ke top-ku':'マイトップに追加','Simpan urutan ini':'この順番を保存','Daftarmu sudah diurutkan.':'リストを並べ替えました。','Ditambahkan {n} oshi.':'{n}人を追加しました。','Battle lagi!':'もう一度バトル!','Tutup':'閉じる',
- 'Bandingkan dengan link teman':'友達のリンクと比較','Tempel link share temanmu':'友達の共有リンクを貼り付け','Bandingkan':'比較する','Link itu bukan link daftar JKT48 Top 10.':'JKT48 Top 10 の共有リンクではありません。','Daftarmu masih kosong untuk jenis ini. Isi dulu di tab-nya.':'この種類のリストが空です。先にそのタブで選んでください。','Kecocokan {n}%':'一致度 {n}%','Sama-sama ada ({n})':'両方にある({n})','Cuma di daftarmu ({n})':'あなたのだけ({n})','Cuma di daftar temanmu ({n})':'友達のだけ({n})','kamu #{a} · temanmu #{b}':'あなた #{a} · 友達 #{b}','Tidak ada yang sama.':'共通するものはありません。','FINAL: siapa juaranya?':'決勝:優勝は誰?','⚔ Bingung? Oshi Battle':'⚔ 迷ったら 推しバトル','Free Palestine · Save Indonesia: kebakaran hutan masih terjadi':'Free Palestine · Save Indonesia: 森林火災は今も続いています'
+ 'Bandingkan dengan link teman':'友達のリンクと比較','Tempel link share temanmu':'友達の共有リンクを貼り付け','Bandingkan':'比較する','Link itu bukan link daftar JKT48 Top 10.':'JKT48 Top 10 の共有リンクではありません。','Daftarmu masih kosong untuk jenis ini. Isi dulu di tab-nya.':'この種類のリストが空です。先にそのタブで選んでください。','Kecocokan {n}%':'一致度 {n}%','Sama-sama ada ({n})':'両方にある({n})','Cuma di daftarmu ({n})':'あなたのだけ({n})','Cuma di daftar temanmu ({n})':'友達のだけ({n})','kamu #{a} · temanmu #{b}':'あなた #{a} · 友達 #{b}','Tidak ada yang sama.':'共通するものはありません。','FINAL: siapa juaranya?':'決勝:優勝は誰?','⚔ Bingung? Oshi Battle':'⚔ 迷ったら 推しバトル','Free Palestine · Save Indonesia: kebakaran hutan masih terjadi':'Free Palestine · Save Indonesia: 森林火災は今も続いています','Sebelum pergi, sedikit pesan':'最後にひとこと','Oke, lanjut':'OK、続ける'
 };
 const JA_HTML = {
  insp:'<a href="https://taylor.fyi/top/" target="_blank" rel="noopener">taylor.fyi/top</a>(<a href="https://x.com/taylor_" target="_blank" rel="noopener">@taylor_</a> さん作)に着想を得ました。アイデアを借りてJKT48向けに作ったファンで、公式な関係はありません。',
@@ -2281,9 +2286,23 @@ $('#mkSpin').onclick=async()=>{
 let busyAction = false;
 for (const id of ['dlPost','dlZip','copyImg','toX','shareSheet','mkStory','mkSpin','dlStoryImg']) {
   const el = $('#'+id), h = el.onclick;
-  el.onclick = async e => { if (busyAction) return; busyAction = true; el.disabled = true; try { await h.call(el,e); } finally { busyAction = false; el.disabled = false; } };
+  el.onclick = async e => { if (busyAction) return; busyAction = true; el.disabled = true; try { await h.call(el,e); careMaybe(); } finally { busyAction = false; el.disabled = false; } };
 }
 
+/* pesan kepedulian: muncul sekali per browser, sesudah orang selesai mengunduh/menyalin/membagikan gambar (bukan saat baru membuka situs) */
+let careShown = false;
+function careMaybe(){
+  if (careShown || document.body.classList.contains('view')) return;
+  try { if (localStorage.getItem('jkt48care')==='1') return; } catch(e){}
+  careShown = true; try { localStorage.setItem('jkt48care','1'); } catch(e){}
+  const show = () => { $('#careBody').innerHTML = $('#care').innerHTML; $('#careModal').hidden=false; $('#careOk').focus(); };
+  if (document.hidden) { const f=()=>{ if (!document.hidden) { document.removeEventListener('visibilitychange',f); setTimeout(show,500); } }; document.addEventListener('visibilitychange',f); }   // mis. tab X terbuka: tunggu sampai pengguna kembali
+  else setTimeout(show,700);
+}
+const careClose = () => { $('#careModal').hidden=true; };
+$('#careX').onclick = careClose; $('#careOk').onclick = careClose;
+$('#careModal').onclick = e => { if (e.target.id==='careModal') careClose(); };
+document.addEventListener('keydown', e => { if (e.key==='Escape' && !$('#careModal').hidden) careClose(); });
 /* pita kepedulian di atas: bisa ditutup, pilihannya diingat di browser ini */
 try { if (localStorage.getItem('jkt48ribbon')==='1') $('#ribbon').hidden=true; } catch(e){}
 $('#ribbonX').onclick = () => { $('#ribbon').hidden=true; try { localStorage.setItem('jkt48ribbon','1'); } catch(e){} };
