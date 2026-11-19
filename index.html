@@ -94,7 +94,14 @@ body.view .ribbon{display:none}
 @keyframes carepulse{0%{box-shadow:0 0 0 0 rgba(228,0,43,.65)}60%{box-shadow:0 0 0 14px rgba(228,0,43,0)}100%{box-shadow:0 0 0 0 rgba(228,0,43,0)}}
 .lstats{margin-top:14px;padding:14px;border-radius:16px;background:var(--soft);font-size:13px}
 .lstats[hidden]{display:none}
-.lstats .lt{font-weight:800;font-size:14px;margin-bottom:10px}
+.look{position:relative}
+.newdot{position:absolute;top:4px;right:4px;background:var(--red);color:#fff;font:700 9px/1 system-ui,sans-serif;padding:3px 6px;border-radius:99px;font-style:normal;letter-spacing:.04em}
+.nudge{display:flex;align-items:center;gap:8px;margin-top:12px;padding:10px 12px;border-radius:14px;background:var(--soft);font-size:13px}
+.nudge[hidden]{display:none}
+.nudge span{flex:1;min-width:0}
+.nudge .btn{padding:7px 12px;font-size:13px}
+.nudge .linkbtn{margin-left:0;font-size:18px;text-decoration:none}
+.lstats .lt{font-weight:800;font-size:14px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
 .lstats .lbar{display:flex;height:14px;border-radius:99px;overflow:hidden;background:var(--line)}
 .lstats .lbar i{display:block;height:100%}
 .lstats .lleg{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:8px}
@@ -297,6 +304,8 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
         <div class="chips" id="modes" style="margin:0 0 10px"><span style="font-size:13px;color:var(--mute)">Jumlah:</span><button class="chip" data-n="3">Top 3</button><button class="chip" data-n="5">Top 5</button><button class="chip on" data-n="10">Top 10</button><button class="chip" data-n="20">Top 20</button></div>
         <ol id="list"></ol>
         <div id="empty" class="empty">Belum ada pilihan. Klik cover di atas.</div>
+        <div id="nudge" class="nudge" hidden></div>
+        <div id="challenge" class="lstats" hidden></div>
         <div id="liveStats" class="lstats" hidden></div>
         <div class="saved">
           <div class="two"><input type="text" id="listName" placeholder="Nama daftar (mis. Top 2026)"><button class="btn" id="saveList" type="button">Simpan daftar</button></div>
@@ -418,7 +427,7 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
     </header>
     <div class="card"><canvas id="cvView" width="1600" height="900" style="width:100%;height:auto;border-radius:14px;display:block"></canvas></div>
     <div class="card"><ol id="vList" style="max-height:none"></ol></div>
-    <div class="btns"><button class="btn" id="vDl" type="button">Unduh gambar</button><button class="btn dark" id="vMake" type="button">Buat top-mu sendiri</button></div>
+    <div class="btns"><button class="btn" id="vDl" type="button">Unduh gambar</button><button class="btn" id="vCmp" type="button">Bandingkan dengan daftarku</button><button class="btn dark" id="vMake" type="button">Buat top-mu sendiri</button></div>
     <div class="sub" data-k="viewFoot">dibikin pakai jkt48 top 10 · web iseng, bukan resmi.</div>
   </div>
   <div class="sub insp" data-k="insp">terinspirasi dari <a href="https://taylor.fyi/top/" target="_blank" rel="noopener">taylor.fyi/top</a> bikinan <a href="https://x.com/taylor_" target="_blank" rel="noopener">@taylor_</a> di x. gw cuma fans yang iseng minjem idenya buat jkt48, nggak ada hubungan resmi sama dia.</div>
@@ -497,7 +506,7 @@ const EN = {
  'Perangkat ini tidak mendukung menu share dengan foto. Pakai "Unduh foto".':'This device does not support the share menu with photos. Use "Download photos".',
  'Membuat video...':'Making video...','Video diunduh. Tambahkan lagu saat kamu posting.':'Video downloaded. Add a song when you post.','Link disalin.':'Link copied.','Merekam...':'Recording...','Video diunduh (tanpa suara). Tambahkan lagu saat kamu posting.':'Video downloaded (no sound). Add a song when you post.',
  'Bingung nentuin oshi? Santai. Tinggal pilih satu dari dua, ulang terus, nanti urutannya jadi sendiri.':'Cannot pick your oshi? Easy. Just choose one of two, again and again, and the ranking builds itself.','Urutkan oshi-ku':'Rank my oshi','Isi dulu minimal 2 oshi di daftarmu, baru bisa diurutkan.':'Add at least 2 oshi to your list first.','Belum ketemu oshinya? Cari lewat battle':'Not sure who your oshi is? Find them by battle','Peserta diambil acak dari {n} member yang lagi tampil (ikut filter yang kamu pilih).':'Contestants are picked at random from the {n} members shown (follows your filter).','Berapa peserta?':'How many contestants?','MULAI BATTLE!':'START BATTLE!','Member yang tampil kurang dari 4. Hapus filter atau pencarian dulu.':'Fewer than 4 members shown. Clear the filter or search first.','Duel {m} dari {t} · Babak {r}':'Duel {m} of {t} · Round {r}','Duel {n} dari sekitar {t}':'Duel {n} of about {t}','Siapa yang lebih kamu pilih? (tombol ← → juga bisa)':'Who do you pick? (← → keys work too)','Salah pilih? Ulangi':'Oops? Undo','Ini urutan hatimu':'This is your heart\'s ranking','Juara hatimu':'Champion of your heart','Jadikan top-ku':'Make it my top list','Tambah ke top-ku':'Add to my top list','Simpan urutan ini':'Save this order','Daftarmu sudah diurutkan.':'Your list has been reordered.','Ditambahkan {n} oshi.':'Added {n} oshi.','Battle lagi!':'Battle again!','Tutup':'Close',
- 'Bandingkan dengan link teman':'Compare with a friend\'s link','Tempel link share temanmu':'Paste your friend\'s share link','Bandingkan':'Compare','Link itu bukan link daftar JKT48 Top 10.':'That is not a JKT48 Top 10 share link.','Daftarmu masih kosong untuk jenis ini. Isi dulu di tab-nya.':'Your list is empty for this type. Fill it in on its tab first.','Kecocokan {n}%':'Match {n}%','Sama-sama ada ({n})':'In both ({n})','Cuma di daftarmu ({n})':'Only in yours ({n})','Cuma di daftar temanmu ({n})':'Only in your friend\'s ({n})','kamu #{a} · temanmu #{b}':'you #{a} · friend #{b}','Tidak ada yang sama.':'Nothing in common.','FINAL: siapa juaranya?':'FINAL: who takes the crown?','⚔ Bingung? Oshi Battle':'⚔ Can\'t decide? Oshi Battle','psst, pencet gw dulu bentar ↓':'psst, tap me for a sec ↓','Sebelum pergi, sedikit pesan':'Before you go, a small note','Oke, lanjut':'Okay, continue','Receipt: satu gambar berisi seluruh daftar. Seret, salin, atau unduh.':'Receipt: one image with your whole list. Drag, copy or download.','Photo strip: {n} strip, 4 foto tiap strip. Seret atau salin tiap strip, atau unduh ZIP.':'Photo strip: {n} strip(s), 4 photos each. Drag or copy each strip, or download a ZIP.','Nama di struk':'Name on the receipt','Kosongkan = GUEST':'Leave empty = GUEST','Statistik':'Stats','Statistik daftarmu':'Your list stats','Statistik oshi-ku':'My oshi stats','Statistik album-ku':'My album stats','Statistik lagu-ku':'My song stats','Per tim':'By team','Tim favorit':'Favorite team','Angkatan terbanyak':'Most common generation','{a} dari {b}':'{a} of {b}','Data angkatan belum tersedia':'Generation data not loaded yet','Per angkatan':'By generation','Per tahun rilis':'By release year','Per jenis':'By type','Per sumber':'By source','Per album':'By album','Tahun terbanyak':'Most common year','Rentang tahun':'Year range','Album terbanyak':'Top album','Dari berapa album':'Number of albums','Lainnya':'Other','Statistik: satu gambar berisi ringkasan daftarmu. Seret, salin, atau unduh.':'Stats: one image summarizing your list. Drag, copy or download.','Urutan oshi-ku':'My oshi ranking','Juara hatiku':'Champion of my heart','{n} peserta · {m} duel':'{n} contestants · {m} duels','Diurutkan lewat {n} duel':'Ranked through {n} duels','Browser ini menolak menyalin. Coba unduh gambarnya.':'This browser refused to copy. Try downloading the image.'
+ 'Bandingkan dengan link teman':'Compare with a friend\'s link','Tempel link share temanmu':'Paste your friend\'s share link','Bandingkan':'Compare','Link itu bukan link daftar JKT48 Top 10.':'That is not a JKT48 Top 10 share link.','Daftarmu masih kosong untuk jenis ini. Isi dulu di tab-nya.':'Your list is empty for this type. Fill it in on its tab first.','Kecocokan {n}%':'Match {n}%','Sama-sama ada ({n})':'In both ({n})','Cuma di daftarmu ({n})':'Only in yours ({n})','Cuma di daftar temanmu ({n})':'Only in your friend\'s ({n})','kamu #{a} · temanmu #{b}':'you #{a} · friend #{b}','Tidak ada yang sama.':'Nothing in common.','FINAL: siapa juaranya?':'FINAL: who takes the crown?','⚔ Bingung? Oshi Battle':'⚔ Can\'t decide? Oshi Battle','psst, pencet gw dulu bentar ↓':'psst, tap me for a sec ↓','Sebelum pergi, sedikit pesan':'Before you go, a small note','Oke, lanjut':'Okay, continue','Receipt: satu gambar berisi seluruh daftar. Seret, salin, atau unduh.':'Receipt: one image with your whole list. Drag, copy or download.','Photo strip: {n} strip, 4 foto tiap strip. Seret atau salin tiap strip, atau unduh ZIP.':'Photo strip: {n} strip(s), 4 photos each. Drag or copy each strip, or download a ZIP.','Nama di struk':'Name on the receipt','Kosongkan = GUEST':'Leave empty = GUEST','Statistik':'Stats','Statistik daftarmu':'Your list stats','BARU':'NEW','Bingung urutannya? Coba Oshi Battle: pilih satu dari dua sampai ketemu.':'Cannot decide the order? Try Oshi Battle: pick one of two until it is clear.','Coba':'Try','Urutan baru! Lihat sebagai kartu Rarity: #1 jadi SSR.':'New order! See it as Rarity cards: #1 becomes SSR.','Lihat':'View','Coba format Receipt: daftarmu jadi struk belanja.':'Try the Receipt format: your list as a shopping receipt.','Bandingkan dengan daftarku':'Compare with my list','Kamu diajak membandingkan dengan daftar {nama}.':'You are invited to compare with {nama}\'s list.','Pilih minimal 2 untuk melihat kecocokannya.':'Pick at least 2 to see the match.','temanmu':'your friend','Lihat sebagai kartu Rarity':'See as Rarity cards','Lihat statistik':'See stats','Statistik oshi-ku':'My oshi stats','Statistik album-ku':'My album stats','Statistik lagu-ku':'My song stats','Per tim':'By team','Tim favorit':'Favorite team','Angkatan terbanyak':'Most common generation','{a} dari {b}':'{a} of {b}','Data angkatan belum tersedia':'Generation data not loaded yet','Per angkatan':'By generation','Per tahun rilis':'By release year','Per jenis':'By type','Per sumber':'By source','Per album':'By album','Tahun terbanyak':'Most common year','Rentang tahun':'Year range','Album terbanyak':'Top album','Dari berapa album':'Number of albums','Lainnya':'Other','Statistik: satu gambar berisi ringkasan daftarmu. Seret, salin, atau unduh.':'Stats: one image summarizing your list. Drag, copy or download.','Urutan oshi-ku':'My oshi ranking','Juara hatiku':'Champion of my heart','{n} peserta · {m} duel':'{n} contestants · {m} duels','Diurutkan lewat {n} duel':'Ranked through {n} duels','Browser ini menolak menyalin. Coba unduh gambarnya.':'This browser refused to copy. Try downloading the image.'
 };
 const EN_HTML = {
  insp:'inspired by <a href="https://taylor.fyi/top/" target="_blank" rel="noopener">taylor.fyi/top</a> by <a href="https://x.com/taylor_" target="_blank" rel="noopener">@taylor_</a> on x. i am just a fan who borrowed the idea for jkt48, no official connection.',
@@ -569,7 +578,7 @@ const JA = {
  'Perangkat ini tidak mendukung menu share dengan foto. Pakai "Unduh foto".':'この端末は写真付きの共有メニューに対応していません。「写真をダウンロード」をお使いください。',
  'Membuat video...':'動画を作成中...','Video diunduh. Tambahkan lagu saat kamu posting.':'動画をダウンロードしました。投稿時に曲を追加してください。','Link disalin.':'リンクをコピーしました。','Merekam...':'録画中...','Video diunduh (tanpa suara). Tambahkan lagu saat kamu posting.':'動画をダウンロードしました(音なし)。投稿時に曲を追加してください。',
  'Bingung nentuin oshi? Santai. Tinggal pilih satu dari dua, ulang terus, nanti urutannya jadi sendiri.':'推しが決められない?大丈夫。2人から1人を選び続けるだけで、ランキングが完成します。','Urutkan oshi-ku':'推しを並べ替える','Isi dulu minimal 2 oshi di daftarmu, baru bisa diurutkan.':'まずリストに2人以上追加してください。','Belum ketemu oshinya? Cari lewat battle':'推しが決まらない?バトルで探そう','Peserta diambil acak dari {n} member yang lagi tampil (ikut filter yang kamu pilih).':'表示中の{n}人からランダムに選ばれます(フィルターに従います)。','Berapa peserta?':'何人で戦う?','MULAI BATTLE!':'バトル開始!','Member yang tampil kurang dari 4. Hapus filter atau pencarian dulu.':'表示中のメンバーが4人未満です。フィルターや検索を解除してください。','Duel {m} dari {t} · Babak {r}':'デュエル {m}/{t} · 第{r}ラウンド','Duel {n} dari sekitar {t}':'デュエル {n} / 約{t}','Siapa yang lebih kamu pilih? (tombol ← → juga bisa)':'どっちを選ぶ?(← → キーも使えます)','Salah pilih? Ulangi':'間違えた?戻す','Ini urutan hatimu':'あなたの推しランキング','Juara hatimu':'あなたの優勝','Jadikan top-ku':'これをマイトップにする','Tambah ke top-ku':'マイトップに追加','Simpan urutan ini':'この順番を保存','Daftarmu sudah diurutkan.':'リストを並べ替えました。','Ditambahkan {n} oshi.':'{n}人を追加しました。','Battle lagi!':'もう一度バトル!','Tutup':'閉じる',
- 'Bandingkan dengan link teman':'友達のリンクと比較','Tempel link share temanmu':'友達の共有リンクを貼り付け','Bandingkan':'比較する','Link itu bukan link daftar JKT48 Top 10.':'JKT48 Top 10 の共有リンクではありません。','Daftarmu masih kosong untuk jenis ini. Isi dulu di tab-nya.':'この種類のリストが空です。先にそのタブで選んでください。','Kecocokan {n}%':'一致度 {n}%','Sama-sama ada ({n})':'両方にある({n})','Cuma di daftarmu ({n})':'あなたのだけ({n})','Cuma di daftar temanmu ({n})':'友達のだけ({n})','kamu #{a} · temanmu #{b}':'あなた #{a} · 友達 #{b}','Tidak ada yang sama.':'共通するものはありません。','FINAL: siapa juaranya?':'決勝:優勝は誰?','⚔ Bingung? Oshi Battle':'⚔ 迷ったら 推しバトル','psst, pencet gw dulu bentar ↓':'ちょっとだけ、タップして ↓','Sebelum pergi, sedikit pesan':'最後にひとこと','Oke, lanjut':'OK、続ける','Receipt: satu gambar berisi seluruh daftar. Seret, salin, atau unduh.':'レシート:リスト全体を1枚に。ドラッグ、コピー、ダウンロードできます。','Photo strip: {n} strip, 4 foto tiap strip. Seret atau salin tiap strip, atau unduh ZIP.':'フォトストリップ:{n}枚、1枚につき4枚の写真。ドラッグかコピー、またはZIPでダウンロード。','Rarity':'レアリティ','Photo strip':'フォトストリップ','Receipt':'レシート','Nama di struk':'レシートの名前','Kosongkan = GUEST':'空欄 = GUEST','Statistik':'統計','Statistik daftarmu':'リストの統計','Statistik oshi-ku':'私の推しの統計','Statistik album-ku':'私のアルバム統計','Statistik lagu-ku':'私の楽曲統計','Per tim':'チーム別','Tim favorit':'一番多いチーム','Angkatan terbanyak':'一番多い期','{a} dari {b}':'{a} / {b}','Data angkatan belum tersedia':'期のデータがまだありません','Per angkatan':'期別','Per tahun rilis':'リリース年別','Per jenis':'種類別','Per sumber':'ソース別','Per album':'アルバム別','Tahun terbanyak':'一番多い年','Rentang tahun':'年の範囲','Album terbanyak':'一番多いアルバム','Dari berapa album':'アルバムの数','Lainnya':'その他','Statistik: satu gambar berisi ringkasan daftarmu. Seret, salin, atau unduh.':'統計:リストの要約を1枚に。ドラッグ、コピー、ダウンロードできます。','Urutan oshi-ku':'私の推しランキング','Juara hatiku':'私の心の優勝者','{n} peserta · {m} duel':'{n}人参加・{m}試合','Diurutkan lewat {n} duel':'{n}回のデュエルで並べ替え','Browser ini menolak menyalin. Coba unduh gambarnya.':'コピーできませんでした。画像をダウンロードしてください。'
+ 'Bandingkan dengan link teman':'友達のリンクと比較','Tempel link share temanmu':'友達の共有リンクを貼り付け','Bandingkan':'比較する','Link itu bukan link daftar JKT48 Top 10.':'JKT48 Top 10 の共有リンクではありません。','Daftarmu masih kosong untuk jenis ini. Isi dulu di tab-nya.':'この種類のリストが空です。先にそのタブで選んでください。','Kecocokan {n}%':'一致度 {n}%','Sama-sama ada ({n})':'両方にある({n})','Cuma di daftarmu ({n})':'あなたのだけ({n})','Cuma di daftar temanmu ({n})':'友達のだけ({n})','kamu #{a} · temanmu #{b}':'あなた #{a} · 友達 #{b}','Tidak ada yang sama.':'共通するものはありません。','FINAL: siapa juaranya?':'決勝:優勝は誰?','⚔ Bingung? Oshi Battle':'⚔ 迷ったら 推しバトル','psst, pencet gw dulu bentar ↓':'ちょっとだけ、タップして ↓','Sebelum pergi, sedikit pesan':'最後にひとこと','Oke, lanjut':'OK、続ける','Receipt: satu gambar berisi seluruh daftar. Seret, salin, atau unduh.':'レシート:リスト全体を1枚に。ドラッグ、コピー、ダウンロードできます。','Photo strip: {n} strip, 4 foto tiap strip. Seret atau salin tiap strip, atau unduh ZIP.':'フォトストリップ:{n}枚、1枚につき4枚の写真。ドラッグかコピー、またはZIPでダウンロード。','Rarity':'レアリティ','Photo strip':'フォトストリップ','Receipt':'レシート','Nama di struk':'レシートの名前','Kosongkan = GUEST':'空欄 = GUEST','Statistik':'統計','Statistik daftarmu':'リストの統計','BARU':'NEW','Bingung urutannya? Coba Oshi Battle: pilih satu dari dua sampai ketemu.':'順番に迷ったら、推しバトルを試してみよう。2人から1人を選ぶだけ。','Coba':'試す','Urutan baru! Lihat sebagai kartu Rarity: #1 jadi SSR.':'新しい順番!レアリティカードで見てみよう:1位がSSRに。','Lihat':'見る','Coba format Receipt: daftarmu jadi struk belanja.':'レシート形式を試そう:リストが買い物レシートに。','Bandingkan dengan daftarku':'自分のリストと比較','Kamu diajak membandingkan dengan daftar {nama}.':'{nama}さんのリストと比較してみませんか。','Pilih minimal 2 untuk melihat kecocokannya.':'2つ以上選ぶと一致度が見られます。','temanmu':'友達','Lihat sebagai kartu Rarity':'レアリティカードで見る','Lihat statistik':'統計を見る','Statistik oshi-ku':'私の推しの統計','Statistik album-ku':'私のアルバム統計','Statistik lagu-ku':'私の楽曲統計','Per tim':'チーム別','Tim favorit':'一番多いチーム','Angkatan terbanyak':'一番多い期','{a} dari {b}':'{a} / {b}','Data angkatan belum tersedia':'期のデータがまだありません','Per angkatan':'期別','Per tahun rilis':'リリース年別','Per jenis':'種類別','Per sumber':'ソース別','Per album':'アルバム別','Tahun terbanyak':'一番多い年','Rentang tahun':'年の範囲','Album terbanyak':'一番多いアルバム','Dari berapa album':'アルバムの数','Lainnya':'その他','Statistik: satu gambar berisi ringkasan daftarmu. Seret, salin, atau unduh.':'統計:リストの要約を1枚に。ドラッグ、コピー、ダウンロードできます。','Urutan oshi-ku':'私の推しランキング','Juara hatiku':'私の心の優勝者','{n} peserta · {m} duel':'{n}人参加・{m}試合','Diurutkan lewat {n} duel':'{n}回のデュエルで並べ替え','Browser ini menolak menyalin. Coba unduh gambarnya.':'コピーできませんでした。画像をダウンロードしてください。'
 };
 const JA_HTML = {
  insp:'<a href="https://taylor.fyi/top/" target="_blank" rel="noopener">taylor.fyi/top</a>(<a href="https://x.com/taylor_" target="_blank" rel="noopener">@taylor_</a> さん作)に着想を得ました。アイデアを借りてJKT48向けに作ったファンで、公式な関係はありません。',
@@ -1019,6 +1028,49 @@ function renderFilters(){
   if (state.kind==='oshi') html += `<button class="chip" data-battle="1">${tr('⚔ Bingung? Oshi Battle')}</button>`;
   host.innerHTML = html;
 }
+/* ---------- sinergi antar fitur: penanda BARU, petunjuk kontekstual, tantangan bandingkan dari link teman ---------- */
+let CHAL = null, nudgeOverride = null;
+const lsGet = k => { try { return localStorage.getItem(k); } catch(e){ return null; } }, lsSet = (k,v) => { try { localStorage.setItem(k,v); } catch(e){} };
+const NEW_LOOKS = ['rarity','strip','receipt','stats'], NEW_UNTIL = Date.UTC(2026,11,4);
+const isNewLook = k => NEW_LOOKS.includes(k) && Date.now()<NEW_UNTIL && lsGet('jkt48seen_'+k)!=='1';
+function setLook(l){ state.look=l; lsSet('jkt48seen_'+l,'1'); save(); refresh(); const lk=$('#looks'); if (lk) lk.scrollIntoView({behavior:'smooth',block:'center'}); }
+function renderNudge(){
+  const host=$('#nudge'), n=cur().length; let h=null;
+  if (nudgeOverride && nudgeOverride.kind===state.kind) h=nudgeOverride;
+  else if (state.kind==='oshi' && n>=3 && lsGet('jkt48n_battle')!=='1') h={id:'battle',text:'Bingung urutannya? Coba Oshi Battle: pilih satu dari dua sampai ketemu.',btn:'Coba',act:()=>btOpen()};
+  else if ((state.kind==='album'||state.kind==='song') && n>=3 && lsGet('jkt48n_receipt')!=='1' && lsGet('jkt48seen_receipt')!=='1') h={id:'receipt',text:'Coba format Receipt: daftarmu jadi struk belanja.',btn:'Coba',act:()=>setLook('receipt')};
+  if (!h) { host.hidden=true; host._h=null; return; }
+  host.innerHTML=`<span>${esc(tr(h.text))}</span><button class="btn dark" type="button" data-nact>${esc(tr(h.btn))}</button><button class="linkbtn" type="button" data-nx aria-label="${esc(tr('Tutup'))}">×</button>`;
+  host._h=h; host.hidden=false;
+}
+$('#nudge').onclick = e => {
+  const host=$('#nudge'), h=host._h; if (!h) return; const act=e.target.closest('[data-nact]'), x=e.target.closest('[data-nx]'); if (!act && !x) return;
+  if (h.id==='rarity') nudgeOverride=null; else lsSet('jkt48n_'+h.id,'1');
+  host.hidden=true; host._h=null; if (act) h.act();
+};
+function cmpHtml(d){
+  const mine=state.picks[d.k]||[]; if (!mine.length) return `<p>${tr('Daftarmu masih kosong untuk jenis ini. Isi dulu di tab-nya.')}</p>`;
+  const kf=t=>keyOf(t)||String(t).toLowerCase().trim();
+  const A=mine.map((p,i)=>({k:kf(p.title),p,i})), B=d.p.slice(0,20).map((r,i)=>({k:kf(r[0]),title:String(r[0]),img:(typeof r[2]==='string'&&/^https:\/\//.test(r[2]))?r[2]:placeholder(String(r[0])),i}));
+  const bk=new Map(B.map(b=>[b.k,b])), ak=new Set(A.map(a=>a.k));
+  const both=A.filter(a=>bk.has(a.k)).map(a=>({title:a.p.title,img:a.p.img,a:a.i+1,b:bk.get(a.k).i+1}));
+  const onlyA=A.filter(a=>!bk.has(a.k)).map(a=>({title:a.p.title,img:a.p.img})), onlyB=B.filter(b=>!ak.has(b.k)).map(b=>({title:b.title,img:b.img}));
+  const score=Math.round(200*both.length/(A.length+B.length));
+  const row=(x,extra)=>`<li><img src="${esc(x.img)}" alt="" onerror="this.onerror=null;this.src=placeholder('?')"><div><b>${esc(x.title)}</b>${extra?`<span>${esc(extra)}</span>`:''}</div></li>`;
+  const sec=(t,l,f)=>l.length ? `<div class="themehead">${tr(t,{n:l.length})}</div><ul class="cmpl">${l.map(f).join('')}</ul>` : '';
+  return `<div class="cmpscore"><b>${tr('Kecocokan {n}%',{n:score})}</b></div>` + (both.length ? '' : `<p>${tr('Tidak ada yang sama.')}</p>`)
+    + sec('Sama-sama ada ({n})',both,x=>row(x,tr('kamu #{a} · temanmu #{b}',{a:x.a,b:x.b}))) + sec('Cuma di daftarmu ({n})',onlyA,x=>row(x)) + sec('Cuma di daftar temanmu ({n})',onlyB,x=>row(x));
+}
+function renderChallenge(){                                      // dibuka dari tombol "Bandingkan dengan daftarku" di halaman link teman
+  const host=$('#challenge');
+  if (!CHAL || CHAL.d.k!==state.kind) { host.hidden=true; return; }
+  const nm=CHAL.name||tr('temanmu');
+  host.innerHTML=`<div class="lt"><span style="flex:1">${esc(tr('Kamu diajak membandingkan dengan daftar {nama}.',{nama:nm}))}</span><button class="linkbtn" type="button" data-cx aria-label="${esc(tr('Tutup'))}">×</button></div>`
+    + (cur().length<2 ? `<p style="margin:0;color:var(--mute)">${tr('Pilih minimal 2 untuk melihat kecocokannya.')}</p>` : cmpHtml(CHAL.d));
+  host.hidden=false;
+}
+$('#challenge').onclick = e => { if (e.target.closest('[data-cx]')) { CHAL=null; renderChallenge(); } };
+function btGo(look){ btApply(BT.mode==='sort'?'sort':'replace'); setTimeout(()=>{ nudgeOverride=null; setLook(look); renderNudge(); },250); }
 /* statistik langsung di bawah daftar: berubah setiap kali pilihan ditambah, dihapus, atau diurutkan (tanpa perlu ekspor) */
 let genReady = false;
 function renderLiveStats(){
@@ -1042,7 +1094,7 @@ function renderList(){
   $('#list').innerHTML = arr.map((p,i)=>`<li class="item" draggable="true" data-i="${i}">
     <span class="n">${i+1}</span><img src="${esc(p.img)}" alt="${esc(p.title)}" onerror="this.onerror=null;this.src=placeholder(this.alt)"><div class="t"><b>${esc(p.title)}</b><span>${esc(p.sub)}</span></div>
     <button data-up="${i}" title="${tr('Naik')}">↑</button><button data-rm="${i}" title="${tr('Hapus')}">×</button></li>`).join('');
-  save(); refresh(); renderLiveStats();
+  save(); refresh(); renderLiveStats(); renderNudge(); renderChallenge();
 }
 
 function placeholder(t){
@@ -1883,6 +1935,7 @@ function renderLooks(o){
   }
   host.querySelectorAll('.look').forEach(b=>{
     b.classList.toggle('on',b.dataset.look===state.look);
+    { let bd=b.querySelector('.newdot'); if (isNewLook(b.dataset.look)) { if (!bd) { bd=document.createElement('em'); bd.className='newdot'; b.appendChild(bd); } bd.textContent=tr('BARU'); } else if (bd) bd.remove(); }
     const mc=b.querySelector('canvas').getContext('2d'), sub={...o,look:b.dataset.look,num:false,picks:o.picks.slice(0,10)};
     mc.setTransform(1,0,0,1,0,0); mc.clearRect(0,0,160,90); mc.save(); mc.scale(0.1,0.1);
     if (sub.picks.length) scene(mc,1600,900,sub,1); else { mc.fillStyle='#8883'; mc.fillRect(0,0,1600,900); }
@@ -2190,7 +2243,7 @@ async function btShare(how){
 const BT = { mode:'', size:8, S:[], Q:[], it:null, lo:0, hi:0, n:0, est:0, hist:[], pool:[], round:[], next:[], pi:0, rno:1, L:null, R:null, res:[] };
 const shuffled = a => { a=a.slice(); for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
 function btPool(){ const q=state.q.trim().toLowerCase(); return cache.oshi.filter(x=>passFilter(x) && (!q || qMatch(x,q))); }
-function btOpen(){ $('#battle').hidden=false; document.body.style.overflow='hidden'; btSetup(); }
+function btOpen(){ lsSet('jkt48n_battle','1'); $('#battle').hidden=false; document.body.style.overflow='hidden'; btSetup(); }
 function btClose(){ $('#battle').hidden=true; document.body.style.overflow=''; }
 function btSetup(){
   const mine=cur().length, pool=btPool().length;
@@ -2253,6 +2306,7 @@ function btResult(list){
   BT.res=list; const sort=BT.mode==='sort', shown=sort ? list : list.slice(0,Math.min(MAX,list.length));
   $('#bBody').innerHTML = `<div class="bstat">${tr('Ini urutan hatimu')}</div><ol class="bres">${shown.map((w,i)=>`<li><span class="n">${i+1}</span><img src="${esc(w.p.img)}" alt="${esc(w.p.title)}" onerror="this.onerror=null;this.src=placeholder(this.alt)"><div><b>${esc(w.p.title)}</b><span>${i===0&&!sort?tr('Juara hatimu'):esc(w.p.sub||'')}</span></div></li>`).join('')}</ol>
     <div class="bfoot2">${sort ? `<button class="btn dark" type="button" data-bapply="sort">${tr('Simpan urutan ini')}</button>` : `<button class="btn dark" type="button" data-bapply="replace">${tr('Jadikan top-ku')}</button><button class="btn" type="button" data-bapply="add">${tr('Tambah ke top-ku')}</button>`}<button class="btn" type="button" data-bagain>${tr('Battle lagi!')}</button></div>
+    <div class="bfoot2"><button class="btn" type="button" data-bgo="rarity">${tr('Lihat sebagai kartu Rarity')}</button><button class="btn" type="button" data-bgo="stats">${tr('Lihat statistik')}</button></div>
     <div class="bfoot2"><button class="btn" type="button" data-bimg="dl">${tr('Unduh gambar')}</button><button class="btn" type="button" data-bimg="copy">${tr('Salin gambar')}</button></div><div class="sub" id="bMsg"></div>`;
 }
 function btApply(how){
@@ -2260,6 +2314,7 @@ function btApply(how){
   if (how==='sort') { const ord=new Map(picks.map((p,i)=>[p,i])); arr.sort((a,b)=>ord.get(a)-ord.get(b)); msg=tr('Daftarmu sudah diurutkan.'); }
   else if (how==='replace') { arr.splice(0,arr.length,...picks.slice(0,MAX).map(p=>({...p}))); msg=tr('Ditambahkan {n} oshi.',{n:Math.min(MAX,picks.length)}); }
   else { const have=new Set(arr.map(p=>String(p.id))); let n=0; for (const p of picks) { if (arr.length>=MAX) break; if (have.has(String(p.id))) continue; arr.push({...p}); n++; } msg = n ? tr('Ditambahkan {n} oshi.',{n}) : tr('Maksimal {n}.',{n:MAX}); }
+  nudgeOverride={id:'rarity',kind:'oshi',text:'Urutan baru! Lihat sebagai kartu Rarity: #1 jadi SSR.',btn:'Lihat',act:()=>setLook('rarity')};
   btClose(); renderList(); renderResults().then(()=>{ $('#msg').textContent=msg; });
 }
 $('#bClose').onclick = btClose;
@@ -2273,6 +2328,7 @@ $('#bBody').onclick = e => {
   else if ((b=t.closest('[data-bapply]'))) btApply(b.dataset.bapply);
   else if (t.closest('[data-bagain]')) btSetup();
   else if ((b=t.closest('[data-bimg]'))) btShare(b.dataset.bimg);
+  else if ((b=t.closest('[data-bgo]'))) btGo(b.dataset.bgo);
 };
 document.addEventListener('keydown', e => {
   if ($('#battle').hidden) return;
@@ -2282,18 +2338,7 @@ document.addEventListener('keydown', e => {
 /* ---------- bandingkan daftarmu dengan link share temanmu ---------- */
 function cmpRun(){
   const out=$('#cmpOut'), d=parseShareStr($('#cmpIn').value.trim());
-  if (!d) { out.innerHTML=`<p>${tr('Link itu bukan link daftar JKT48 Top 10.')}</p>`; return; }
-  const mine=state.picks[d.k]||[]; if (!mine.length) { out.innerHTML=`<p>${tr('Daftarmu masih kosong untuk jenis ini. Isi dulu di tab-nya.')}</p>`; return; }
-  const kf=t=>keyOf(t)||String(t).toLowerCase().trim();
-  const A=mine.map((p,i)=>({k:kf(p.title),p,i})), B=d.p.slice(0,20).map((r,i)=>({k:kf(r[0]),title:String(r[0]),img:(typeof r[2]==='string'&&/^https:\/\//.test(r[2]))?r[2]:placeholder(String(r[0])),i}));
-  const bk=new Map(B.map(b=>[b.k,b])), ak=new Set(A.map(a=>a.k));
-  const both=A.filter(a=>bk.has(a.k)).map(a=>({title:a.p.title,img:a.p.img,a:a.i+1,b:bk.get(a.k).i+1}));
-  const onlyA=A.filter(a=>!bk.has(a.k)).map(a=>({title:a.p.title,img:a.p.img})), onlyB=B.filter(b=>!ak.has(b.k)).map(b=>({title:b.title,img:b.img}));
-  const score=Math.round(200*both.length/(A.length+B.length));
-  const row=(x,extra)=>`<li><img src="${esc(x.img)}" alt="" onerror="this.onerror=null;this.src=placeholder('${'?'}')"><div><b>${esc(x.title)}</b>${extra?`<span>${esc(extra)}</span>`:''}</div></li>`;
-  const sec=(t,l,f)=>l.length ? `<div class="themehead">${tr(t,{n:l.length})}</div><ul class="cmpl">${l.map(f).join('')}</ul>` : '';
-  out.innerHTML = `<div class="cmpscore"><b>${tr('Kecocokan {n}%',{n:score})}</b></div>` + (both.length ? '' : `<p>${tr('Tidak ada yang sama.')}</p>`)
-    + sec('Sama-sama ada ({n})',both,x=>row(x,tr('kamu #{a} · temanmu #{b}',{a:x.a,b:x.b}))) + sec('Cuma di daftarmu ({n})',onlyA,x=>row(x)) + sec('Cuma di daftar temanmu ({n})',onlyB,x=>row(x));
+  out.innerHTML = d ? cmpHtml(d) : `<p>${tr('Link itu bukan link daftar JKT48 Top 10.')}</p>`;
 }
 $('#cmpGo').onclick = cmpRun;
 $('#cmpIn').onkeydown = e => { if (e.key==='Enter') cmpRun(); };
@@ -2391,7 +2436,7 @@ $('#delList').onclick = () => {
 };
 $('#clear').onclick=()=>{ state.picks[state.kind]=[]; renderList(); renderResults(); };
 
-$('#looks').onclick=e=>{ const b=e.target.closest('.look'); if(!b) return; state.look=b.dataset.look; refresh(); };
+$('#looks').onclick=e=>{ const b=e.target.closest('.look'); if(!b) return; state.look=b.dataset.look; lsSet('jkt48seen_'+b.dataset.look,'1'); refresh(); };
 $('#swNum').onclick=()=>{ state.num=!state.num; $('#swNum').classList.toggle('on',state.num); refresh(); };
 /* tema poster + font */
 function renderThemeUI(){
@@ -2631,6 +2676,7 @@ async function showView(d){
   scene($('#cvView').getContext('2d'),1600,900,o,1);
   $('#vList').innerHTML=picks.map((p,i)=>`<li><span class="n">${i+1}</span><img src="${esc(p.img)}" alt=""><div><b>${esc(p.title)}</b><span>${esc(p.sub)}${p.plays?` · ${tr('{n}× diputar',{n:p.plays.toLocaleString(LOC())})}`:''}</span></div></li>`).join('');
   $('#vDl').onclick=()=>dlCanvas($('#cvView'),'jkt48-top.png');
+  $('#vCmp').onclick=()=>{ CHAL={d,name}; $('#vMake').onclick(); const t=document.querySelector('.tab[data-kind="'+d.k+'"]'); if (t) t.click(); };
   $('#vMake').onclick=()=>{ document.body.classList.remove('view'); document.title='JKT48 Top 10'; history.replaceState(null,'',location.pathname+location.search); renderList(); renderResults(); };
 }
 </script>
