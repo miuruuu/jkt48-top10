@@ -721,9 +721,36 @@ async function loadWikiMedia(kind){
   out.sort((a,b)=>a.title.localeCompare(b.title));
   return out;
 }
-/* ex-member: kategori "JKT48 Graduates"; angkatan, tahun aktif dan foto dibaca dari infobox halaman member */
-async function loadExMembers(){
-  const hit=cacheRead('ex'); if (hit) return hit;
+/* foto ex-member: infobox biasanya berisi foto terbaru setelah lulus, jadi cari file era JKT48 ("<Nama> JKT48 <tahun>", foto profil resmi berseragam) dan pakai yang terbaru sampai tahun lulus */
+function exPhotoPick(files, endYr){
+  const cand = files.map(t=>{ const m=t.match(/^File:.* JKT48 (20\d\d)(?: \((\d)\))?\.(?:jpe?g|png|webp)$/i); return m ? {t,y:+m[1],n:+(m[2]||0)} : null; }).filter(Boolean);
+  if (!cand.length) return null;
+  const ok = endYr ? cand.filter(c=>c.y<=endYr) : cand, pool = ok.length ? ok : cand;
+  pool.sort((a,b)=>b.y-a.y || a.n-b.n);
+  return pool[0].t;
+}
+async function exEraPhotos(out){
+  try {
+    const files = {}, chunks=[]; for (let i=0;i<out.length;i+=20) chunks.push(out.slice(i,i+20));
+    await Promise.all(chunks.map(async grp=>{
+      let cont='';
+      do {
+        const j=await wikiGet('action=query&prop=images&imlimit=500&pageids='+grp.map(x=>x.id.slice(2)).join('|')+cont);
+        Object.values(j.query.pages||{}).forEach(p=>{ if (p.images) (files['x:'+p.pageid] = files['x:'+p.pageid] || []).push(...p.images.map(i=>i.title)); });
+        cont = j.continue && j.continue.imcontinue ? '&imcontinue='+encodeURIComponent(j.continue.imcontinue) : '';
+      } while (cont);
+    }));
+    const pick = {}; out.forEach(x=>{ const t=exPhotoPick(files[x.id]||[], x.end); if (t) pick[t]=(pick[t]||[]).concat(x); });
+    const titles = Object.keys(pick), tch=[]; for (let i=0;i<titles.length;i+=40) tch.push(titles.slice(i,i+40));
+    await Promise.all(tch.map(async grp=>{
+      const j=await wikiGet('action=query&prop=imageinfo&iiprop=url&titles='+encodeURIComponent(grp.join('|')));
+      Object.values(j.query.pages||{}).forEach(p=>{ const u=p.imageinfo&&p.imageinfo[0]&&p.imageinfo[0].url; if (u && pick[p.title]) pick[p.title].forEach(x=>{ x.img=wikiThumb(u,true); }); });
+    }));
+  } catch(e){}
+  out.forEach(x=>{ delete x.end; });
+}
+/* ex-member: kategori "JKT48 Graduates"; angkatan, tahun aktif dan foto dibaca dari infobox halaman member */async function loadExMembers(){
+  const hit=cacheRead('ex2'); if (hit) return hit;
   const m=await wikiCat('JKT48 Graduates'), out=[];
   const chunks=[]; for (let i=0;i<m.length;i+=20) chunks.push(m.slice(i,i+20));
   await Promise.all(chunks.map(async grp=>{
@@ -733,12 +760,13 @@ async function loadExMembers(){
         const w=(p.revisions&&p.revisions[0].slots.main['*'])||'', grp=(w.match(/\|\s*group\s*=\s*([^\n|]*)/)||[])[1]||'';
         if (grp && !/JKT48/i.test(grp)) return;                       // hanya JKT48
         const gen=(w.match(/(\d+)(?:st|nd|rd|th) Generation/)||[])[1], act=w.match(/\|\s*active\s*=\s*(\d{4})\s*-\s*(\d{4})/);
-        out.push({ id:'x:'+p.pageid, title:p.title, sub:['Ex-member', gen?'Gen '+gen:'', act?act[1]+'–'+act[2]:''].filter(Boolean).join(' · '), team:'X', img:p.thumbnail?wikiThumb(p.thumbnail.source,true):placeholder(p.title) });
+        out.push({ id:'x:'+p.pageid, title:p.title, sub:['Ex-member', gen?'Gen '+gen:'', act?act[1]+'–'+act[2]:''].filter(Boolean).join(' · '), team:'X', end:act?+act[2]:0, img:p.thumbnail?wikiThumb(p.thumbnail.source,true):placeholder(p.title) });
       });
     } catch(e){}
   }));
   out.sort((a,b)=>a.title.localeCompare(b.title));
-  if (out.length) cacheWrite('ex', out);
+  await exEraPhotos(out);
+  if (out.length) cacheWrite('ex2', out);
   return out;
 }
 /* ---------- pencarian bahasa Jepang: kana -> romaji, plus nama/judul Jepang dari AKB48 Wiki (dimuat malas saat orang mengetik Jepang) ---------- */
