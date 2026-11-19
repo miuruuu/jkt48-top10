@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; media-src 'self' blob: https:; connect-src 'self' https://itunes.apple.com https://musicbrainz.org https://id.wikipedia.org https://akb48.fandom.com https://api.stats.fm https://ws.audioscrobbler.com; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>JKT48 Top 10</title>
 <meta name="description" content="web iseng buat nyusun top 10 album, lagu, oshi, atau setlist JKT48 lu. Fan-made, unofficial, just for fun.">
 <meta property="og:type" content="website">
@@ -841,7 +843,7 @@ async function renderResults(){
   const shown = items.slice(0,300);
   $('#results').innerHTML = manual + photoTile + shown.map(x =>
     `<button class="res ${used.has(String(x.id))?'used':''}" data-id="${esc(x.id)}" title="${esc(x.title)}">` +
-    (x.img ? `<img loading="lazy" src="${x.img}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'ph',textContent:resIni(this.closest('.res').title)}))">` : `<div class="ph">${esc(resIni(x.title))}</div>`) + `<span class="cap">${esc(x.title)}</span></button>`).join('');
+    (x.img ? `<img loading="lazy" src="${esc(x.img)}" alt="" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'ph',textContent:resIni(this.closest('.res').title)}))">` : `<div class="ph">${esc(resIni(x.title))}</div>`) + `<span class="cap">${esc(x.title)}</span></button>`).join('');
   $('#msg').textContent = !items.length && cache[state.kind].length ? tr('Tidak ketemu. Klik + untuk menambah manual.') : (items.length>300 ? tr('Menampilkan 300 dari {n}. Ketik untuk mencari.',{n:items.length}) : '');
 }
 const FILTERS = {
@@ -863,7 +865,7 @@ function renderList(){
   const arr = cur();
   $('#empty').style.display = arr.length ? 'none' : 'block';
   $('#list').innerHTML = arr.map((p,i)=>`<li class="item" draggable="true" data-i="${i}">
-    <span class="n">${i+1}</span><img src="${p.img}" alt="${esc(p.title)}" onerror="this.onerror=null;this.src=placeholder(this.alt)"><div class="t"><b>${esc(p.title)}</b><span>${esc(p.sub)}</span></div>
+    <span class="n">${i+1}</span><img src="${esc(p.img)}" alt="${esc(p.title)}" onerror="this.onerror=null;this.src=placeholder(this.alt)"><div class="t"><b>${esc(p.title)}</b><span>${esc(p.sub)}</span></div>
     <button data-up="${i}" title="${tr('Naik')}">↑</button><button data-rm="${i}" title="${tr('Hapus')}">×</button></li>`).join('');
   save(); refresh();
 }
@@ -1591,7 +1593,7 @@ function startSpin(o){
 function renderLink(){
   const arr=cur(), nm=$('#nm').value.trim();
   $('#linkTitle').innerHTML = `${listTitleText(arr.length||MAX,state.kind)} <span style="color:var(--mute);font-weight:400;font-size:13px">${nm?tr('oleh')+' '+esc(nm):''}</span>`;
-  $('#slots').innerHTML = Array.from({length:Math.max(MAX,arr.length)},(_,i)=>`<div>${arr[i]?`<img src="${arr[i].img}" alt="">`:''}</div>`).join('');
+  $('#slots').innerHTML = Array.from({length:Math.max(MAX,arr.length)},(_,i)=>`<div>${arr[i]?`<img src="${esc(arr[i].img)}" alt="">`:''}</div>`).join('');
 }
 function renderLooks(o){
   renderPbUI(); renderSlUI();
