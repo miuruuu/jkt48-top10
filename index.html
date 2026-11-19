@@ -568,22 +568,15 @@ async function mbGet(path){
 }
 async function loadITunes(kind){
   const entity = kind==='album' ? 'album' : 'song', out = [];
-  for (const term of ['JKT48','JKT48 '+(kind==='album'?'album':'lagu')]) {
-    try {
-      const j = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(term)}&entity=${entity}&limit=200&country=ID`).then(r=>r.json());
-      for (const r of j.results) if (/JKT48/i.test(r.artistName)) out.push(norm(r,kind));
-    } catch(e){}
-  }
+  const res = await Promise.all(['JKT48','JKT48 '+(kind==='album'?'album':'lagu')].map(term=>fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(term)}&entity=${entity}&limit=200&country=ID`).then(r=>r.json()).catch(()=>null)));
+  for (const j of res) if (j) for (const r of j.results) if (/JKT48/i.test(r.artistName)) out.push(norm(r,kind));
   return out;
 }
 async function loadITunesTracks(albums){
   const out = [], ids = albums.filter(a=>/^\d+$/.test(a.id)).map(a=>a.id);
-  for (let i=0;i<ids.length;i+=25) {
-    try {
-      const j = await fetch(`https://itunes.apple.com/lookup?id=${ids.slice(i,i+25).join(',')}&entity=song&limit=200&country=ID`).then(r=>r.json());
-      for (const r of j.results) if (r.wrapperType==='track' && /JKT48/i.test(r.artistName)) out.push(norm(r,'song'));
-    } catch(e){}
-  }
+  const groups=[]; for (let i=0;i<ids.length;i+=25) groups.push(ids.slice(i,i+25));
+  const res = await Promise.all(groups.map(g=>fetch(`https://itunes.apple.com/lookup?id=${g.join(',')}&entity=song&limit=200&country=ID`).then(r=>r.json()).catch(()=>null)));   // semua kelompok sekaligus
+  for (const j of res) if (j) for (const r of j.results) if (r.wrapperType==='track' && /JKT48/i.test(r.artistName)) out.push(norm(r,'song'));
   return out;
 }
 async function loadMB(kind){
@@ -601,7 +594,7 @@ async function loadMB(kind){
         const j = await mbGet(`/recording?artist=${MB_ARTIST}&limit=100&offset=${off}`);
         for (const r of j.recordings) out.push({ id:'mb:'+r.id, title:r.title, sub:'JKT48', img:null, src:'rilis' });
         if (off+100 >= j['recording-count']) break;
-        $('#msg').textContent = tr('Memuat lagu... {a}/{b}',{a:Math.min(off+100,j['recording-count']),b:j['recording-count']});
+        say('song', tr('Memuat lagu... {a}/{b}',{a:Math.min(off+100,j['recording-count']),b:j['recording-count']}));
         await wait(1100);
       }
     }
@@ -647,13 +640,13 @@ async function fetchStagePosters(){
   const base='https://akb48.fandom.com/api.php?origin=*&format=json&', g=async q=>(await fetch(base+q)).json(), map={};
   try {
     const titles=new Set();
-    for (const cat of ['JKT48 Stages','JKT48 Team Stages','JKT48 Trainee Stages','JKT48 Special Stages','JKT48 Waiting Stages']) {
-      const j=await g('action=query&list=categorymembers&cmtitle='+encodeURIComponent('Category:'+cat)+'&cmlimit=100&cmnamespace=0');
-      (j.query&&j.query.categorymembers||[]).forEach(m=>titles.add(m.title));
-    }
+    const sets=await Promise.all(['JKT48 Stages','JKT48 Team Stages','JKT48 Trainee Stages','JKT48 Special Stages','JKT48 Waiting Stages'].map(cat=>g('action=query&list=categorymembers&cmtitle='+encodeURIComponent('Category:'+cat)+'&cmlimit=100&cmnamespace=0').catch(()=>null)));
+    sets.forEach(j=>(j&&j.query&&j.query.categorymembers||[]).forEach(m=>titles.add(m.title)));
     const list=[...titles];
-    for (let i=0;i<list.length;i+=20) {
-      const j=await g('action=query&prop=pageimages|revisions&rvprop=content&rvslots=main&rvsection=0&piprop=thumbnail&pithumbsize=600&titles='+encodeURIComponent(list.slice(i,i+20).join('|')));
+    const chunks=[]; for (let i=0;i<list.length;i+=20) chunks.push(list.slice(i,i+20));
+    const pagesJ=await Promise.all(chunks.map(ch=>g('action=query&prop=pageimages|revisions&rvprop=content&rvslots=main&rvsection=0&piprop=thumbnail&pithumbsize=600&titles='+encodeURIComponent(ch.join('|'))).catch(()=>null)));
+    for (const j of pagesJ) {
+      if (!j) continue;
       Object.values(j.query.pages||{}).forEach(p=>{
         const w=(p.revisions&&p.revisions[0].slots.main['*'])||'', b=w.match(/'''([^']{3,80})'''/), nm=b?b[1].replace(/["“”]/g,'').trim():'';
         if (nm && !/PAGENAME/.test(nm) && p.thumbnail) { const k=keyOf(nm); if (k && !map[k]) map[k]='https://wsrv.nl/?url='+encodeURIComponent(p.thumbnail.source.replace(/^https?:\/\//,'').replace(/\/revision\/.*$/,''))+'&w=600'; }
@@ -664,13 +657,13 @@ async function fetchStagePosters(){
 }
 const posterFor = (map,title) => { const k=keyOf(title); if (map[k]) return map[k]; if (k.length>=6) { const hit=Object.keys(map).find(x=>x.includes(k)); if (hit) return map[hit]; } return null; };
 async function loadSetlists(){
-  const out=[]; const posters=await fetchStagePosters();
+  const out=[]; const postersP=fetchStagePosters();     // poster dan daftar Wikipedia diambil bersamaan
   try {
     const j = await fetch('https://id.wikipedia.org/w/api.php?action=parse&page='+encodeURIComponent('Daftar lagu yang direkam oleh JKT48')+'&prop=text&format=json&origin=*&formatversion=2').then(r=>r.json());
     const doc = new DOMParser().parseFromString(j.parse.text,'text/html');
     const t = [...doc.querySelectorAll('table')].find(tb=>/Nama setlist/i.test((tb.rows[1]&&tb.rows[1].cells[0]&&tb.rows[1].cells[0].textContent)||''));
     if (!t) return out;
-    const seen = new Set();
+    const posters = await postersP, seen = new Set();
     for (const r of [...t.rows].slice(2)) {
       const c = [...r.cells]; if (!c.length) continue; const first = c[0];
       if (!(first.rowSpan>1 || c.length>=5)) continue;                       // baris pertama sebuah setlist
@@ -694,22 +687,25 @@ const wikiClean = t => t.replace(/\s*\((JKT48|Digital)[^)]*\)\s*$/i,'').replace(
 const wikiThumb = (u,portrait) => 'https://wsrv.nl/?url='+encodeURIComponent(u.replace(/^https?:\/\//,'').replace(/\/revision\/.*$/,''))+(portrait?'&w=600&h=900&fit=cover&a=top':'&w=400');
 async function loadWikiMedia(kind){
   if (kind==='song') return (await wikiCat('JKT48 Songs')).map(x=>({ id:'wk:'+x.pageid, title:wikiClean(x.title), sub:'JKT48 · AKB48 Wiki', img:null, src:'wiki' }));
-  const all=[]; for (const c of ['JKT48 Singles','JKT48 Original Singles','JKT48 Digital Singles','JKT48 Albums','JKT48 Album']) all.push(...await wikiCat(c));
+  const all=(await Promise.all(['JKT48 Singles','JKT48 Original Singles','JKT48 Digital Singles','JKT48 Albums','JKT48 Album'].map(wikiCat))).flat();
   const uniq=[...new Map(all.filter(x=>!/\((JKT48 )?(Song|Cover)\)$/i.test(x.title) && !/^(JKT48|Oricon)$/i.test(x.title.trim())).map(x=>[x.pageid,x])).values()], out=[];
-  for (let i=0;i<uniq.length;i+=20) {
-    const grp=uniq.slice(i,i+20); let pages={};
+  const groups=[]; for (let i=0;i<uniq.length;i+=20) groups.push(uniq.slice(i,i+20));
+  await Promise.all(groups.map(async grp=>{
+    let pages={};
     try { pages=(await wikiGet('action=query&prop=pageimages&piprop=thumbnail&pithumbsize=400&pageids='+grp.map(x=>x.pageid).join('|'))).query.pages||{}; } catch(e){}
     grp.forEach(x=>{ const th=pages[x.pageid]&&pages[x.pageid].thumbnail; out.push({ id:'wk:'+x.pageid, title:wikiClean(x.title), sub:'JKT48 · AKB48 Wiki', img:th?wikiThumb(th.source):null, type:/Single\)/i.test(x.title)?'single':'album' }); });
-  }
+  }));
+  out.sort((a,b)=>a.title.localeCompare(b.title));
   return out;
 }
 /* ex-member: kategori "JKT48 Graduates"; angkatan, tahun aktif dan foto dibaca dari infobox halaman member */
 async function loadExMembers(){
   const hit=cacheRead('ex'); if (hit) return hit;
   const m=await wikiCat('JKT48 Graduates'), out=[];
-  for (let i=0;i<m.length;i+=20) {
+  const chunks=[]; for (let i=0;i<m.length;i+=20) chunks.push(m.slice(i,i+20));
+  await Promise.all(chunks.map(async grp=>{
     try {
-      const j=await wikiGet('action=query&prop=pageimages|revisions&rvprop=content&rvslots=main&rvsection=0&piprop=thumbnail&pithumbsize=600&pageids='+m.slice(i,i+20).map(x=>x.pageid).join('|'));
+      const j=await wikiGet('action=query&prop=pageimages|revisions&rvprop=content&rvslots=main&rvsection=0&piprop=thumbnail&pithumbsize=600&pageids='+grp.map(x=>x.pageid).join('|'));
       Object.values(j.query.pages||{}).forEach(p=>{
         const w=(p.revisions&&p.revisions[0].slots.main['*'])||'', grp=(w.match(/\|\s*group\s*=\s*([^\n|]*)/)||[])[1]||'';
         if (grp && !/JKT48/i.test(grp)) return;                       // hanya JKT48
@@ -717,7 +713,7 @@ async function loadExMembers(){
         out.push({ id:'x:'+p.pageid, title:p.title, sub:['Ex-member', gen?'Gen '+gen:'', act?act[1]+'–'+act[2]:''].filter(Boolean).join(' · '), team:'X', img:p.thumbnail?wikiThumb(p.thumbnail.source,true):placeholder(p.title) });
       });
     } catch(e){}
-  }
+  }));
   out.sort((a,b)=>a.title.localeCompare(b.title));
   if (out.length) cacheWrite('ex', out);
   return out;
@@ -776,31 +772,39 @@ function cacheRead(kind){ try { const d = JSON.parse(localStorage.getItem(DATA_K
 function cacheWrite(kind,items){ try { localStorage.setItem(DATA_KEY+kind, JSON.stringify({t:Date.now(),items})); } catch(e){} }
 /* satu pemuatan per jenis data, walau dipanggil berkali-kali bersamaan (ganti tab cepat, klik beruntun) */
 const loading = {};
+const say = (kind,t) => { if (state.kind===kind) $('#msg').textContent = t; };   // pesan status hanya tampil di tab yang sedang dibuka
 function load(kind){ return loading[kind] || (loading[kind] = loadInner(kind).finally(()=>{ delete loading[kind]; })); }
 async function loadInner(kind){
   if (cache[kind].length) return;
   if (kind==='oshi') { cache.oshi = oshiItems(); loadExMembers().then(ex=>{ if (!ex.length) return; cache.oshi = cache.oshi.concat(ex); if (state.kind==='oshi') renderResults(); }); return; }
   if (kind==='setlist') { // setlist teater dari Wikipedia Indonesia (di-cache seperti data lain)
     const hit0 = cacheRead('setlist'); if (hit0) { cache.setlist = hit0.map(x=>({...x, img:x.poster||setlistArt(x.title,x.tm,x.yr)})); return; } // poster dibuat ulang, tidak disimpan
-    $('#msg').textContent = tr('Memuat daftar setlist teater...');
+    say('setlist', tr('Memuat daftar setlist teater...'));
     cache.setlist = await loadSetlists(); if (cache.setlist.length) cacheWrite('setlist', cache.setlist.map(({img,...r})=>r));
-    $('#msg').textContent = cache.setlist.length ? '' : tr('Gagal memuat data. Buka lewat server (http), bukan file.'); return;
+    say('setlist', cache.setlist.length ? '' : tr('Gagal memuat data. Buka lewat server (http), bukan file.')); return;
   }
   const hit = cacheRead(kind); if (hit) { cache[kind] = hit; return; }
-  $('#msg').textContent = tr('Memuat daftar dari iTunes dan MusicBrainz...');
-  let out;
+  say(kind, tr('Memuat daftar dari iTunes dan MusicBrainz...'));
+  /* bagian cepat (iTunes, Wikipedia, AKB48 Wiki) langsung ditampilkan; MusicBrainz (1 permintaan per detik) menyusul di latar belakang */
+  let quick, rest;
   if (kind==='album') {
-    const [it, mb] = [await loadITunes('album'), await loadMB('album')];
-    out = mergeLists(it, mb, await loadWikiMedia('album'));
+    const [it, wm] = await Promise.all([loadITunes('album'), loadWikiMedia('album')]);
+    quick = mergeLists(it, wm);
+    rest = async () => mergeLists(it, await loadMB('album'), wm);
   } else {
     await load('album');
-    const it = mergeLists(await loadITunes('song'), await loadITunesTracks(cache.album));
-    const mb = await loadMB('song'), wk = await loadWiki();
-    out = mergeLists(it, mb, wk, await loadWikiMedia('song'));
+    const [its, itt, wk, wm] = await Promise.all([loadITunes('song'), loadITunesTracks(cache.album), loadWiki(), loadWikiMedia('song')]), it = mergeLists(its, itt);
+    quick = mergeLists(it, wk, wm);
+    rest = async () => mergeLists(it, await loadMB('song'), wk, wm);
   }
-  cache[kind] = out;
-  if (out.length) cacheWrite(kind, out);
-  $('#msg').textContent = out.length ? '' : tr('Gagal memuat data. Buka lewat server (http), bukan file.');
+  cache[kind] = quick;
+  say(kind, quick.length ? '' : tr('Gagal memuat data. Buka lewat server (http), bukan file.'));
+  (async()=>{                                                      // lengkapi dengan MusicBrainz tanpa menahan layar
+    let full = quick; try { full = await rest(); } catch(e){}
+    if (full.length >= quick.length) cache[kind] = full;
+    if (cache[kind].length) cacheWrite(kind, cache[kind]);
+    if (state.kind===kind) { if (full.length > quick.length) renderResults(); say(kind,''); }
+  })();
 }
 let renderTok = 0, lastItems = [];
 /* filter jenis/tahun yang sedang dipilih (dipakai daftar kotak dan dropdown saran) */
@@ -1983,6 +1987,8 @@ for (const id of ['dlPost','dlZip','copyImg','toX','shareSheet','mkStory','mkSpi
   renderSaved(); renderHeads(); renderThemeUI(); $('#swNum').classList.toggle('on',state.num);
   if (shared) { showView(shared); return; }
   renderList(); renderResults();
+  // data tab lain diambil di latar belakang supaya pindah tab terasa instan (dilewati kalau mode hemat data)
+  if (!(navigator.connection && navigator.connection.saveData)) setTimeout(async()=>{ for (const k of ['oshi','setlist','song']) { if (k===state.kind) continue; try { await load(k); } catch(e){} await wait(300); } if (LANG==='ja' || /^ja/i.test(navigator.language||'')) loadJaNames(); }, 1500);   // nama Jepang hanya diambil duluan untuk pengguna berbahasa Jepang
 })();
 
 /* ---------- halaman hasil untuk link share (#d=...): tampil seperti pameran, bukan editor ---------- */
