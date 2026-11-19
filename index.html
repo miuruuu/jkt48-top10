@@ -230,6 +230,10 @@ video{max-width:100%;border-radius:14px;display:block;margin:0 auto}
           <label class="sw" id="swNum"><i></i>Numbers</label>
         </div>
         <div class="looks" id="looks"></div>
+        <div id="spBox" hidden>
+          <div class="themehead">Gaya punggung</div>
+          <div class="chips" style="margin-top:6px"><button class="chip" type="button" data-sp="team">Warna tim</button><button class="chip" type="button" data-sp="photo">Foto member</button></div>
+        </div>
         <div id="pbBox" hidden>
           <div class="themehead">Warna photobook</div>
           <div class="chips" style="margin-top:6px"><button class="chip" type="button" data-pb="team">Ikut warna tim</button><label class="chip" style="display:inline-flex;gap:6px;align-items:center;cursor:pointer">Kustom <input type="color" id="pbColor" value="#ff5c93" style="width:28px;height:22px;padding:0;border:0;background:none;cursor:pointer"></label></div>
@@ -356,7 +360,7 @@ const EN = {
  'Cari setlist teater JKT48...':'Search JKT48 theater setlists...','Memuat daftar setlist teater...':'Loading theater setlists...',
  'Photobook: sampul + {n} halaman, berurutan. Seret atau salin tiap halaman, atau unduh ZIP. X menerima sampai 20 foto per post.':'Photobook: cover + {n} pages, in order. Drag or copy each page, or download the ZIP. X accepts up to 20 photos per post.',
  'Poster setlist':'Setlist poster','Judul setlist':'Setlist title','Tanggal / tempat (opsional)':'Date / venue (optional)','Tanpa encore':'No encore','Encore: {n} lagu terakhir':'Encore: last {n} songs','Setlist-ku':'My setlist','Poster setlist: {n} halaman, berurutan. Seret atau salin tiap halaman, atau unduh ZIP.':'Setlist poster: {n} pages, in order. Drag or copy each page, or download the ZIP.',
- 'Warna photobook':'Photobook color','Ikut warna tim':'Follow team color',
+ 'Warna photobook':'Photobook color','Gaya punggung':'Spine style','Warna tim':'Team color','Foto member':'Member photo','Ikut warna tim':'Follow team color',
  'Salin berurutan':'Copy one by one','Unduh ZIP':'Download ZIP','Salin berikutnya ({a}/{b})':'Copy next ({a}/{b})','Foto {a}/{b} tersalin. Tempel dengan Ctrl+V di tweet, lalu klik lagi untuk foto berikutnya.':'Photo {a}/{b} copied. Paste with Ctrl+V in the tweet, then click again for the next one.','Foto terakhir ({a}/{b}) tersalin. Tempel dengan Ctrl+V. Klik lagi untuk mengulang dari awal.':'Last photo ({a}/{b}) copied. Paste with Ctrl+V. Click again to start over.','ZIP diunduh: semua foto dalam satu file.':'ZIP downloaded: all photos in one file.',
  'Foto':'Photo','Terang':'Light','Otomatis (ikut perangkat)':'Auto (follow device)','Gelap':'Dark','Pencarian terakhir':'Recent searches','Hapus riwayat':'Clear history','Hasil untuk "{q}"':'Results for "{q}"','{n} cocok':'{n} matches','Tidak ada yang cocok.':'No matches.','Tambah "{q}" manual':'Add "{q}" manually','Kalau tidak ada di daftar':'If it is not in the list',
  '+ tambah semua':'+ add all','Tambah semua yang tampil (sampai penuh)':'Add everything shown (until full)','Ditambah {n} item.':'Added {n} item(s).','Tambah manual dengan foto sendiri':'Add manually with your own photo','Foto sendiri hanya tersimpan di browser ini dan tidak ikut link share.':'Your own photo is only kept in this browser and is not included in the share link.','Gagal membuka foto itu.':'Could not open that photo.',
@@ -425,7 +429,7 @@ const JA = {
  'Cari setlist teater JKT48...':'JKT48の劇場公演を検索...','Memuat daftar setlist teater...':'劇場公演リストを読み込み中...',
  'Photobook: sampul + {n} halaman, berurutan. Seret atau salin tiap halaman, atau unduh ZIP. X menerima sampai 20 foto per post.':'フォトブック: 表紙+{n}ページを順番に用意しました。各ページをドラッグ/コピー、またはZIPでダウンロード。Xは1投稿につき最大20枚までです。',
  'Poster setlist':'セットリスト','Judul setlist':'セットリストのタイトル','Tanggal / tempat (opsional)':'日付・会場(任意)','Tanpa encore':'アンコールなし','Encore: {n} lagu terakhir':'アンコール: 最後の{n}曲','Setlist-ku':'私のセットリスト','Poster setlist: {n} halaman, berurutan. Seret atau salin tiap halaman, atau unduh ZIP.':'セットリストポスター: {n}ページ、順番どおり。ドラッグかコピー、またはZIPでダウンロード。',
- 'Warna photobook':'フォトブックの色','Ikut warna tim':'チームカラーに合わせる',
+ 'Warna photobook':'フォトブックの色','Gaya punggung':'背表紙のスタイル','Warna tim':'チームカラー','Foto member':'メンバー写真','Ikut warna tim':'チームカラーに合わせる',
  'Salin berurutan':'1枚ずつコピー','Unduh ZIP':'ZIPをダウンロード','Salin berikutnya ({a}/{b})':'次をコピー({a}/{b})','Foto {a}/{b} tersalin. Tempel dengan Ctrl+V di tweet, lalu klik lagi untuk foto berikutnya.':'{a}/{b}枚目をコピーしました。ツイートに Ctrl+V で貼り付け、もう一度クリックして次へ。','Foto terakhir ({a}/{b}) tersalin. Tempel dengan Ctrl+V. Klik lagi untuk mengulang dari awal.':'最後の写真({a}/{b})をコピーしました。Ctrl+V で貼り付け。もう一度クリックで最初から。','ZIP diunduh: semua foto dalam satu file.':'ZIPをダウンロードしました。すべての写真が1つのファイルに入っています。',
  'Foto':'フォト','Terang':'ライト','Otomatis (ikut perangkat)':'自動(端末に合わせる)','Gelap':'ダーク','Pencarian terakhir':'最近の検索','Hapus riwayat':'履歴を消去','Hasil untuk "{q}"':'「{q}」の結果','{n} cocok':'{n}件ヒット','Tidak ada yang cocok.':'一致するものがありません。','Tambah "{q}" manual':'「{q}」を手動で追加','Kalau tidak ada di daftar':'リストにない場合',
  '+ tambah semua':'+ すべて追加','Tambah semua yang tampil (sampai penuh)':'表示中のものをすべて追加(上限まで)','Ditambah {n} item.':'{n}件追加しました。','Tambah manual dengan foto sendiri':'自分の写真で手動追加','Foto sendiri hanya tersimpan di browser ini dan tidak ikut link share.':'自分の写真はこのブラウザにだけ保存され、共有リンクには含まれません。','Gagal membuka foto itu.':'その写真を開けませんでした。',
@@ -519,7 +523,7 @@ function setLang(l){
   renderHeads(); renderThemeUI(); renderResults(); renderList(); renderSaved($('#savedSel').value); $('#sfUser').placeholder = tr($('#impSrc').value==='lastfm' ? 'Username Last.fm' : 'Username stats.fm'); $('#q').placeholder = tr(KIND[state.kind].ph);
 }
 const slClean = v => ({ t:String(v&&v.t||'').slice(0,40), s:String(v&&v.s||'').slice(0,50), e:Math.max(0,Math.min(5,Math.floor(+(v&&v.e)||0))) });
-const state = { sl:{t:'',s:'',e:0}, pbColor:'team', vinyl:'auto', theme:'classic', custom:{bg:'#fff1f3',ink:'#2a1218',acc:'#e4002b',bg2:''}, font:'sys', postMode:'multi', kind:'album', look:'cds', num:false, night:false, share:'post', spin:'all', spinFmt:'sq', audio:true, q:'', filter:'all', year:'all', picks:{album:[],song:[],oshi:[],setlist:[]} };
+const state = { sl:{t:'',s:'',e:0}, pbColor:'team', spine:'team', vinyl:'auto', theme:'classic', custom:{bg:'#fff1f3',ink:'#2a1218',acc:'#e4002b',bg2:''}, font:'sys', postMode:'multi', kind:'album', look:'cds', num:false, night:false, share:'post', spin:'all', spinFmt:'sq', audio:true, q:'', filter:'all', year:'all', picks:{album:[],song:[],oshi:[],setlist:[]} };
 const cache = {album:[],song:[],oshi:[],setlist:[]};
 let MAX = 10; let RED = '#e4002b'; let THEME_FONT = 'system-ui,sans-serif';
 
@@ -545,7 +549,8 @@ function buildTheme(id, custom){
   ['bg','ink','acc'].forEach(k=>{ if (!validHex(t[k])) t[k]=THEMES.classic[k]; }); if (t.bg2 && !validHex(t.bg2)) delete t.bg2;
   t.mu = mixHex(t.ink,t.bg,.45); t.dark = lumHex(t.bg)<0.45; return t;
 }
-function applyTheme(o){ RED = o.theme.acc; THEME_FONT = (FONTS[o.font]||FONTS.sys)[1]; }
+let SPINE_PHOTO = false;
+function applyTheme(o){ SPINE_PHOTO = o.kind==='oshi' && o.spine==='photo'; RED = o.theme.acc; THEME_FONT = (FONTS[o.font]||FONTS.sys)[1]; }
 function fillBg(c,W,H,t){
   if (t.bg2) { const g=c.createLinearGradient(0,0,W,H); g.addColorStop(0,t.bg); g.addColorStop(1,t.bg2); c.fillStyle=g; } else c.fillStyle=t.bg;
   c.fillRect(0,0,W,H);
@@ -555,8 +560,8 @@ function fillBg(c,W,H,t){
 (()=>{ const d=Object.getOwnPropertyDescriptor(CanvasRenderingContext2D.prototype,'font');
   Object.defineProperty(CanvasRenderingContext2D.prototype,'font',{configurable:true,get(){ return d.get.call(this); },set(v){ d.set.call(this, typeof v==='string' ? v.replace('system-ui,sans-serif', THEME_FONT) : v); }}); })();
 try { const s = JSON.parse(localStorage.getItem('jkt48top')||'null'); if (s && s.album) Object.assign(state.picks, s); const m = +localStorage.getItem('jkt48max'); if ([3,5,10,20].includes(m)) MAX = m; } catch(e){}
-try { const th = JSON.parse(localStorage.getItem('jkt48theme')||'null'); if (th) { if (th.id==='custom' || THEMES[th.id]) state.theme=th.id; if (th.custom) Object.assign(state.custom, th.custom); if (FONTS[th.font]) state.font=th.font; if (VINYL_LIST.includes(th.vinyl)) state.vinyl=th.vinyl; if (th.pb==='team' || validHex(th.pb)) state.pbColor=th.pb; if (th.sl) state.sl=slClean(th.sl); } } catch(e){}
-const save = () => { try{ localStorage.setItem('jkt48top', JSON.stringify(state.picks)); localStorage.setItem('jkt48max', MAX); localStorage.setItem('jkt48theme', JSON.stringify({id:state.theme,custom:state.custom,font:state.font,vinyl:state.vinyl,pb:state.pbColor,sl:state.sl})); }catch(e){} };
+try { const th = JSON.parse(localStorage.getItem('jkt48theme')||'null'); if (th) { if (th.id==='custom' || THEMES[th.id]) state.theme=th.id; if (th.custom) Object.assign(state.custom, th.custom); if (FONTS[th.font]) state.font=th.font; if (VINYL_LIST.includes(th.vinyl)) state.vinyl=th.vinyl; if (th.pb==='team' || validHex(th.pb)) state.pbColor=th.pb; if (th.sp==='photo') state.spine='photo'; if (th.sl) state.sl=slClean(th.sl); } } catch(e){}
+const save = () => { try{ localStorage.setItem('jkt48top', JSON.stringify(state.picks)); localStorage.setItem('jkt48max', MAX); localStorage.setItem('jkt48theme', JSON.stringify({id:state.theme,custom:state.custom,font:state.font,vinyl:state.vinyl,pb:state.pbColor,sp:state.spine,sl:state.sl})); }catch(e){} };
 const big = u => u.replace(/\d+x\d+bb/, '600x600bb');
 const cur = () => state.picks[state.kind];
 const KIND = { album:{noun:'albums', one:'album', ph:'Cari album JKT48...'}, song:{noun:'songs', one:'lagu', ph:'Cari lagu JKT48...'}, oshi:{noun:'oshi', one:'member', ph:'Cari member JKT48...'}, setlist:{noun:'setlists', one:'setlist', ph:'Cari setlist teater JKT48...'} };
@@ -1146,7 +1151,7 @@ function spinFrame(c,o,t){
 const opts = async () => {
   const picks = cur().slice(), assets = await loadAll(picks);
   const theme = buildTheme(state.theme, state.custom);
-  return { picks, assets, look:state.look, num:state.num, theme, night:theme.dark, font:state.font, vinyl:state.vinyl, pbColor:state.pbColor, sl:state.sl, kind:state.kind, name:$('#nm').value.trim() };
+  return { picks, assets, look:state.look, num:state.num, theme, night:theme.dark, font:state.font, vinyl:state.vinyl, pbColor:state.pbColor, spine:state.spine, sl:state.sl, kind:state.kind, name:$('#nm').value.trim() };
 };
 /* Satu foto per item, tanpa latar/padding: di X, foto-foto tipis ini berjajar rapat jadi satu rak.
    CDs 200x2660 (≈0.075), Tapes 330x2130 (≈0.155), Covers 1:1, Vinyl 1.15, Player 9:16 */
@@ -1416,7 +1421,9 @@ function spineTitle(c,cx,y0,y1,title,maxCross,u,T,F){
 }
 function drawSpineCommon(c,x,y,w,h,p,a,kind,cfg){
   const tc = kind==='oshi' && 'LDP'.includes(teamOf(p)) ? TEAM_COLOR[teamOf(p)] : null;   // member aktif: kertas mengikuti warna tim (Love/Dream/Passion)
-  const u = w/cfg.base, side = cfg.side*u, cap = cfg.cap*u, T = tc ? paperTone({dom:tc}) : paperTone(a), F = TITLE_FONTS[hashStr(String(p.title))%TITLE_FONTS.length];
+  const u = w/cfg.base, side = cfg.side*u, cap = cfg.cap*u; let T = tc ? paperTone({dom:tc}) : paperTone(a), F = TITLE_FONTS[hashStr(String(p.title))%TITLE_FONTS.length];
+  const ph0 = kind==='oshi' && SPINE_PHOTO && a && a.im;   // gaya foto: foto member diperbesar jadi latar punggung, teks putih serif miring
+  if (ph0) { T = Object.assign({}, T, {ink:'#ffffff', mu:'rgba(255,255,255,.9)'}); F = { f:'Georgia,"Times New Roman",serif', w:500, up:false, it:'italic' }; }
   c.save(); c.translate(x,y);
   // plastik bening ala jewel case / casing asli: badan tebal berlapis, rel kiri-kanan, tutup dengan tab engsel di atas dan bawah
   rr(c,0,0,w,h,cfg.radius*u); let g = c.createLinearGradient(0,0,w,0);
@@ -1434,6 +1441,7 @@ function drawSpineCommon(c,x,y,w,h,p,a,kind,cfg){
   const px = side, py = cap, pw = w-side*2, ph = h-cap*2;
   c.save(); c.beginPath(); c.rect(px,py,pw,ph); c.clip();
   c.fillStyle = T.bg; c.fillRect(px,py,pw,ph);
+  if (ph0) { drawCoverFit(c, a.im, px, py, pw, ph, 0.12); c.fillStyle='rgba(18,14,22,.42)'; c.fillRect(px,py,pw,ph); }
   drawCoverFit(c, a.im, px, py, pw, pw, 0);                         // cover kecil di atas
   const my = py + pw + cfg.markGap*u;                               // logo JKT / 48 bertumpuk
   c.fillStyle = T.mu; c.textAlign = 'center'; c.textBaseline = 'alphabetic'; c.font = `300 ${pw*0.4}px "Arial Narrow","Segoe UI",system-ui,sans-serif`;
@@ -1599,7 +1607,7 @@ function renderLink(){
   $('#slots').innerHTML = Array.from({length:Math.max(MAX,arr.length)},(_,i)=>`<div>${arr[i]?`<img src="${esc(arr[i].img)}" alt="">`:''}</div>`).join('');
 }
 function renderLooks(o){
-  renderPbUI(); renderSlUI();
+  renderPbUI(); renderSpUI(); renderSlUI();
   const host=$('#looks'), group = state.kind==='oshi' ? 'oshi' : state.kind==='setlist' ? 'setlist' : state.kind==='song' ? 'lagu' : 'musik';
   if (host.dataset.group !== group) { // jenis format berbeda: member tidak cocok dengan CD, vinyl, dan player
     host.dataset.group = group; host.replaceChildren();
@@ -1920,6 +1928,11 @@ $('#slTitle').oninput = e => { state.sl.t=e.target.value.slice(0,40); save(); re
 $('#slSub').oninput = e => { state.sl.s=e.target.value.slice(0,50); save(); refresh(); };
 $('#slEnc').onchange = e => { state.sl.e=+e.target.value||0; save(); refresh(); };
 /* warna photobook: ikut tim (bawaan) atau satu warna kustom */
+function renderSpUI(){
+  const on = state.kind==="oshi" && (state.look==="cds" || state.look==="tapes"); $("#spBox").hidden = !on;
+  document.querySelectorAll("#spBox .chip[data-sp]").forEach(b=>b.classList.toggle("on", b.dataset.sp===state.spine));
+}
+$("#spBox").onclick = e => { const b=e.target.closest("[data-sp]"); if (!b) return; state.spine=b.dataset.sp; save(); renderSpUI(); refresh(); };
 function renderPbUI(){
   $('#pbBox').hidden = state.look!=='photobook'; const custom = state.pbColor!=='team' && validHex(state.pbColor);
   document.querySelectorAll('#pbBox .chip[data-pb]').forEach(b=>b.classList.toggle('on',!custom)); $('#pbBox label.chip').classList.toggle('on',custom); if (custom) $('#pbColor').value = state.pbColor;
@@ -2038,7 +2051,7 @@ $('#mkStory').onclick=async()=>{
 };
 $('#copy').onclick=async()=>{
   // seluruh daftar dikodekan di link (judul + alamat cover), jadi tidak perlu server atau lookup
-  const data={k:state.kind,l:state.look,n:+state.num,v:state.vinyl,pb:state.pbColor,sl:state.look==='setlistposter'?[state.sl.t,state.sl.s,state.sl.e]:undefined,th:state.theme,cu:state.theme==='custom'?state.custom:undefined,f:state.font,nm:$('#nm').value.trim(),lk:$('#lk').value.trim(),
+  const data={k:state.kind,l:state.look,n:+state.num,v:state.vinyl,pb:state.pbColor,ss:state.spine==='photo'?'photo':undefined,sl:state.look==='setlistposter'?[state.sl.t,state.sl.s,state.sl.e]:undefined,th:state.theme,cu:state.theme==='custom'?state.custom:undefined,f:state.font,nm:$('#nm').value.trim(),lk:$('#lk').value.trim(),
     p:cur().map(p=>[p.title,p.sub,p.img&&!p.img.startsWith('data:')?p.img:0,p.plays||0,p.ms||0])};
   const b64=btoa(unescape(encodeURIComponent(JSON.stringify(data)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
   const url=location.href.split('#')[0]+'#d='+b64;
@@ -2093,7 +2106,7 @@ async function showView(d){
   const picks=d.p.slice(0,20).map(([title,sub,img,plays,ms],i)=>({id:'s'+i,title:String(title),sub:String(sub||''),img:(typeof img==='string'&&/^https:\/\//.test(img))?img:placeholder(String(title)),plays:+plays||0,ms:+ms||0}));
   const look=(['cds','tapes','covers','vinyl','player','photobook','setlistposter',...OSHI_LOOKS].includes(d.l) && (d.l==='setlistposter' ? d.k==='song' : (d.k==='oshi' || (d.l!=='photobook' && !OSHI_LOOKS.includes(d.l))))) ? d.l : (d.k==='oshi'?'photocard':'cds'), name=String(d.nm||'').slice(0,40);
   const themeId = d.th==='custom' || THEMES[d.th] ? d.th : (d.d ? 'night' : 'classic'), theme = buildTheme(themeId, d.cu && typeof d.cu==='object' ? d.cu : {});
-  const o={picks,assets:await loadAll(picks),look,num:!!d.n,theme,night:theme.dark,font:FONTS[d.f]?d.f:'sys',vinyl:VINYL_LIST.includes(d.v)?d.v:'auto',pbColor:(d.pb==='team'||validHex(d.pb))?d.pb:'team',sl:Array.isArray(d.sl)?slClean({t:d.sl[0],s:d.sl[1],e:d.sl[2]}):slClean(),kind:d.k,name};
+  const o={picks,assets:await loadAll(picks),look,num:!!d.n,theme,night:theme.dark,font:FONTS[d.f]?d.f:'sys',vinyl:VINYL_LIST.includes(d.v)?d.v:'auto',pbColor:(d.pb==='team'||validHex(d.pb))?d.pb:'team',spine:d.ss==='photo'?'photo':'team',sl:Array.isArray(d.sl)?slClean({t:d.sl[0],s:d.sl[1],e:d.sl[2]}):slClean(),kind:d.k,name};
   document.title=`${listTitleText(picks.length,d.k)}${name?' '+tr('oleh')+' '+name:''}`;
   $('#vTitle').textContent=listTitleText(picks.length,d.k);
   const by=$('#vBy'); by.textContent=''; const parts=[];
