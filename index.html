@@ -946,16 +946,25 @@ async function exEraPhotos(out){
   } catch(e){}
   out.forEach(x=>{ delete x.end; });
 }
+/* ex-member JKT48 yang oleh wiki dikategorikan di tempat lain (mis. pindahan dari AKB48 yang masuk "AKB48 Graduates"): mereka ada di kategori
+   "<n> Generation JKT48" tapi bukan di "JKT48 Graduates", bukan member aktif di wiki, dan bukan di daftar member lokal */
+async function wikiExtraEx(known){
+  const ord=n=>n+(['th','st','nd','rd'][(n%100>10&&n%100<14)?0:(n%10<4?n%10:0)]);
+  const [lists,active]=await Promise.all([Promise.all(Array.from({length:16},(_,i)=>wikiCat(ord(i+1)+' Generation JKT48'))), wikiCat('JKT48 Members')]);
+  const seen=new Set([...known.map(x=>x.pageid),...active.map(x=>x.pageid)]), names=new Set(MEMBERS.map(x=>keyOf(x[0]))), out=[];
+  lists.flat().forEach(x=>{ if (seen.has(x.pageid) || names.has(keyOf(x.title))) return; seen.add(x.pageid); out.push(x); });
+  return out;
+}
 /* ex-member: kategori "JKT48 Graduates"; angkatan, tahun aktif dan foto dibaca dari infobox halaman member */async function loadExMembers(){
-  const hit=cacheRead('ex2'); if (hit) return hit;
-  const m=await wikiCat('JKT48 Graduates'), out=[];
+  const hit=cacheRead('ex3'); if (hit) return hit;
+  const m0=await wikiCat('JKT48 Graduates'), extra=await wikiExtraEx(m0), m=[...m0,...extra], extraIds=new Set(extra.map(x=>x.pageid)), out=[];
   const chunks=[]; for (let i=0;i<m.length;i+=20) chunks.push(m.slice(i,i+20));
   await Promise.all(chunks.map(async grp=>{
     try {
       const j=await wikiGet('action=query&prop=pageimages|revisions&rvprop=content&rvslots=main&rvsection=0&piprop=thumbnail&pithumbsize=600&pageids='+grp.map(x=>x.pageid).join('|'));
       Object.values(j.query.pages||{}).forEach(p=>{
         const w=(p.revisions&&p.revisions[0].slots.main['*'])||'', grp=(w.match(/\|\s*group\s*=\s*([^\n|]*)/)||[])[1]||'';
-        if (grp && !/JKT48/i.test(grp)) return;                       // hanya JKT48
+        if (grp && !/JKT48/i.test(grp) && !extraIds.has(p.pageid)) return;                       // hanya JKT48
         const gen=(w.match(/(\d+)(?:st|nd|rd|th) Generation/)||[])[1], act=w.match(/\|\s*active\s*=\s*(\d{4})\s*-\s*(\d{4})/);
         out.push({ id:'x:'+p.pageid, title:p.title, sub:['Ex-member', gen?'Gen '+gen:'', act?act[1]+'–'+act[2]:''].filter(Boolean).join(' · '), team:'X', end:act?+act[2]:0, img:p.thumbnail?wikiThumb(p.thumbnail.source,true):placeholder(p.title) });
       });
@@ -963,7 +972,7 @@ async function exEraPhotos(out){
   }));
   out.sort((a,b)=>a.title.localeCompare(b.title));
   await exEraPhotos(out);
-  if (out.length) cacheWrite('ex2', out);
+  if (out.length) cacheWrite('ex3', out);
   return out;
 }
 /* ---------- pencarian bahasa Jepang: kana -> romaji, plus nama/judul Jepang dari AKB48 Wiki (dimuat malas saat orang mengetik Jepang) ---------- */
